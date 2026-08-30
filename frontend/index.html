@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#16171b">
+  <title>MedV2 - Analisador de Exames & Saúde</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <section id="auth-screen" class="auth-screen hidden" aria-labelledby="auth-title">
+    <div class="auth-card">
+      <div class="logo-area"><span class="logo-accent">Med</span><span>V2</span></div>
+      <h1 id="auth-title">Acesse o MedV2</h1>
+      <p id="auth-description">Entre para consultar seu perfil, exames e análises.</p>
+      <form id="auth-form">
+        <label id="auth-name-label" class="hidden" for="auth-name">Nome</label>
+        <input id="auth-name" class="form-input hidden" type="text" autocomplete="name" placeholder="Seu nome">
+        <label for="auth-email">E-mail</label>
+        <input id="auth-email" class="form-input" type="email" autocomplete="email" required>
+        <label for="auth-password">Senha</label>
+        <input id="auth-password" class="form-input" type="password" autocomplete="current-password" minlength="8" required>
+        <button id="auth-submit" class="btn-primary-orange" type="submit">Entrar</button>
+        <p id="auth-error" class="auth-error" role="alert"></p>
+      </form>
+      <button id="auth-toggle" class="btn-text-orange" type="button">Criar uma conta</button>
+    </div>
+  </section>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="logo-area" id="nav-dashboard-logo">
+        <span class="logo-accent">Med</span><span>V2</span>
+      </div>
+      <div class="user-greeting">
+        <span>Olá, <strong id="header-patient-name">patient</strong></span>
+        <div class="header-actions">
+          <button id="btn-settings" title="Configurações" class="icon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+          <button id="btn-logout" title="Sair" class="icon-btn logout-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- App Navigation Tabs -->
+    <nav class="app-nav">
+      <button type="button" class="nav-btn active" id="nav-dashboard">Painel</button>
+      <button type="button" class="nav-btn" id="nav-labs">Labs</button>
+      <button type="button" class="nav-btn" id="nav-scores">Sistemas</button>
+      <button type="button" class="nav-btn" id="nav-profile">Perfil</button>
+      <button type="button" class="nav-btn" id="nav-history">Histórico</button>
+    </nav>
+
+    <!-- Missing API Key Alert Banner -->
+    <div id="api-key-warning" class="warning-banner hidden">
+      <div class="warning-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>Chave de API do OpenRouter não configurada no servidor. O administrador deve definir OPENROUTER_API_KEY.</span>
+      </div>
+      <button id="btn-warning-config" class="btn-small-orange">Configurar</button>
+    </div>
+
+    <!-- Active Analysis Selector (History Navigation Toolbar) -->
+    <div id="active-analysis-bar" class="analysis-bar hidden">
+      <div class="bar-left">
+        <span class="bar-label">Visualizando exames de:</span>
+        <select id="select-active-analysis" class="analysis-select">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+      <button id="btn-reset-latest" class="btn-text-orange hidden">Ver mais recente</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      
+      <!-- DASHBOARD VIEW -->
+      <section id="view-dashboard" class="content-view active">
+        
+        <!-- Patient Overview Card -->
+        <div class="dashboard-card patient-card">
+          <div class="patient-header">
+            <div>
+              <h2 id="patient-name-display" class="patient-name">patient</h2>
+              <p id="patient-age-sex" class="patient-meta">45 anos • masculino</p>
+            </div>
+            <a href="#" id="link-go-profile" class="card-link">Atualizar perfil →</a>
+          </div>
+          <div class="patient-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Altura</span>
+              <span class="metric-value"><strong id="metric-altura">--</strong> <span class="metric-unit">cm</span></span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Peso</span>
+              <span class="metric-value"><strong id="metric-peso">--</strong> <span class="metric-unit">kg</span></span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Massa Magra</span>
+              <span class="metric-value"><strong id="metric-massa-magra">--</strong> <span class="metric-unit">kg</span></span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">IMC</span>
+              <span class="metric-value">
+                <strong id="metric-imc">--</strong>
+                <span id="badge-imc-class" class="metric-badge">--</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline analysis navigation stays on the main panel. -->
+        <section id="dashboard-detail-slot" class="dashboard-detail-slot hidden" aria-label="Análise detalhada">
+          <div class="inline-detail-header">
+            <div>
+              <span class="inline-detail-kicker">ANÁLISE DETALHADA</span>
+              <h3>Estado, planos e próximos passos</h3>
+            </div>
+            <span id="inline-detail-date" class="detail-date">--</span>
+          </div>
+        </section>
+
+        <!-- Health Status (Estado de Saúde) Card -->
+        <div class="dashboard-card status-card">
+          <div class="card-header">
+            <h3>Estado de Saúde</h3>
+            <span id="status-analysis-date" class="header-date">Sem análises</span>
+          </div>
+          <div class="status-content">
+            <div id="status-summary-text" class="status-summary-text markdown-rendered">
+              <p>Nenhuma análise de exame disponível. Faça upload de um exame de sangue para gerar sua primeira análise de saúde, planos alimentar, de treino e suplementação.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health Scores (Pontuações de Saúde) Card -->
+        <div class="dashboard-card scores-card" id="card-health-scores">
+          <div class="card-header">
+            <h3>Pontuações de Saúde</h3>
+            <span class="header-date">Visão geral por sistemas</span>
+          </div>
+          <div class="scores-grid">
+            <div class="score-widget">
+              <div class="score-circle-wrapper">
+                <svg class="score-circle" viewBox="0 0 36 36">
+                  <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-val metab-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="score-number" id="score-metabolica">--</div>
+              </div>
+              <span class="score-label">Metabólica</span>
+            </div>
+            
+            <div class="score-widget">
+              <div class="score-circle-wrapper">
+                <svg class="score-circle" viewBox="0 0 36 36">
+                  <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-val cardio-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="score-number" id="score-cardio">--</div>
+              </div>
+              <span class="score-label">Cardio</span>
+            </div>
+            
+            <div class="score-widget">
+              <div class="score-circle-wrapper">
+                <svg class="score-circle" viewBox="0 0 36 36">
+                  <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-val tireoide-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="score-number" id="score-tireoide">--</div>
+              </div>
+              <span class="score-label">Tireoide</span>
+            </div>
+            
+            <div class="score-widget">
+              <div class="score-circle-wrapper">
+                <svg class="score-circle" viewBox="0 0 36 36">
+                  <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="circle-val geral-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="score-number" id="score-geral">--</div>
+              </div>
+              <span class="score-label">Nutricional</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Plans (Meus Planos) Card -->
+        <div class="dashboard-card plans-card">
+          <div class="card-header">
+            <h3>Meus Planos</h3>
+            <span id="plans-analysis-date" class="header-date">--</span>
+          </div>
+          <div class="plans-grid">
+            
+            <!-- Plan 1: Suplementação -->
+            <div class="plan-item-card" id="plan-card-suplementacao">
+              <div class="plan-icon-wrapper supplement-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
+              </div>
+              <h4 class="plan-title">Suplementação</h4>
+              <p class="plan-date" id="plan-date-suplementacao">Nenhum plano</p>
+            </div>
+
+            <!-- Plan 2: Plano Alimentar -->
+            <div class="plan-item-card" id="plan-card-alimentar">
+              <div class="plan-icon-wrapper nutrition-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"></path><path d="M12 6a6 6 0 0 0-6 6h6Z"></path></svg>
+              </div>
+              <h4 class="plan-title">Plano Alimentar</h4>
+              <p class="plan-date" id="plan-date-alimentar">Nenhum plano</p>
+            </div>
+
+            <!-- Plan 3: Treino -->
+            <div class="plan-item-card" id="plan-card-treino">
+              <div class="plan-icon-wrapper training-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"></path><path d="m21 21-1-1"></path><path d="m3 3 1 1"></path><path d="m18.5 5.5 3 3"></path><path d="m2.5 15.5 3 3"></path><path d="M16 16v5h5"></path><path d="M8 8V3H3"></path></svg>
+              </div>
+              <h4 class="plan-title">Treino</h4>
+              <p class="plan-date" id="plan-date-treino">Nenhum plano</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Recent Documents & Upload Widget -->
+        <div class="dashboard-card docs-card">
+          <div class="card-header">
+            <h3>Últimos Documentos</h3>
+            <a href="#" id="link-view-all-docs" class="card-link">Ver histórico →</a>
+          </div>
+
+          <!-- Upload Area -->
+          <div class="upload-section">
+            <div class="upload-dropzone" id="dropzone">
+              <input type="file" id="file-input" accept="application/pdf" class="hidden-input">
+              <div class="dropzone-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <p class="dropzone-text">Arraste seus laudos em PDF aqui ou <span class="browse-link">busque no computador</span></p>
+                <span class="dropzone-sub">Suporta Exames de Sangue e Bioimpedância</span>
+              </div>
+            </div>
+            
+            <div id="upload-dialog" class="upload-dialog hidden">
+              <div class="dialog-field">
+                <label for="select-doc-type">Qual tipo de documento é este?</label>
+                <select id="select-doc-type" class="form-select">
+                  <option value="blood-test">Exames de Sangue (Gera nova análise e planos)</option>
+                  <option value="bioimpedance">Bioimpedância (Preenche perfil corporal automaticamente)</option>
+                </select>
+              </div>
+              <div class="dialog-actions">
+                <span id="upload-file-name" class="upload-filename">arquivo.pdf</span>
+                <div>
+                  <button id="btn-cancel-upload" class="btn-secondary">Cancelar</button>
+                  <button id="btn-submit-upload" class="btn-primary-orange">Processar Documento</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload Loading Overlay -->
+            <div id="upload-loading" class="loading-overlay hidden">
+              <div class="spinner"></div>
+              <p id="loading-text">Analisando documento com a IA... Isso pode levar alguns segundos.</p>
+            </div>
+          </div>
+
+          <!-- Document List -->
+          <div class="documents-list" id="documents-container">
+            <!-- Loaded dynamically -->
+            <div class="no-docs-message">Nenhum documento cadastrado. Use a área de upload acima para enviar seus exames.</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- LABS VIEW (Evolução) -->
+      <section id="view-labs" class="content-view">
+        <div class="labs-header">
+          <h2 class="section-title-outfit">Labs (Evolução)</h2>
+          <p class="section-subtitle-outfit">Acompanhe a evolução histórica dos seus exames e marcadores calculados.</p>
+        </div>
+
+        <div class="dashboard-card correlations-card">
+          <div class="card-header">
+            <h3>Evolução de Biomarcadores</h3>
+            <span class="header-date">Normalizado (escala comparativa de tendências)</span>
+          </div>
+          
+          <div class="correlations-filters">
+            <div class="presets-container-layout">
+              <!-- Left Column: Preset Selectors -->
+              <div class="preset-selector-panel">
+                <div class="preset-group">
+                  <span class="presets-label">Painéis Clínicos Principais</span>
+                  <label class="preset-select-label" for="select-preset-principal">Escolha um painel</label>
+                  <select id="select-preset-principal" class="preset-select">
+                    <option value="preset-carga-aterogenica">Carga Aterogênica</option>
+                    <option value="preset-discordancia-ldl-apob">Discordância LDL vs ApoB</option>
+                    <option value="preset-sindrome-metabolica">Síndrome Metabólica</option>
+                    <option value="preset-controle-glicemico-ampliado">Controle Glicêmico Ampliado</option>
+                    <option value="preset-figado-metabolico">Fígado Metabólico</option>
+                    <option value="preset-inflamacao-aterotrombose">Inflamação & Aterotrombose</option>
+                    <option value="preset-funcao-renal">Função Renal</option>
+                    <option value="preset-tireoide-essencial">Tireoide Essencial</option>
+                  </select>
+                  <div class="preset-buttons-row">
+                    <button type="button" class="btn-preset active" id="preset-carga-aterogenica">Carga Aterogênica</button>
+                    <button type="button" class="btn-preset" id="preset-discordancia-ldl-apob">Discordância LDL vs ApoB</button>
+                    <button type="button" class="btn-preset" id="preset-sindrome-metabolica">Síndrome Metabólica</button>
+                    <button type="button" class="btn-preset" id="preset-controle-glicemico-ampliado">Controle Glicêmico Ampliado</button>
+                    <button type="button" class="btn-preset" id="preset-figado-metabolico">Fígado Metabólico</button>
+                    <button type="button" class="btn-preset" id="preset-inflamacao-aterotrombose">Inflamação & Aterotrombose</button>
+                    <button type="button" class="btn-preset" id="preset-funcao-renal">Função Renal</button>
+                    <button type="button" class="btn-preset" id="preset-tireoide-essencial">Tireoide Essencial</button>
+                  </div>
+                </div>
+                
+                <div class="preset-group">
+                  <span class="presets-label">Painéis Derivados & Co-fatores</span>
+                  <label class="preset-select-label" for="select-preset-derivado">Escolha um painel</label>
+                  <select id="select-preset-derivado" class="preset-select">
+                    <option value="preset-risco-hepatico-fib4">FIB-4 (Risco Hepático)</option>
+                    <option value="preset-inflamacao-hematologica">Inflamação Hematológica</option>
+                    <option value="preset-b12-folato-homocisteina">B12, Folato & Homocisteína</option>
+                    <option value="preset-eritropoiese-ferro">Eritropoiese & Ferro</option>
+                    <option value="preset-metabolismo-osseo-mineral">Metabolismo Ósseo-Mineral</option>
+                  </select>
+                  <div class="preset-buttons-row">
+                    <button type="button" class="btn-preset" id="preset-risco-hepatico-fib4">FIB-4 (Risco Hepático)</button>
+                    <button type="button" class="btn-preset" id="preset-inflamacao-hematologica">Inflamação Hematológica</button>
+                    <button type="button" class="btn-preset" id="preset-b12-folato-homocisteina">B12, Folato & Homocisteína</button>
+                    <button type="button" class="btn-preset" id="preset-eritropoiese-ferro">Eritropoiese & Ferro</button>
+                    <button type="button" class="btn-preset" id="preset-metabolismo-osseo-mineral">Metabolismo Ósseo-Mineral</button>
+                  </div>
+                </div>
+                
+                <div class="preset-group">
+                  <span class="presets-label">Painéis Hormonais</span>
+                  <label class="preset-select-label" for="select-preset-hormonal">Escolha um painel</label>
+                  <select id="select-preset-hormonal" class="preset-select">
+                    <option value="preset-disponibilidade-androgenica">Disponibilidade Androgênica</option>
+                    <option value="preset-eixo-gonadal-masculino">Eixo Gonadal Masculino</option>
+                    <option value="preset-balanco-androgeno-estradiol">Balanço Andrógeno-Estradiol</option>
+                    <option value="preset-androgenos-perifericos">Andrógenos Periféricos</option>
+                    <option value="preset-eixo-adrenal">Eixo Adrenal</option>
+                    <option value="preset-prostata">Acompanhamento Próstata</option>
+                  </select>
+                  <div class="preset-buttons-row">
+                    <button type="button" class="btn-preset" id="preset-disponibilidade-androgenica">Disponibilidade Androgênica</button>
+                    <button type="button" class="btn-preset" id="preset-eixo-gonadal-masculino">Eixo Gonadal Masculino</button>
+                    <button type="button" class="btn-preset" id="preset-balanco-androgeno-estradiol">Balanço Andrógeno-Estradiol</button>
+                    <button type="button" class="btn-preset" id="preset-androgenos-perifericos">Andrógenos Periféricos</button>
+                    <button type="button" class="btn-preset" id="preset-eixo-adrenal">Eixo Adrenal</button>
+                    <button type="button" class="btn-preset" id="preset-prostata">Acompanhamento Próstata</button>
+                  </div>
+                </div>
+                
+                <div class="preset-group">
+                  <span class="presets-label">Painéis de Micronutrientes</span>
+                  <label class="preset-select-label" for="select-preset-micronutrientes">Escolha um painel</label>
+                  <select id="select-preset-micronutrientes" class="preset-select">
+                    <option value="preset-hematopoieticos">Hematopoiéticos</option>
+                    <option value="preset-minerais-metabolicos">Minerais Metabólicos</option>
+                  </select>
+                  <div class="preset-buttons-row">
+                    <button type="button" class="btn-preset" id="preset-hematopoieticos">Hematopoiéticos</button>
+                    <button type="button" class="btn-preset" id="preset-minerais-metabolicos">Minerais Metabólicos</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Info/Tip Card -->
+              <div class="preset-explanation-card" id="preset-explanation-card">
+                <div class="explanation-card-header">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-orange)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="explanation-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  <h4 id="explanation-title">Painel Clínico</h4>
+                </div>
+                <div class="explanation-card-body">
+                  <p class="explanation-question" id="explanation-question">Pergunta clínica sendo avaliada...</p>
+                  <p class="explanation-text" id="explanation-text">Explicação clínica de co-evolução biológica dos marcadores selecionados.</p>
+                  <div class="explanation-biomarkers-tags">
+                    <span class="explanation-tag-label">Marcadores Avaliados:</span>
+                    <div class="biomarkers-tag-list" id="explanation-biomarkers-list"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-container-wrapper">
+            <div id="labs-chart-container" class="svg-chart-container">
+              <!-- Custom SVG chart generated dynamically -->
+              <div class="no-chart-data">Selecione marcadores acima para plotar a evolução.</div>
+            </div>
+            <!-- Information Panel for Correlation / Co-evolution -->
+            <div id="labs-correlation-info" class="labs-correlation-info-box hidden"></div>
+          </div>
+        </div>
+
+        <!-- Context Annotations Card (Anotações de Contexto) -->
+        <div class="dashboard-card annotations-card" id="labs-annotations-card" style="margin-top: 20px;">
+          <div class="card-header">
+            <h3>Anotações de Contexto Clínico</h3>
+            <span class="header-date" id="annotation-active-date">Selecione um exame</span>
+          </div>
+          <div class="annotation-content" style="padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+            <p class="annotation-helper">
+              Selecione o contexto biológico e clínico do paciente no momento desta coleta para enriquecer a interpretação dos resultados:
+            </p>
+            
+            <div class="annotation-tags-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+              <label class="cb-pill-label">
+                <input type="checkbox" class="annotation-tag-cb" value="Início de medicamento"> Início de medicamento
+              </label>
+              <label class="cb-pill-label">
+                <input type="checkbox" class="annotation-tag-cb" value="Perda de peso"> Perda de peso
+              </label>
+              <label class="cb-pill-label">
+                <input type="checkbox" class="annotation-tag-cb" value="Infecção ativa/recente"> Infecção ativa/recente
+              </label>
+              <label class="cb-pill-label">
+                <input type="checkbox" class="annotation-tag-cb" value="Exercício físico vigoroso nas 24h"> Exercício físico vigoroso
+              </label>
+              <label class="cb-pill-label">
+                <input type="checkbox" class="annotation-tag-cb" value="Mudança alimentar drástica"> Mudança alimentar
+              </label>
+            </div>
+            
+            <div class="form-group" style="margin-top: 10px;">
+              <label for="input-annotation-details" class="annotation-field-label">Horário da coleta e anotações adicionais de contexto:</label>
+              <input type="text" id="input-annotation-details" placeholder="Ex: Colhido às 07:45, em jejum de 12h, após boa noite de sono. Iniciei metformina 500mg/dia." style="width: 100%; box-sizing: border-box; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 12px; border-radius: var(--radius-sm); outline: none;">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; margin-top: 6px;">
+              <button type="button" id="btn-save-annotations" class="btn-primary-orange">Salvar Anotações</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-card all-markers-card">
+          <div class="card-header">
+            <h3>Histórico de Todos os Valores</h3>
+          </div>
+          <div class="table-responsive" role="region" aria-label="Histórico de biomarcadores" tabindex="0">
+            <table class="labs-table" id="labs-history-table">
+              <thead>
+                <!-- Populated dynamically -->
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <p class="table-scroll-hint">Deslize horizontalmente para consultar outras datas.</p>
+        </div>
+      </section>
+
+      <!-- PROFILE VIEW -->
+      <section id="view-profile" class="content-view">
+        <div class="profile-header-area">
+          <div class="profile-avatar">P</div>
+          <div class="profile-meta">
+            <h2 id="profile-name-text">patient</h2>
+            <span id="profile-email-text" class="profile-email">patient@sami.local</span>
+          </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="profile-tabs">
+          <button type="button" class="profile-tab-btn active" data-tab="tab-basico" title="Básico" aria-label="Básico"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg></span><span class="tab-label">Básico</span></button>
+          <button type="button" class="profile-tab-btn" data-tab="tab-habitos" title="Hábitos" aria-label="Hábitos"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z"></path></svg></span><span class="tab-label">Hábitos</span></button>
+          <button type="button" class="profile-tab-btn" data-tab="tab-dieta-digestao" title="Dieta e Digestão" aria-label="Dieta e Digestão"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v8M4 3v8M10 3v8M7 11v10M17 3v18M17 3c2 1 3 3 3 5s-1 4-3 5"></path></svg></span><span class="tab-label">Dieta &amp; Digestão</span></button>
+          <button type="button" class="profile-tab-btn" data-tab="tab-performance" title="Exercício e Performance" aria-label="Exercício e Performance"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8v8M3 10v4M18 8v8M21 10v4M6 12h12"></path></svg></span><span class="tab-label">Exercício &amp; Performance</span></button>
+        </div>
+
+        <form id="profile-form">
+          
+          <!-- TAB: BÁSICO -->
+          <div id="tab-basico" class="tab-panel active">
+            
+            <!-- Identificação -->
+            <div class="form-card">
+              <h4>Identificação</h4>
+              <p class="form-card-sub">Dados básicos pessoais e medidas corporais.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-idade">Idade</label>
+                  <input type="number" id="input-idade" name="idade" value="45" min="1" max="120">
+                </div>
+                <div class="form-group">
+                  <label for="input-sexo">Sexo biológico</label>
+                  <select id="input-sexo" name="sexo">
+                    <option value="masculino">masculino</option>
+                    <option value="feminino">feminino</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="input-altura">Altura (cm)</label>
+                  <input type="number" id="input-altura" name="altura" value="170">
+                </div>
+                <div class="form-group">
+                  <label for="input-peso">Peso (kg)</label>
+                  <input type="number" id="input-peso" name="peso" step="0.1" value="90.9">
+                </div>
+              </div>
+              <div class="calculated-imc-row">
+                <span>IMC: <strong id="profile-imc-value">31.5</strong> kg/m²</span>
+              </div>
+            </div>
+
+            <!-- Cardiovascular -->
+            <div class="form-card">
+              <h4>Cardiovascular</h4>
+              <p class="form-card-sub">Pressão arterial e frequência cardíaca.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-cardio-sistolica">Sistólica</label>
+                  <input type="number" id="input-cardio-sistolica" name="cardioSistolica" value="120">
+                </div>
+                <div class="form-group">
+                  <label for="input-cardio-diastolica">Diastólica</label>
+                  <input type="number" id="input-cardio-diastolica" name="cardioDiastolica" value="80">
+                </div>
+                <div class="form-group">
+                  <label for="input-cardio-fc">FC Repouso</label>
+                  <input type="number" id="input-cardio-fc" name="cardioFcRepouso" value="65">
+                </div>
+              </div>
+            </div>
+
+            <!-- Objetivos -->
+            <div class="form-card">
+              <h4>Objetivos</h4>
+              <p class="form-card-sub">Metas de saúde e histórico familiar.</p>
+              <div class="form-group">
+                <label for="textarea-objetivos">Metas de Saúde</label>
+                <textarea id="textarea-objetivos" name="objetivos" rows="3" placeholder="Foco em emagrecimento, hipertrofia..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="textarea-historico-familiar">Histórico familiar</label>
+                <textarea id="textarea-historico-familiar" name="historicoFamiliar" rows="2" placeholder="Diabetes no pai, hipertensão na mãe..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="textarea-observacoes">Observações</label>
+                <textarea id="textarea-observacoes" name="observacoes" rows="2" placeholder="Outras informações relevantes..."></textarea>
+              </div>
+            </div>
+
+            <!-- Histórico Médico -->
+            <div class="form-card">
+              <h4>Histórico Médico</h4>
+              <p class="form-card-sub">Condições, medicamentos e alergias.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-condicoes">Condições médicas</label>
+                  <input type="text" id="input-condicoes" name="condicoesMedicas" placeholder="hipertensão, diabetes..." value="hipertensão, pré-diabetes...">
+                </div>
+                <div class="form-group">
+                  <label for="input-medicamentos">Medicamentos</label>
+                  <input type="text" id="input-medicamentos" name="medicamentos" placeholder="metformina 500mg..." value="metformina 500mg...">
+                </div>
+                <div class="form-group">
+                  <label for="input-alergias">Alergias</label>
+                  <input type="text" id="input-alergias" name="alergias" placeholder="penicilina, látex..." value="penicilina, látex...">
+                </div>
+                <div class="form-group">
+                  <label for="input-cirurgias">Cirurgias</label>
+                  <input type="text" id="input-cirurgias" name="cirurgias" placeholder="apendicectomia 2015..." value="apendicectomia 2015...">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TAB: HÁBITOS -->
+          <div id="tab-habitos" class="tab-panel">
+            
+            <!-- Sono -->
+            <div class="form-card">
+              <h4>Sono</h4>
+              <p class="form-card-sub">Qualidade e padrões de sono.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-sono-horas">Horas de sono</label>
+                  <input type="number" id="input-sono-horas" name="sonoHoras" step="0.1" value="7.5">
+                </div>
+                <div class="form-group">
+                  <label for="input-sono-qualidade">Qualidade (1-10)</label>
+                  <input type="number" id="input-sono-qualidade" name="sonoQualidade" min="1" max="10" value="8">
+                </div>
+                <div class="form-group">
+                  <label for="input-sono-tempo-cama">Tempo na cama (h)</label>
+                  <input type="number" id="input-sono-tempo-cama" name="sonoTempoCama" step="0.1" value="8.0">
+                </div>
+                <div class="form-group">
+                  <label for="input-sono-regularidade">Regularidade</label>
+                  <input type="text" id="input-sono-regularidade" name="sonoRegularidade" value="regular">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input-sono-problemas">Problemas de sono</label>
+                <input type="text" id="input-sono-problemas" name="sonoProblemas" value="insônia, roncos">
+              </div>
+            </div>
+
+            <!-- Hábitos Gerais -->
+            <div class="form-card">
+              <h4>Hábitos</h4>
+              <p class="form-card-sub">Alimentação, substâncias e bem-estar.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-agua-dia">Água/dia (litros)</label>
+                  <input type="number" id="input-agua-dia" name="aguaDia" step="0.1" value="2.0">
+                </div>
+                <div class="form-group">
+                  <label for="input-estresse">Nível de estresse</label>
+                  <input type="number" id="input-estresse" name="nivelEstresse" min="1" max="10" value="5">
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-tabagismo">Detalhes do tabagismo</label>
+                  <input type="text" id="input-tabagismo" name="tabagismo" value="parou em 2020, 5 cigarros/dia...">
+                </div>
+                <div class="form-group">
+                  <label for="input-dieta">Dieta atual</label>
+                  <input type="text" id="input-dieta" name="dietaAtual" value="low carb, mediterrânea">
+                </div>
+                <div class="form-group">
+                  <label for="input-gestao-estresse">Gestão de estresse</label>
+                  <input type="text" id="input-gestao-estresse" name="gestaoEstresse" value="meditação, exercício">
+                </div>
+                <div class="form-group">
+                  <label for="input-suplementacao">Suplementação</label>
+                  <input type="text" id="input-suplementacao" name="suplementacaoAtual" value="Nenhuma ativa.">
+                </div>
+              </div>
+            </div>
+
+            <!-- Cronobiologia -->
+            <div class="form-card">
+              <h4>Cronobiologia</h4>
+              <p class="form-card-sub">Horários no formato HH:MM.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-crono-solar">1ª exposição solar</label>
+                  <input type="time" id="input-crono-solar" name="cronoExposicaoSolar" value="07:30">
+                </div>
+                <div class="form-group">
+                  <label for="input-crono-refeicao">Última refeição</label>
+                  <input type="time" id="input-crono-refeicao" name="cronoUltimaRefeicao" value="20:30">
+                </div>
+                <div class="form-group">
+                  <label for="input-crono-luz-inicio">Luz artificial início</label>
+                  <input type="time" id="input-crono-luz-inicio" name="cronoLuzArtInicio" value="06:00">
+                </div>
+                <div class="form-group">
+                  <label for="input-crono-luz-fim">Luz artificial fim</label>
+                  <input type="time" id="input-crono-luz-fim" name="cronoLuzArtFim" value="23:00">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input-crono-obs">Obs. exposição à luz</label>
+                <input type="text" id="input-crono-obs" name="cronoObsLuz" value="tela de celular até 23h">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TAB: PERFORMANCE -->
+          <div id="tab-performance" class="tab-panel">
+            
+            <!-- Frequência e Intensidade -->
+            <div class="form-card">
+              <h4>Rotina de Exercícios</h4>
+              <p class="form-card-sub">Frequência semanal e intensidade média de esforço físico.</p>
+              
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-exercise-frequency">Frequência</label>
+                  <select id="input-exercise-frequency" name="exerciseFrequency">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhuma</option>
+                    <option value="1-2x/week">1 a 2x por semana</option>
+                    <option value="3-4x/week">3 a 4x por semana</option>
+                    <option value="5-6x/week">5 a 6x por semana</option>
+                    <option value="daily">Diária</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-exercise-intensity">Intensidade Média</label>
+                  <select id="input-exercise-intensity" name="exerciseIntensity">
+                    <option value="">Selecione...</option>
+                    <option value="light">Leve</option>
+                    <option value="moderate">Moderada</option>
+                    <option value="intense">Intensa</option>
+                    <option value="mixed">Mista</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tipos de Exercício -->
+            <div class="form-card">
+              <h4>Tipos de Atividade Praticados</h4>
+              <p class="form-card-sub">Selecione todas as modalidades que você pratica com regularidade.</p>
+              
+              <div class="form-group">
+                <div class="checkbox-pill-grid">
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="strength / resistance"> Força / Musculação</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="walking"> Caminhada</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="running / jogging"> Corrida / Cooper</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="cycling"> Ciclismo / Bike</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="swimming"> Natação</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="HIIT / intervals"> HIIT / Intervalado</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="yoga/mobility"> Yoga / Mobilidade</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="Pilates"> Pilates</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="physiotherapy / rehab"> Fisioterapia / Reabilitação</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="team / racket sports"> Esportes de Quadra/Raquete</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="martial arts"> Artes Marciais</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="dance"> Dança</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="exercise-type-cb" value="hiking"> Trilha / Hiking</label>
+                </div>
+                <input type="hidden" name="exerciseTypes" id="hidden-exercise-types">
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="input-perf-atividade">Outras Observações / Atividades Complementares</label>
+                <input type="text" id="input-perf-atividade" name="perfAtividadeFisica" placeholder="Ex: alongamento pós-treino, etc.">
+              </div>
+            </div>
+
+            <!-- Detalhes de Treino -->
+            <div class="form-card">
+              <h4>Detalhes das Sessões e Movimentação</h4>
+              <p class="form-card-sub">Duração média de cada treino, nível de movimentação diária e contexto muscular.</p>
+              
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-session-duration">Duração Típica da Sessão</label>
+                  <select id="input-session-duration" name="typicalSessionDuration">
+                    <option value="">Selecione...</option>
+                    <option value="<30 min">&lt; 30 minutos</option>
+                    <option value="30-60 min">30 a 60 minutos</option>
+                    <option value="60-90 min">60 a 90 minutos</option>
+                    <option value="90+ min">&gt; 90 minutos</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-daily-movement">Movimentação Diária Padrão</label>
+                  <select id="input-daily-movement" name="dailyMovement">
+                    <option value="">Selecione...</option>
+                    <option value="sedentary desk job">Trabalho sentado (sedentário)</option>
+                    <option value="some walking">Caminhada moderada ao longo do dia</option>
+                    <option value="active job">Trabalho ativo (em pé / movimentando-se)</option>
+                    <option value="very active">Muito ativo fisicamente</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-muscle-context">Massa Muscular Autoavaliada</label>
+                  <select id="input-muscle-context" name="muscleContext">
+                    <option value="">Selecione...</option>
+                    <option value="below-average muscle mass">Abaixo da média</option>
+                    <option value="average">Média</option>
+                    <option value="muscular">Musculoso</option>
+                    <option value="bodybuilding / very muscular">Fisiculturismo / Muito musculoso</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Limitações e Recuperação -->
+            <div class="form-card">
+              <h4>Limitações & Recuperação</h4>
+              <p class="form-card-sub">Desafios que afetam sua recuperação ou execução dos treinos.</p>
+              
+              <div class="form-group">
+                <div class="checkbox-pill-grid">
+                  <label class="cb-pill-label"><input type="checkbox" class="recovery-limit-cb" value="mobility limitation"> Limitação de Mobilidade</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="recovery-limit-cb" value="current injury"> Lesão Ativa / Recente</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="recovery-limit-cb" value="chronic pain"> Dor Crônica</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="recovery-limit-cb" value="poor recovery"> Recuperação Lenta / Ruim</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="recovery-limit-cb" value="overtraining concern"> Preocupação com Overtraining</label>
+                </div>
+                <input type="hidden" name="limitationsAndRecovery" id="hidden-limitations-and-recovery">
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="input-limitacoes">Lesões / Limitações Físicas Detalhadas</label>
+                <input type="text" id="input-limitacoes" name="limitacoesFisicas" placeholder="Ex: dor no joelho direito, hérnia de disco.">
+              </div>
+            </div>
+
+            <!-- Testes Funcionais -->
+            <div class="form-card">
+              <h4>Testes Funcionais</h4>
+              <p class="form-card-sub">Opcional — testes de capacidade funcional.</p>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-perf-forca">Força de preensão (kgf)</label>
+                  <input type="number" id="input-perf-forca" name="perfForcaPreensao" step="0.1" value="42.5">
+                  <span class="form-field-tip">Medido com dinamômetro manual. Aperte com força máxima com a mão dominante.</span>
+                </div>
+                <div class="form-group">
+                  <label for="input-perf-sentar">Sentar-levantar (s)</label>
+                  <input type="number" id="input-perf-sentar" name="perfSentarLevantar" step="0.1" value="12.3">
+                  <span class="form-field-tip">Tempo para sentar e levantar 5x de uma cadeira sem apoio dos braços.</span>
+                </div>
+                <div class="form-group">
+                  <label for="input-perf-vo2">VO2 máx</label>
+                  <input type="number" id="input-perf-vo2" name="perfVo2Max" step="0.1" value="45.0">
+                  <span class="form-field-tip">Capacidade aeróbica máxima (ml/kg/min). Pode ser estimada pelo teste de Cooper de 12 minutos.</span>
+                </div>
+                <div class="form-group">
+                  <label for="input-perf-co2">Tolerância CO2 (s)</label>
+                  <input type="number" id="input-perf-co2" name="perfToleranciaCo2" value="40">
+                  <span class="form-field-tip">Tempo exalando o ar pelo nariz de forma controlada após inspiração profunda.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas de Exercício -->
+            <div class="form-card">
+              <h4>Notas e Histórico de Atividade</h4>
+              <p class="form-card-sub">Notas adicionais sobre o seu treino (ex: histórico de musculação 3x/semana, passos por dia, restrições específicas).</p>
+              <div class="form-group">
+                <textarea name="exerciseNotes" rows="3" placeholder="Ex: Treino de musculação 3x por semana para saúde óssea. Alinha descanso com fluxo menstrual mais pesado. Média de 6000 passos diários."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TAB: DIETA & DIGESTÃO -->
+          <div id="tab-dieta-digestao" class="tab-panel">
+            
+            <!-- Hábitos Alimentares -->
+            <div class="form-card">
+              <h4>Anamnese Nutricional</h4>
+              <p class="form-card-sub">Padrões alimentares, metas e consumo de líquidos.</p>
+              
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-diet-type">Tipo de Dieta</label>
+                  <select id="input-diet-type" name="dietType">
+                    <option value="">Selecione...</option>
+                    <option value="omnivore">Omnívoro</option>
+                    <option value="pescatarian">Pescatariano</option>
+                    <option value="vegetarian">Vegetariano</option>
+                    <option value="vegan">Vegano</option>
+                    <option value="keto">Cetogênico (Keto)</option>
+                    <option value="low-carb">Low-carb</option>
+                    <option value="paleo">Paleolítico</option>
+                    <option value="carnivore">Carnívoro</option>
+                    <option value="mediterranean">Mediterrâneo</option>
+                    <option value="other">Outro</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="input-eating-pattern">Padrão Alimentar</label>
+                  <select id="input-eating-pattern" name="eatingPattern">
+                    <option value="">Selecione...</option>
+                    <option value="3 meals/day">3 refeições/dia</option>
+                    <option value="2 meals/day">2 refeições/dia</option>
+                    <option value="IF 16:8">Jejum Intermitente 16:8</option>
+                    <option value="IF 18:6">Jejum Intermitente 18:6</option>
+                    <option value="IF 20:4">Jejum Intermitente 20:4</option>
+                    <option value="OMAD">OMAD (1 refeição/dia)</option>
+                    <option value="no pattern">Sem padrão definido</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-protein-intake">Meta de Proteína (g/kg/dia)</label>
+                  <select id="input-protein-intake" name="proteinIntake">
+                    <option value="">Selecione...</option>
+                    <option value="<0.8 g/kg/day">&lt; 0.8 g/kg/dia</option>
+                    <option value="0.8-1.2 g/kg/day">0.8 - 1.2 g/kg/dia</option>
+                    <option value="1.2-1.6 g/kg/day">1.2 - 1.6 g/kg/dia</option>
+                    <option value="1.6-2.2 g/kg/day">1.6 - 2.2 g/kg/dia</option>
+                    <option value=">2.2 g/kg/day">&gt; 2.2 g/kg/dia</option>
+                    <option value="not sure">Não tenho certeza</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-fluid-intake">Ingestão de Líquidos (L/dia)</label>
+                  <select id="input-fluid-intake" name="fluidIntake">
+                    <option value="">Selecione...</option>
+                    <option value="<1.5 L/day">&lt; 1.5 L/dia</option>
+                    <option value="1.5-2 L/day">1.5 - 2.0 L/dia</option>
+                    <option value="2-3 L/day">2.0 - 3.0 L/dia</option>
+                    <option value=">3 L/day">&gt; 3.0 L/dia</option>
+                    <option value="varies / not sure">Varia / Não tenho certeza</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Restrições, Cafeína e Álcool -->
+            <div class="form-card">
+              <h4>Restrições & Estilo de Vida</h4>
+              <p class="form-card-sub">Restrições alimentares, cafeína, álcool e mudanças recentes.</p>
+              
+              <div class="form-group">
+                <label>Restrições Alimentares</label>
+                <div class="checkbox-pill-grid">
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="gluten-free"> Sem Glúten</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="dairy-free"> Sem Laticínios</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="nut-free"> Sem Oleaginosas (Castanhas)</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="soy-free"> Sem Soja</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="egg-free"> Sem Ovo</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="sugar-free"> Sem Açúcar</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="seed-oil-free"> Sem Óleos de Sementes</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="low-sodium"> Baixo Sódio</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="restriction-cb" value="low-FODMAP"> Baixo FODMAP</label>
+                </div>
+                <input type="hidden" name="dietaryRestrictions" id="hidden-dietary-restrictions">
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-alcohol">Consumo de Álcool</label>
+                  <select id="input-alcohol" name="alcoholConsumption">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="occasional">Ocasional</option>
+                    <option value="1-3 drinks/week">1 a 3 doses por semana</option>
+                    <option value="4-7 drinks/week">4 a 7 doses por semana</option>
+                    <option value="8+ drinks/week">8 ou mais doses por semana</option>
+                    <option value="binge episodes">Episódios de consumo excessivo</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-caffeine">Consumo de Cafeína</label>
+                  <select id="input-caffeine" name="caffeineIntake">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="1 serving/day">1 dose por dia</option>
+                    <option value="2-3 servings/day">2 a 3 doses por dia</option>
+                    <option value="4+ servings/day">4 ou mais doses por dia</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-latest-caffeine">Último Consumo de Cafeína</label>
+                  <select id="input-latest-caffeine" name="latestCaffeineTime">
+                    <option value="">Selecione...</option>
+                    <option value="morning only">Apenas pela manhã</option>
+                    <option value="afternoon">À tarde</option>
+                    <option value="evening">À noite</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label>Mudanças Recentes na Dieta (últimos 3 meses)</label>
+                <div class="checkbox-pill-grid">
+                  <label class="cb-pill-label"><input type="checkbox" class="dietchange-cb" value="calorie restriction"> Restrição Calórica</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="dietchange-cb" value="fasting more than usual"> Jejum mais frequente que o habitual</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="dietchange-cb" value="significant weight loss"> Perda de peso significativa</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="dietchange-cb" value="significant weight gain"> Ganho de peso significativo</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="dietchange-cb" value="recent major diet change"> Mudança recente drástica na dieta</label>
+                </div>
+                <input type="hidden" name="recentDietChanges" id="hidden-recent-diet-changes">
+              </div>
+            </div>
+
+            <!-- Refeições Típicas -->
+            <div class="form-card">
+              <h4>Refeições Típicas Atuais</h4>
+              <p class="form-card-sub">Descreva o que costuma comer e os horários das suas refeições.</p>
+              <div class="form-group">
+                <textarea name="typicalMeals" rows="4" placeholder="Ex:&#10;07:30 - Café da manhã: 2 ovos, pão e café sem açúcar&#10;12:30 - Almoço: Arroz, feijão, frango grelhado e salada&#10;19:00 - Jantar: Omelete ou carne com legumes..."></textarea>
+              </div>
+            </div>
+
+            <!-- Saúde Digestiva -->
+            <div class="form-card">
+              <h4>Saúde Digestiva</h4>
+              <p class="form-card-sub">Frequência intestinal, consistência das fezes e sintomas de desconforto.</p>
+              
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-bowel-frequency">Frequência de Evacuação</label>
+                  <select id="input-bowel-frequency" name="bowelFrequency">
+                    <option value="">Selecione...</option>
+                    <option value="1x/day">1x por dia</option>
+                    <option value="2x/day">2x por dia</option>
+                    <option value="3+/day">3x ou mais por dia</option>
+                    <option value="every other day">Dia sim, dia não</option>
+                    <option value="irregular">Irregular</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-stool-consistency">Consistência das Fezes</label>
+                  <select id="input-stool-consistency" name="stoolConsistency">
+                    <option value="">Selecione...</option>
+                    <option value="hard/pellets">Duras / em bolinhas (tipo 1 ou 2 Bristol)</option>
+                    <option value="firm">Firmes e moldadas (tipo 3 ou 4 Bristol)</option>
+                    <option value="smooth">Macias e lisas (tipo 4 Bristol)</option>
+                    <option value="soft">Massa macia / pedaços moles (tipo 5 Bristol)</option>
+                    <option value="loose">Pastosas / semiformadas (tipo 6 Bristol)</option>
+                    <option value="watery">Líquidas / diarreia (tipo 7 Bristol)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-bloating">Estufamento / Inchaço Abdominal</label>
+                  <select id="input-bloating" name="bloating">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="mild">Leve</option>
+                    <option value="moderate">Moderado</option>
+                    <option value="severe">Grave</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-gas">Gases / Flatulência</label>
+                  <select id="input-gas" name="gas">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="mild">Leve</option>
+                    <option value="moderate">Moderado</option>
+                    <option value="excessive">Excessivo</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-reflux">Refluxo Ácido / Azia</label>
+                  <select id="input-reflux" name="acidReflux">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="occasional">Ocasional</option>
+                    <option value="frequent">Frequente</option>
+                    <option value="daily">Diário</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-burping">Eructação / Arrotos</label>
+                  <select id="input-burping" name="burping">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="occasional">Ocasional</option>
+                    <option value="frequent">Frequente</option>
+                    <option value="after meals">Após as refeições</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-nausea">Náusea / Enjoo</label>
+                  <select id="input-nausea" name="nausea">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhum</option>
+                    <option value="occasional">Ocasional</option>
+                    <option value="frequent">Frequente</option>
+                    <option value="daily">Diário</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-appetite">Apetite</label>
+                  <select id="input-appetite" name="appetite">
+                    <option value="">Selecione...</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Baixo</option>
+                    <option value="excessive">Excessivo</option>
+                    <option value="variable">Variável</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="input-pain">Dor Abdominal</label>
+                  <select id="input-pain" name="abdominalPain">
+                    <option value="">Selecione...</option>
+                    <option value="none">Nenhuma</option>
+                    <option value="occasional">Ocasional</option>
+                    <option value="frequent">Frequente</option>
+                    <option value="chronic">Crônica</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 16px;">
+                <label>Sensibilidades / Intolerâncias Alimentares</label>
+                <div class="checkbox-pill-grid">
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="gluten"> Glúten</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="dairy"> Laticínios (Lactose/Caseína)</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="eggs"> Ovos</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="soy"> Soja</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="nuts"> Oleaginosas (Nozes/Amendoim)</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="FODMAPs"> FODMAPs</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="histamine"> Histamina</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="nightshades"> Nightshades (Solanáceas)</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="corn"> Milho</label>
+                  <label class="cb-pill-label"><input type="checkbox" class="sensitivity-cb" value="shellfish"> Frutos do Mar</label>
+                </div>
+                <input type="hidden" name="foodSensitivities" id="hidden-food-sensitivities">
+              </div>
+            </div>
+
+            <!-- Notas Adicionais -->
+            <div class="form-card">
+              <h4>Notas Nutricionais Adicionais</h4>
+              <p class="form-card-sub">Instruções ou preferências extras (ex: foco em maior quantidade de proteína, preferência por refeições frias, etc.).</p>
+              <div class="form-group">
+                <textarea name="dietaryNotes" rows="3" placeholder="Foco em maior ingestão de proteínas, preferência por alimentos orgânicos, etc..."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Form Footer Actions -->
+          <div class="profile-form-actions">
+            <button type="button" id="btn-cancel-profile" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary-orange">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Salvar Perfil
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- HISTORY / ALL DOCUMENTS VIEW -->
+      <section id="view-history" class="content-view">
+        <div class="section-title-bar">
+          <button type="button" class="back-link" id="btn-history-back">← Voltar ao painel</button>
+          <h2>Histórico Clínico</h2>
+        </div>
+        
+        <div class="history-grid">
+          
+          <!-- Analyses History List -->
+          <div class="history-card">
+            <h3>Histórico de Análises</h3>
+            <p class="card-subtitle">Selecione uma análise anterior para carregar seus planos e resumo de saúde.</p>
+            <div class="history-list" id="analyses-history-list">
+              <!-- Loaded dynamically -->
+              <div class="no-docs-message">Nenhuma análise disponível.</div>
+            </div>
+          </div>
+
+          <!-- All Documents list -->
+          <div class="history-card">
+            <h3>Todos os Documentos Enviados</h3>
+            <p class="card-subtitle">Laudos de bioimpedância e exames de sangue arquivados.</p>
+            <div class="history-list" id="all-documents-list">
+              <!-- Loaded dynamically -->
+              <div class="no-docs-message">Nenhum documento arquivado.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SCORES VIEW (Sistemas) -->
+      <section id="view-scores" class="content-view">
+        <div class="scores-header-section">
+          <h2 class="section-title-outfit">Sistemas de Saúde (Biology Scores)</h2>
+          <p class="section-subtitle-outfit">Detalhamento dos marcadores biológicos que compõem suas pontuações.</p>
+        </div>
+
+        <div id="scores-details-container" class="scores-details-list">
+          <!-- Populated dynamically (get-based style detailed panels) -->
+        </div>
+      </section>
+
+      <!-- DETAIL VIEW: PLAN DETAILS (Suplementação, Plano Alimentar, Treino, ou Estado de Saúde Completo) -->
+      <section id="view-plan-detail" class="content-view">
+        <div class="section-title-bar">
+          <button type="button" class="back-link" id="btn-detail-back">← Voltar ao painel</button>
+          <span id="detail-date" class="detail-date">01 de ago. de 2026</span>
+        </div>
+
+        <div class="detail-container">
+          
+          <!-- Tab Links for active analysis details -->
+          <div class="detail-tabs">
+            <button type="button" class="detail-tab-btn" id="btn-tab-det-status" title="Estado de Saúde" aria-label="Estado de Saúde"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"></path></svg></span><span class="tab-label">Estado de Saúde</span></button>
+            <button type="button" class="detail-tab-btn" id="btn-tab-det-insights" title="Insights" aria-label="Insights"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 4H9c0-2 0-3-1-4Z"></path></svg></span><span class="tab-label">Insights</span></button>
+            <button type="button" class="detail-tab-btn" id="btn-tab-det-supl" title="Suplementação" aria-label="Suplementação"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 8 8 8M6 10l4-4M14 18l4-4M5 13l6 6M13 5l6 6"></path></svg></span><span class="tab-label">Suplementação</span></button>
+            <button type="button" class="detail-tab-btn" id="btn-tab-det-nutri" title="Plano Alimentar" aria-label="Plano Alimentar"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21c-4-2-7-5-7-10a4 4 0 0 1 7-3 4 4 0 0 1 7 3c0 5-3 8-7 10Z"></path><path d="M12 8c-1-2 0-4 2-5"></path></svg></span><span class="tab-label">Plano Alimentar</span></button>
+            <button type="button" class="detail-tab-btn" id="btn-tab-det-treino" title="Treino" aria-label="Treino"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8v8M3 10v4M18 8v8M21 10v4M6 12h12"></path></svg></span><span class="tab-label">Treino</span></button>
+          </div>
+
+          <!-- Panel: Estado de Saúde Completo -->
+          <div id="panel-det-status" class="detail-panel">
+            <div class="detail-card">
+              <h3>Estado de Saúde Geral (Análise de IA)</h3>
+              <div class="clinical-text-area markdown-rendered" id="det-status-content">
+                <!-- Text summary -->
+              </div>
+              <div class="detail-info-footer">
+                <span id="det-status-exame-ref">Exame de referência: LaudoSabin.pdf</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel: Insights -->
+          <div id="panel-det-insights" class="detail-panel">
+            <div id="det-alerts-container" class="deterministic-alerts-wrapper hidden">
+              <!-- Content generated dynamically -->
+            </div>
+          </div>
+
+          <!-- Panel: Suplementação -->
+          <div id="panel-det-supl" class="detail-panel">
+            
+            <div id="supplements-container" class="supplements-grid">
+              <!-- Loaded dynamically (Page 5 style Cards) -->
+            </div>
+
+            <div class="medical-disclaimer">
+              Consulte seu médico antes de iniciar qualquer suplementação. Este plano é gerado por IA para fins educacionais.
+            </div>
+          </div>
+
+          <!-- Panel: Plano Alimentar -->
+          <div id="panel-det-nutri" class="detail-panel">
+            <div class="detail-card">
+              <h3>Plano Alimentar Recomendado</h3>
+              
+              <!-- Orientação Nutricional Geral -->
+              <div class="orientation-box" id="det-nutri-orientation-wrapper">
+                <h4>Orientação Geral & Estado de Saúde (Ótica Dra. Katia Haranaka / Nutrição)</h4>
+                <div class="clinical-text-area markdown-rendered plan-prose" id="det-nutri-orientation" style="margin-bottom:0; padding:0; background:none; border:none;"></div>
+              </div>
+
+              <!-- Day Tabs -->
+              <div class="day-tabs" id="nutrition-day-tabs" style="margin-top:16px;">
+                <button type="button" class="day-tab-btn" data-day="Segunda-feira">Seg</button>
+                <button type="button" class="day-tab-btn" data-day="Terça-feira">Ter</button>
+                <button type="button" class="day-tab-btn" data-day="Quarta-feira">Qua</button>
+                <button type="button" class="day-tab-btn" data-day="Quinta-feira">Qui</button>
+                <button type="button" class="day-tab-btn" data-day="Sexta-feira">Sex</button>
+                <button type="button" class="day-tab-btn" data-day="Sábado">Sáb</button>
+                <button type="button" class="day-tab-btn" data-day="Domingo">Dom</button>
+              </div>
+
+              <div class="clinical-text-area markdown-rendered plan-prose" id="det-nutri-content">
+                <!-- Markdown rendered HTML -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel: Treino -->
+          <div id="panel-det-treino" class="detail-panel">
+            <div class="detail-card">
+              <h3>Planejamento de Treino e Exercícios</h3>
+              
+              <!-- Orientação de Treino Geral -->
+              <div class="orientation-box" id="det-treino-orientation-wrapper">
+                <h4>Orientação Geral & Aptidão Física (Ótica Dr. Guilherme Freccia)</h4>
+                <div class="clinical-text-area markdown-rendered plan-prose" id="det-treino-orientation" style="margin-bottom:0; padding:0; background:none; border:none;"></div>
+              </div>
+
+              <!-- Botão de Integração OpenGym -->
+              <div class="integration-action-box" id="opengym-integration-box" style="margin-top: 16px;">
+                <button type="button" class="btn-sync-opengym" id="btn-sync-opengym">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/><path d="M6.5 12.5 12.5 6.5"/><path d="m11.5 17.5 6-6"/></svg>
+                  Acompanhar Treino no OpenGym
+                </button>
+              </div>
+
+              <!-- Day Tabs -->
+              <div class="day-tabs" id="training-day-tabs" style="margin-top:16px;">
+                <button type="button" class="day-tab-btn" data-day="Segunda-feira">Seg</button>
+                <button type="button" class="day-tab-btn" data-day="Terça-feira">Ter</button>
+                <button type="button" class="day-tab-btn" data-day="Quarta-feira">Qua</button>
+                <button type="button" class="day-tab-btn" data-day="Quinta-feira">Qui</button>
+                <button type="button" class="day-tab-btn" data-day="Sexta-feira">Sex</button>
+                <button type="button" class="day-tab-btn" data-day="Sábado">Sáb</button>
+                <button type="button" class="day-tab-btn" data-day="Domingo">Dom</button>
+              </div>
+
+              <div class="clinical-text-area markdown-rendered plan-prose" id="det-treino-content">
+                <!-- Markdown rendered HTML -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Configurações do Sistema</h3>
+          <button type="button" id="btn-close-settings" class="close-btn">&times;</button>
+        </div>
+        <form id="settings-form">
+          
+          <div class="form-group">
+            <label for="input-api-key">OpenRouter API Key</label>
+            <input type="password" id="input-api-key" placeholder="Gerenciada pelo servidor" disabled>
+            <small>A credencial é operacional e deve ser configurada em OPENROUTER_API_KEY.</small>
+            <span class="help-text">Obtenha sua chave em <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a>. A chave fica armazenada localmente de forma segura.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="select-model-extraction">Modelo para Extração de PDFs</label>
+            <select id="select-model-extraction">
+              <option value="google/gemini-2.5-flash">Google: Gemini 2.5 Flash (Recomendado - Rápido)</option>
+              <option value="google/gemini-2.5-pro">Google: Gemini 2.5 Pro (Preciso)</option>
+              <option value="deepseek/deepseek-chat">DeepSeek: V3 (Econômico)</option>
+              <option value="anthropic/claude-3.5-sonnet">Anthropic: Claude 3.5 Sonnet (Avançado)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="select-model-analysis">Modelo para Análise Clínica & Planos</label>
+            <select id="select-model-analysis">
+              <option value="google/gemini-2.5-pro">Google: Gemini 2.5 Pro (Recomendado - Excelente raciocínio)</option>
+              <option value="google/gemini-2.5-flash">Google: Gemini 2.5 Flash (Rápido)</option>
+              <option value="anthropic/claude-3.5-sonnet">Anthropic: Claude 3.5 Sonnet (Altíssima Qualidade)</option>
+              <option value="deepseek/deepseek-chat">DeepSeek: V3</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="select-lens">Lente Interpretativa da IA</label>
+            <select id="select-lens">
+              <option value="longevidade">Lente de Otimização e Longevidade (Biohacking)</option>
+              <option value="convencional">Lente da Medicina Convencional (Padrão de Laboratório)</option>
+              <option value="performance">Lente de Performance Esportiva (Foco em Treino/Nutrição de Atleta)</option>
+            </select>
+            <span class="help-text">Altera a perspectiva filosófica e as faixas ideais que a IA utilizará para estruturar sua avaliação de saúde e planos.</span>
+          </div>
+
+          <details class="lens-settings-details">
+            <summary class="lens-settings-summary">✏️ Customizar Prompts das Lentes</summary>
+            
+            <div class="form-group margin-top-sm" style="margin-top: 10px;">
+              <label for="input-lens-longevidade">Prompt Lente Longevidade</label>
+              <textarea id="input-lens-longevidade" rows="3" class="form-textarea-lens"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="input-lens-convencional">Prompt Lente Medicina Convencional</label>
+              <textarea id="input-lens-convencional" rows="3" class="form-textarea-lens"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="input-lens-performance">Prompt Lente Performance Esportiva</label>
+              <textarea id="input-lens-performance" rows="3" class="form-textarea-lens"></textarea>
+            </div>
+          </details>
+
+          <div class="modal-footer">
+            <button type="button" id="btn-cancel-settings" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary-orange">Salvar Configurações</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

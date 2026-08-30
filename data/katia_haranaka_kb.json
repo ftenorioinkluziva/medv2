@@ -1,0 +1,728 @@
+{
+  "totalCards": 26,
+  "cards": [
+    {
+      "fileName": "Exames Hormônios Tireoide - TSH, T4 e T3 (livre e reverso).-Katia Haranaka-hORz3L_EuGw.pdf",
+      "title": "PROTOCOLO: Avaliação Hormonal Completa da Tireoide — TSH, T4, T3 Livre e T3",
+      "type": "PROTOCOLO",
+      "name": "Avaliação Hormonal Completa da Tireoide — TSH, T4, T3 Livre e T3",
+      "tags": [
+        "Tireoide",
+        "TSH",
+        "T4",
+        "T3Livre",
+        "T3Reverso",
+        "Hipotireoidismo"
+      ],
+      "category": "Endocrinologia/Diagnóstico",
+      "tldr": "Avaliação tireoidiana completa requer 4 exames obrigatórios (TSH,",
+      "rawText": "# PROTOCOLO: Avaliação Hormonal Completa da Tireoide — TSH, T4, T3 Livre e T3 \nReverso \n \n**Tags:** #Tireoide #TSH #T4 #T3Livre #T3Reverso #Hipotireoidismo \n**Categoria:** Endocrinologia/Diagnóstico \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Avaliação tireoidiana completa requer 4 exames obrigatórios (TSH, \nT4, T3 livre, T3 reverso) pois TSH isolado ignora problemas de conversão periférica e pode \nmascarar hipotireoidismo funcional. \n \n### 易 Explicação Detalhada \n \n**O que é:** Protocolo de avaliação hormonal que examina toda a cascata tireoidiana: \ndesde a comunicação cerebral (TSH) até a conversão periférica ativa (T3 livre vs. T3 \nreverso). Diferencia-se da avaliação convencional que usa apenas TSH + T4. \n \n**Mecanismo:** O cérebro produz TSH (hormônio tireoestimulante) que estimula a tireoide a \nproduzir T4 (tiroxina). O T4 é um pró-hormônio que deve ser convertido em T3 livre (forma \nativa) através da enzima 5'-desiodinase. Quando há estresse, inflamação ou deficiências \nnutricionais, o T4 é desviado para T3 reverso (forma inativa) através da 5-desiodinase tipo \nIII — mecanismo de hibernação celular. \n \n**Por que importa:** Pacientes com TSH \"normal\" frequentemente apresentam sintomas de \nhipotireoidismo (fadiga, ganho de peso, queda de cabelo, depressão) devido à conversão \ninadequada de T4 para T3 livre. O T3 reverso elevado indica metabolismo celular reduzido \nmesmo com TSH normal. \n \n###  Aplicação Prática \n \n**O que solicitar:** \n- TSH + T4 livre + T3 livre + T3 reverso (painel completo obrigatório) \n- Evitar T3 total (inclui reverso, mascarando o problema) \n- Custo médio: R$ 90-150 no particular (varia por laboratório) \n- No convênio: geralmente libera apenas TSH + T4 \n \n\n**Valores otimizados (não apenas \"normais\"):** \n- TSH: 1,0-2,2 (ideal: 1,5-2,0) — não 0,45-4,5 do laboratório \n- T4 livre: percentil 50-75% do valor de referência \n- T3 livre: percentil 75-90% do valor de referência   \n- T3 reverso: percentil 25% inferior (8-12, não próximo de 24) \n \n**O que evitar:** \n- Avaliar apenas TSH — ignora 80% dos problemas tireoidianos \n- Aceitar \"está normal\" quando há sintomas clínicos \n- Laboratórios sem calibração adequada para micro-hormônios \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| TSH normal + sintomas persistentes | Possível problema de conversão | Solicitar T3 livre + \nT3 reverso | \n| T3 reverso >15 + T3 livre baixo-normal | Dominância T3 reverso (hibernação) | Investigar \nestresse/inflamação/deficiências | \n| T4 normal + T3 livre baixo | Problema de conversão periférica | Suplementação enzimática \n(selênio, zinco) | \n| Todos normais + temperatura <36,6°C | Resistência periférica aos hormônios | Avaliar \nreceptores celulares | \n \n**Timeline:** Repetir avaliação a cada 6-8 semanas durante ajustes, depois manter controle \nsemestral. \n \n→ Ver também: [CARD: PROTOCOLO — Suplementação para Otimizar Conversão T4-T3] "
+    },
+    {
+      "fileName": "Exames Hormônios Tireoide - TSH, T4 e T3 (livre e reverso).-Katia Haranaka-hORz3L_EuGw.pdf",
+      "title": "FISIOPATOLOGIA: Conversão T4 para T3 Livre vs. T3 Reverso — O Interruptor",
+      "type": "FISIOPATOLOGIA",
+      "name": "Conversão T4 para T3 Livre vs. T3 Reverso — O Interruptor",
+      "tags": [
+        "T4",
+        "T3Livre",
+        "T3Reverso",
+        "Desiodinase",
+        "MetabolismoTireoidiano"
+      ],
+      "category": "Endocrinologia/Fisiopatologia",
+      "tldr": "O T4 pode ser convertido em T3 livre (ativo) via 5'-desiodinase tipo",
+      "rawText": "# FISIOPATOLOGIA: Conversão T4 para T3 Livre vs. T3 Reverso — O Interruptor \nMetabólico \n \n**Tags:** #T4 #T3Livre #T3Reverso #Desiodinase #MetabolismoTireoidiano \n**Categoria:** Endocrinologia/Fisiopatologia   \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** O T4 pode ser convertido em T3 livre (ativo) via 5'-desiodinase tipo \nII ou T3 reverso (inativo) via 5'-desiodinase tipo III — essa bifurcação determina se teremos \nmetabolismo acelerado ou \"modo hibernação\". \n \n### 易 Explicação Detalhada \n \n**O que é:** O T4 (tiroxina) é um pró-hormônio que funciona como \"matéria-prima\" para \nproduzir o hormônio realmente ativo. Essa conversão acontece em dois caminhos opostos: \nT3 livre (metabolismo ativo) ou T3 reverso (metabolismo reduzido). É como um interruptor \nque pode ligar ou desligar o metabolismo celular. \n\n \n**Mecanismo:** \n1. **Via ativa:** A enzima 5'-desiodinase tipo II remove um átomo de iodo da posição \nexterna do T4, criando T3 livre — hormônio que acelera metabolismo, termogênese, síntese \nproteica e função mitocondrial. \n2. **Via inativa:** A enzima 5'-desiodinase tipo III remove iodo da posição interna, criando \nT3 reverso — hormônio que bloqueia receptores de T3, induzindo \"hibernação metabólica\". \n3. **Regulação:** Zinco, selênio e magnésio ativam a via do T3 livre. Estresse, cortisol \nelevado, inflamação (TNF-α, IL-6) e deficiências nutricionais desviam para T3 reverso. \n \n**Por que importa:** O T3 reverso é o \"hormônio da hibernação\" — evolutivamente útil em \nemergências (UTI, jejum extremo) mas desastroso na vida moderna. Quando dominante, \ncausa todos os sintomas de hipotireoidismo mesmo com TSH e T4 \"normais\": fadiga \npós-prandial, ganho de peso, depressão, temperatura corporal baixa (<36,6°C). \n \n###  Aplicação Prática \n \n**O que monitorar:** \n- Razão T3 livre/T3 reverso: ideal >2,0 \n- T3 reverso isolado: manter no quartil inferior (8-12) \n- T3 livre: percentil 75-90% do valor de referência \n- Temperatura basal ao acordar: >36,6°C por 5 dias consecutivos \n \n**O que otimiza conversão para T3 livre:** \n- Zinco quelado: 25mg/dia com aminoácido \n- Selênio: 100mcg/dia (selenometionina)   \n- Magnésio: 200mg/dia quelado \n- Ferro adequado: ferritina >70 (especialmente mulheres) \n \n**O que força conversão para T3 reverso:** \n \nConceitos identificados: "
+    },
+    {
+      "fileName": "Exames Hormônios Tireoide - TSH, T4 e T3 (livre e reverso).-Katia Haranaka-hORz3L_EuGw.pdf",
+      "title": "FISIOPATOLOGIA: Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual",
+      "type": "FISIOPATOLOGIA",
+      "name": "Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual",
+      "tags": [
+        "Ferritina",
+        "AltaFluxoMenstrual",
+        "Hipotireoidismo",
+        "DeficiênciaFerro",
+        "Progesterona"
+      ],
+      "category": "Endocrinologia/Deficiências Nutricionais",
+      "tldr": "Ferritina <70 ng/mL por alto fluxo menstrual é a principal causa de",
+      "rawText": "# FISIOPATOLOGIA: Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual \n \n**Tags:** #Ferritina #AltaFluxoMenstrual #Hipotireoidismo #DeficiênciaFerro #Progesterona \n**Categoria:** Endocrinologia/Deficiências Nutricionais \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Ferritina <70 ng/mL por alto fluxo menstrual é a principal causa de \nhipotireoidismo em mulheres, resultado da cascata progesterona baixa → endométrio \nfragilizado → sangramento excessivo. \n \n### 易 Explicação Detalhada \n \n\n**O que é:** Hipotireoidismo secundário à deficiência de ferro (ferritina <70 ng/mL), \nrepresentando mais de 60% dos casos em mulheres na prática clínica. O ferro é cofator \nessencial para enzimas da síntese hormonal tireoidiana. \n \n**Mecanismo:** \n1. **Nível hormonal:** Baixos níveis de progesterona (por consumo excessivo de leite, \nglúten, anticoncepcionais) enfraquecem o endométrio \n2. **Nível tecidual:** Endométrio fragilizado resulta em sangramento menstrual excessivo \ncom coágulos (\"como se estivesse se esvaindo de sangue\") \n3. **Nível sistêmico:** Perda crônica de ferro compromete a síntese de hemoglobina e \ntransporte de oxigênio celular \n4. **Nível molecular:** Deficiência de ferro prejudica enzimas ferro-dependentes na \nconversão T4→T3 e síntese de hormônios tireoidianos \n \n**Por que importa:** O ferro é crucial para o transporte de oxigênio via hemoglobina e \ncofator de enzimas tireoidianas. Ferritina é a forma de estoque do ferro funcionante no \norganismo - dosá-la no sangue é mais confiável que dosar ferro sérico, pois minerais \"não \ngostam de ficar soltos no sangue\". \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Dosar ferritina em toda mulher com sintomas de hipotireoidismo \n- Meta: ferritina entre 70-150 ng/mL (mulheres não devem doar sangue se >150) \n- Investigar padrão menstrual: volume, duração, presença de coágulos \n- Avaliar progesterona para entender a causa raiz \n \n**O que evitar:** \n- Ignorar alto fluxo menstrual como \"normal\" — é sempre patológico \n- Suplementar ferro oral sem avaliar ferritina (<50 responde melhor ao endovenoso) \n- Prescrever apenas hormônio tireoidiano sem corrigir a deficiência de ferro \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Menstruação com coágulos grandes | Deficiência de progesterona + perda excessiva de \nferro | Investigar causas de progesterona baixa + repor ferro | \n| Ferritina <50 | Deficiência severa, absorção oral limitada | Ferro endovenoso obrigatório | \n| Ferritina 50-70 | Deficiência moderada | Ferro oral com cofatores pode ser suficiente | \n| Sintomas de hipotireoidismo com TSH normal | Possível deficiência de ferro mascarada | \nDosar ferritina independente do TSH | \n \n**Timeline:** Melhora dos sintomas de hipotireoidismo em 4-8 semanas após normalização \nda ferritina. \n \n→ Ver também: [CARD: PROTOCOLO — Reposição de Ferro Endovenoso vs Oral] "
+    },
+    {
+      "fileName": "Exames Hormônios Tireoide - TSH, T4 e T3 (livre e reverso).-Katia Haranaka-hORz3L_EuGw.pdf",
+      "title": "MECANISMO: Competição de Halógenos na Síntese de Hormônios Tireoidianos",
+      "type": "MECANISMO",
+      "name": "Competição de Halógenos na Síntese de Hormônios Tireoidianos",
+      "tags": [
+        "Halógenos",
+        "Iodo",
+        "Flúor",
+        "Cloro",
+        "Bromo",
+        "MecanismoSimportador"
+      ],
+      "category": "Toxicologia/Endocrinologia",
+      "tldr": "Flúor, cloro e bromo competem com iodo no transportador NIS",
+      "rawText": "# MECANISMO: Competição de Halógenos na Síntese de Hormônios Tireoidianos \n \n**Tags:** #Halógenos #Iodo #Flúor #Cloro #Bromo #MecanismoSimportador \n**Categoria:** Toxicologia/Endocrinologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Flúor, cloro e bromo competem com iodo no transportador NIS \n(simportador sódio-iodeto), formando hormônios disfuncionais que desencadeiam \nautoimunidade tireoidiana. \n \n### 易 Explicação Detalhada \n \n**O que é:** Mecanismo de toxicidade onde halógenos da família 7A (flúor, cloro, bromo) \nsubstituem o iodo na síntese hormonal, criando moléculas estruturalmente similares mas \nbiologicamente inativas. \n \n**Mecanismo:** \n1. **Nível molecular:** T4 = tirosina + 4 moléculas de iodo; T3 = tirosina + 3 moléculas de \niodo \n2. **Competição no transportador:** O simportador NIS opera com regra \"onde entra um, \nnão entra outro\" — flúor (menor peso atômico) tem preferência sobre iodo \n3. **Formação de análogos tóxicos:** Tirosina + flúor/cloro/bromo = estruturas que \n\"parecem T4 mas não são T4\" \n4. **Resposta autoimune:** Sistema imunológico reconhece esses análogos como corpos \nestranhos, criando anticorpos anti-TPO e anti-tireoglobulina \n \n**Por que importa:** Esta é a explicação bioquímica para o aumento exponencial de \ntireoidite de Hashimoto e câncer de tireoide. Países com fluoretação da água e \nadolescentes com limpezas dentárias frequentes (flúor) têm maior incidência de \nhipotireoidismo. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Usar pasta de dente sem flúor (disponível em lojas de produtos naturais) \n- Filtrar água para remoção de cloro domiciliar \n- Evitar piscinas tratadas com cloro (absorção transdérmica significativa) \n- Suplementar iodo orgânico para competir favoravelmente com halógenos tóxicos \n \n**O que evitar:** \n- Pão francês (rico em brometo de potássio) — preferir pães sem conservantes \n- Limpezas dentárias excessivas com flúor em adolescentes \n- Água da torneira sem filtração (cloro)  \n- Exposição prolongada em piscinas (\"professoras de natação todas têm hipotireoidismo\") \n \n**Sinais de Alerta:** \n\n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| TPO >200 ou anti-tireoglobulina positivos | Autoimunidade ativa por halógenos | Eliminar \nfontes + suplementar iodo orgânico | \n| Hipotireoidismo em adolescente c/ higiene dental rigorosa | Intoxicação por flúor | Pasta \nsem flúor + investigar outras fontes | \n| Nódulos tireoidianos crescentes | Tentativa da glândula de captar mais iodo | \nDesintoxicação + iodo + avaliação ultrassonográfica seriada | \n \n**Timeline:** Redução de anticorpos tireoidianos em 6-12 meses após eliminar fontes de \n "
+    },
+    {
+      "fileName": "Hipotireoidismo  causas, sintomas e os tratamentos-Katia Haranaka-AUTUfqHj5qY.pdf",
+      "title": "FISIOPATOLOGIA: Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual",
+      "type": "FISIOPATOLOGIA",
+      "name": "Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual",
+      "tags": [
+        "Ferritina",
+        "AltaFluxoMenstrual",
+        "Hipotireoidismo",
+        "DeficiênciaFerro",
+        "Progesterona"
+      ],
+      "category": "Endocrinologia/Deficiências Nutricionais",
+      "tldr": "Ferritina <70 ng/mL por alto fluxo menstrual é a principal causa de",
+      "rawText": "# FISIOPATOLOGIA: Hipotireoidismo por Deficiência de Ferro — Alto Fluxo Menstrual \n \n**Tags:** #Ferritina #AltaFluxoMenstrual #Hipotireoidismo #DeficiênciaFerro #Progesterona \n**Categoria:** Endocrinologia/Deficiências Nutricionais \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Ferritina <70 ng/mL por alto fluxo menstrual é a principal causa de \nhipotireoidismo em mulheres, resultado da cascata progesterona baixa → endométrio \nfragilizado → sangramento excessivo. \n \n### 易 Explicação Detalhada \n \n**O que é:** Hipotireoidismo secundário à deficiência de ferro (ferritina <70 ng/mL), \nrepresentando mais de 60% dos casos em mulheres na prática clínica. O ferro é cofator \nessencial para enzimas da síntese hormonal tireoidiana. \n \n**Mecanismo:** \n1. **Nível hormonal:** Baixos níveis de progesterona (por consumo excessivo de leite, \nglúten, anticoncepcionais) enfraquecem o endométrio \n2. **Nível tecidual:** Endométrio fragilizado resulta em sangramento menstrual excessivo \ncom coágulos (\"como se estivesse se esvaindo de sangue\") \n3. **Nível sistêmico:** Perda crônica de ferro compromete a síntese de hemoglobina e \ntransporte de oxigênio celular \n4. **Nível molecular:** Deficiência de ferro prejudica enzimas ferro-dependentes na \nconversão T4→T3 e síntese de hormônios tireoidianos \n \n**Por que importa:** O ferro é crucial para o transporte de oxigênio via hemoglobina e \ncofator de enzimas tireoidianas. Ferritina é a forma de estoque do ferro funcionante no \norganismo - dosá-la no sangue é mais confiável que dosar ferro sérico, pois minerais \"não \ngostam de ficar soltos no sangue\". \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Dosar ferritina em toda mulher com sintomas de hipotireoidismo \n- Meta: ferritina entre 70-150 ng/mL (mulheres não devem doar sangue se >150) \n- Investigar padrão menstrual: volume, duração, presença de coágulos \n\n- Avaliar progesterona para entender a causa raiz \n \n**O que evitar:** \n- Ignorar alto fluxo menstrual como \"normal\" — é sempre patológico \n- Suplementar ferro oral sem avaliar ferritina (<50 responde melhor ao endovenoso) \n- Prescrever apenas hormônio tireoidiano sem corrigir a deficiência de ferro \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Menstruação com coágulos grandes | Deficiência de progesterona + perda excessiva de \nferro | Investigar causas de progesterona baixa + repor ferro | \n| Ferritina <50 | Deficiência severa, absorção oral limitada | Ferro endovenoso obrigatório | \n| Ferritina 50-70 | Deficiência moderada | Ferro oral com cofatores pode ser suficiente | \n| Sintomas de hipotireoidismo com TSH normal | Possível deficiência de ferro mascarada | \nDosar ferritina independente do TSH | \n \n**Timeline:** Melhora dos sintomas de hipotireoidismo em 4-8 semanas após normalização \nda ferritina. \n \n→ Ver também: [CARD: PROTOCOLO — Reposição de Ferro Endovenoso vs Oral] "
+    },
+    {
+      "fileName": "Hipotireoidismo  causas, sintomas e os tratamentos-Katia Haranaka-AUTUfqHj5qY.pdf",
+      "title": "MECANISMO: Competição de Halógenos na Síntese de Hormônios Tireoidianos",
+      "type": "MECANISMO",
+      "name": "Competição de Halógenos na Síntese de Hormônios Tireoidianos",
+      "tags": [
+        "Halógenos",
+        "Iodo",
+        "Flúor",
+        "Cloro",
+        "Bromo",
+        "MecanismoSimportador"
+      ],
+      "category": "Toxicologia/Endocrinologia",
+      "tldr": "Flúor, cloro e bromo competem com iodo no transportador NIS",
+      "rawText": "# MECANISMO: Competição de Halógenos na Síntese de Hormônios Tireoidianos \n \n**Tags:** #Halógenos #Iodo #Flúor #Cloro #Bromo #MecanismoSimportador \n**Categoria:** Toxicologia/Endocrinologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Flúor, cloro e bromo competem com iodo no transportador NIS \n(simportador sódio-iodeto), formando hormônios disfuncionais que desencadeiam \nautoimunidade tireoidiana. \n \n### 易 Explicação Detalhada \n \n**O que é:** Mecanismo de toxicidade onde halógenos da família 7A (flúor, cloro, bromo) \nsubstituem o iodo na síntese hormonal, criando moléculas estruturalmente similares mas \nbiologicamente inativas. \n \n**Mecanismo:** \n1. **Nível molecular:** T4 = tirosina + 4 moléculas de iodo; T3 = tirosina + 3 moléculas de \niodo \n2. **Competição no transportador:** O simportador NIS opera com regra \"onde entra um, \nnão entra outro\" — flúor (menor peso atômico) tem preferência sobre iodo \n3. **Formação de análogos tóxicos:** Tirosina + flúor/cloro/bromo = estruturas que \n\"parecem T4 mas não são T4\" \n\n4. **Resposta autoimune:** Sistema imunológico reconhece esses análogos como corpos \nestranhos, criando anticorpos anti-TPO e anti-tireoglobulina \n \n**Por que importa:** Esta é a explicação bioquímica para o aumento exponencial de \ntireoidite de Hashimoto e câncer de tireoide. Países com fluoretação da água e \nadolescentes com limpezas dentárias frequentes (flúor) têm maior incidência de \nhipotireoidismo. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Usar pasta de dente sem flúor (disponível em lojas de produtos naturais) \n- Filtrar água para remoção de cloro domiciliar \n- Evitar piscinas tratadas com cloro (absorção transdérmica significativa) \n- Suplementar iodo orgânico para competir favoravelmente com halógenos tóxicos \n \n**O que evitar:** \n- Pão francês (rico em brometo de potássio) — preferir pães sem conservantes \n- Limpezas dentárias excessivas com flúor em adolescentes \n- Água da torneira sem filtração (cloro)  \n- Exposição prolongada em piscinas (\"professoras de natação todas têm hipotireoidismo\") \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| TPO >200 ou anti-tireoglobulina positivos | Autoimunidade ativa por halógenos | Eliminar \nfontes + suplementar iodo orgânico | \n| Hipotireoidismo em adolescente c/ higiene dental rigorosa | Intoxicação por flúor | Pasta \nsem flúor + investigar outras fontes | \n| Nódulos tireoidianos crescentes | Tentativa da glândula de captar mais iodo | \nDesintoxicação + iodo + avaliação ultrassonográfica seriada | \n \n**Timeline:** Redução de anticorpos tireoidianos em 6-12 meses após eliminar fontes de "
+    },
+    {
+      "fileName": "Exames  Homocisteína e proteína C – ultra sensível-Katia Haranaka-46OiT5D2w2o.pdf",
+      "title": "MARCADOR: Proteína C Reativa Ultra-Sensível — Preditor de Risco Vascular",
+      "type": "MARCADOR",
+      "name": "Proteína C Reativa Ultra-Sensível — Preditor de Risco Vascular",
+      "tags": [
+        "PCRUltraSensível",
+        "InflamaçãoVascular",
+        "RiscoCardiovascular",
+        "Marcadores"
+      ],
+      "category": "Laboratório/Inflamação",
+      "tldr": "PCR-us <0,5 mg/L é o alvo terapêutico real para proteção vascular,",
+      "rawText": "# MARCADOR: Proteína C Reativa Ultra-Sensível — Preditor de Risco Vascular \n \n**Tags:** #PCRUltraSensível #InflamaçãoVascular #RiscoCardiovascular #Marcadores \n**Categoria:** Laboratório/Inflamação \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** PCR-us <0,5 mg/L é o alvo terapêutico real para proteção vascular, \nnão os valores de referência laboratoriais que normalizam inflamação crônica. \n \n### 易 Explicação Detalhada \n \n**O que é:** A Proteína C Reativa Ultra-Sensível é uma proteína de fase aguda produzida \npelo fígado em resposta a citocinas pró-inflamatórias (IL-6, TNF-α). A versão \"ultra-sensível\" \ndetecta níveis baixos de inflamação crônica que a PCR convencional não consegue \nmensurar. \n \n**Mecanismo:**  \n1. **Nível molecular:** Estímulos inflamatórios (LPS, citocinas, radicais livres) ativam \nmacrófagos e células endoteliais, liberando IL-6. \n2. **Nível hepático:** IL-6 induz transcrição de PCR nos hepatócitos via ativação do fator \nnuclear NF-κB. \n3. **Nível vascular:** PCR elevada indica inflamação endotelial crônica, que promove \naterogênese, disfunção endotelial e instabilidade de placas. \n \n**Por que importa:** PCR-us foi inicialmente validada para predição de eventos \ncardiovasculares (infarto, AVC). Hoje entendemos que reflete inflamação sistêmica que \nafeta todos os órgãos vascularizados, incluindo cérebro (demência, declínio cognitivo) e rins \n(doença renal crônica). \n \n###  Aplicação Prática \n \n**Alvos Terapêuticos vs Referência Laboratorial:** \n \n| Classificação Lab | Valor | Interpretação Real | Meta Terapêutica | \n|-------------------|-------|-------------------|------------------| \n| Risco Baixo | <1,0 mg/L | Ainda há inflamação residual | ❌ | \n| Risco Médio | 1,0-3,0 mg/L | Inflamação significativa | ❌ | \n| Risco Alto | >3,0 mg/L | Inflamação severa | ❌ | \n| **Alvo Ideal** | **<0,5 mg/L** | **Inflamação mínima** | ✅ | \n \n\n**O que fazer para reduzir:** \n- Eliminar álcool completamente (maior elevador de PCR-us) \n- Dieta anti-inflamatória: ômega-3 (2g EPA/DHA), polifenóis, fibras \n- Exercício regular mas não excessivo (overtraining eleva PCR) \n- Manejo do estresse: cortisol elevado estimula resposta inflamatória \n \n**O que evitar:** \n- Álcool — aumenta permeabilidade intestinal e transloca LPS \n- Anti-inflamatórios/analgésicos — mascaram o valor sem tratar a causa \n- Carboidratos refinados — geram picos glicêmicos pró-inflamatórios \n \n**Sinais de Alerta:** \n \n| Valor PCR-us | Interpretação | Ação Imediata | \n|--------------|---------------|---------------| \n| <0,5 mg/L | Inflamação controlada | Manter estilo de vida | \n| 0,5-1,0 mg/L | Inflamação emergente | Revisar dieta e estresse | \n| 1,0-3,0 mg/L | Inflamação estabelecida | Protocolo anti-inflamatório agressivo | \n| >3,0 mg/L | Inflamação severa | Investigar fonte (infecção, autoimune) | \n \n**Timeline:** Redução mensurável em 8-12 semanas com mudanças consistentes de estilo \nde vida. \n \n→ Ver também: [CARD: Homocisteína e Sistema de Metilação] "
+    },
+    {
+      "fileName": "Exames  Homocisteína e proteína C – ultra sensível-Katia Haranaka-46OiT5D2w2o.pdf",
+      "title": "MARCADOR: Homocisteína — Termômetro do Sistema de Metilação",
+      "type": "MARCADOR",
+      "name": "Homocisteína — Termômetro do Sistema de Metilação",
+      "tags": [
+        "Homocisteína",
+        "Metilação",
+        "NeuroproteçãoCognitiva",
+        "VitaminasB"
+      ],
+      "category": "Laboratório/Neuroproteção",
+      "tldr": "Homocisteína <7 μmol/L indica sistema de metilação funcional,",
+      "rawText": "# MARCADOR: Homocisteína — Termômetro do Sistema de Metilação \n \n**Tags:** #Homocisteína #Metilação #NeuroproteçãoCognitiva #VitaminasB \n**Categoria:** Laboratório/Neuroproteção   \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Homocisteína <7 μmol/L indica sistema de metilação funcional, \nessencial para neuroproteção e prevenção de AVC/demência. \n \n### 易 Explicação Detalhada \n \n**O que é:** A homocisteína é um aminoácido não-proteico, intermediário metabólico que \nreflete a eficiência do ciclo de metilação — processo fundamental para síntese de DNA, \nneurotransmissores e detoxificação celular. \n \n**Mecanismo:** \n1. **Ciclo de metilação:** Metionina → S-adenosil-metionina (SAMe) → homocisteína → \nmetionina (via reciclagem) \n2. **Cofatores críticos:** Vitaminas B6, B12, folato e betaína são essenciais para \nreconversão de homocisteína \n\n3. **Disfunção:** Deficiência nutricional, polimorfismos genéticos (MTHFR) ou sobrecarga \ntóxica elevam homocisteína \n4. **Toxicidade vascular:** Homocisteína elevada gera estresse oxidativo, inflama endotélio \ne promove trombose \n \n**Por que importa:** O Dr. refere como \"espinha dorsal da fisiologia humana\" porque \nmetilação controla expressão genética, síntese de neurotransmissores (serotonina, \ndopamina), detoxificação (fase II) e reparo de DNA. Homocisteína elevada prediz AVC, \ndemência e Alzheimer independentemente de outros fatores. \n \n###  Aplicação Prática \n \n**Alvos Terapêuticos:** \n \n| Faixa Laboratorial | Valor | Interpretação | Meta | \n|-------------------|-------|---------------|------| \n| Referência Normal | <15 μmol/L | Patológico normalizado | ❌ | \n| **Meta Funcional** | **5-7 μmol/L** | **Metilação otimizada** | ✅ | \n| Alerta | 7-10 μmol/L | Deficiência subclínica | ⚠ | \n| Risco | >10 μmol/L | Disfunção significativa |  | \n \n**Protocolo para redução:** \n- **B12 metilcobalamina:** 1000-2000 mcg sublingual \n- **Folato ativo (5-MTHF):** 800-1000 mcg (não ácido fólico sintético) \n- **B6 piridoxal-5-fosfato:** 50-100 mg \n- **Betaína (TMG):** 500-1000 mg com refeições \n- **Colina:** 300-500 mg (precursor de betaína endógena) \n \n**Fatores agravantes:** \n- Álcool — depleta vitaminas B e sobrecarrega metilação \n- Medicamentos (metformina, omeprazol "
+    },
+    {
+      "fileName": "EXAMES  VITAMINA D3, VITAMINA B12 E CÁLCIO SÉRICO-Katia Haranaka-9J8k7W63rps.pdf",
+      "title": "BIOHACK: Vitamina D3 com TCM — Absorção Otimizada via Cortisol Matinal",
+      "type": "BIOHACK",
+      "name": "Vitamina D3 com TCM — Absorção Otimizada via Cortisol Matinal",
+      "tags": [
+        "VitaminaD3",
+        "TCM",
+        "Cortisol",
+        "Absorção",
+        "CronoBiologia"
+      ],
+      "category": "Suplementação/Cronobiologia",
+      "tldr": "Vitamina D3 5.000 UI com triglicerídeos de cadeia média (TCM) pela",
+      "rawText": "# BIOHACK: Vitamina D3 com TCM — Absorção Otimizada via Cortisol Matinal \n \n**Tags:** #VitaminaD3 #TCM #Cortisol #Absorção #CronoBiologia \n**Categoria:** Suplementação/Cronobiologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Vitamina D3 5.000 UI com triglicerídeos de cadeia média (TCM) pela \nmanhã aproveita pico de cortisol para maximizar absorção intestinal. \n \n### 易 Explicação Detalhada \n \n**O que é:** Protocolo de suplementação que combina vitamina D3 na forma colecalciferol \ncom triglicerídeos de cadeia média (TCM) como excipiente, consumida no momento de \nmaior cortisol endógeno. \n \n**Mecanismo:**  \n1. **Nível hormonal:** O cortisol matinal (6h-10h) facilita a absorção de vitaminas \nlipossolúveis através da estimulação da produção biliar e ativação de transportadores \nintestinais específicos. \n2. **Nível molecular:** Os TCM são absorvidos diretamente pela veia porta sem \nnecessidade de quilomícrons, garantindo que a vitamina D3 chegue rapidamente ao fígado \npara primeira hidroxilação (25-hidroxivitamina D3). \n3. **Nível celular:** O excipiente lipídico permite a solubilização da vitamina D3 no meio \naquoso intestinal, aumentando a biodisponibilidade em até 300% comparado à forma seca. \n \n**Por que importa:** Níveis subótimos de vitamina D3 (<50 ng/mL) comprometem a \nexpressão de mais de 3.000 genes, incluindo aqueles responsáveis pela síntese de \nneurotransmissores, função imune e prevenção oncológica. A absorção inadequada \nmantém estados de inflamação crônica e submetilação. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Consumir 5.000 UI de vitamina D3 com TCM após o café da manhã (8h-9h) \n- Manter dosagem única diária - evitar fracionamento \n- Para jejum intermitente: tomar com a primeira refeição do dia \n- Incluir fonte de gordura na refeição (abacate, oleaginosas ou azeite) \n \n**O que evitar:** \n\n- Consumo noturno — interfere no ritmo circadiano natural \n- Vitamina D3 sem excipiente lipídico — absorção reduzida em até 70% \n- Combinação com fibras em excesso — podem quelar a vitamina \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Níveis >75 ng/mL após 3 meses | Absorção otimizada | Manter protocolo | \n| Estagnação <40 ng/mL | Má absorção ou dose insuficiente | Verificar TCM ou aumentar \npara 7.000 UI | \n| Sonolência pós-dose | Timing inadequado com cortisol | Antecipar para 7h-8h | \n| Hipercalciúria | Excesso sem cofatores | Adicionar magnésio e K2 | \n \n**Timeline:** Elevação sérica significativa em 30-45 dias, saturação dos estoques em 90 \ndias. \n \n→ Ver também: [CARD: SINERGIA — Cálcio-Magnésio-K2 para Direcionamento Ósseo] "
+    },
+    {
+      "fileName": "EXAMES  VITAMINA D3, VITAMINA B12 E CÁLCIO SÉRICO-Katia Haranaka-9J8k7W63rps.pdf",
+      "title": "FISIOPATOLOGIA: Polimorfismo Genético MTRR — Ineficiência da Vitamina B12",
+      "type": "FISIOPATOLOGIA",
+      "name": "Polimorfismo Genético MTRR — Ineficiência da Vitamina B12",
+      "tags": [
+        "PolimorfismoGenético",
+        "VitaminaB12",
+        "MTRR",
+        "Metilcobalamina",
+        "Neuroproteção"
+      ],
+      "category": "Genética/Metabolismo",
+      "tldr": "33% da população possui polimorfismo MTRR impedindo conversão",
+      "rawText": "# FISIOPATOLOGIA: Polimorfismo Genético MTRR — Ineficiência da Vitamina B12 \n \n**Tags:** #PolimorfismoGenético #VitaminaB12 #MTRR #Metilcobalamina #Neuroproteção \n**Categoria:** Genética/Metabolismo \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** 33% da população possui polimorfismo MTRR impedindo conversão \nde cianocobalamina em metilcobalamina ativa, necessitando suplementação direta da forma \nbioativa. \n \n### 易 Explicação Detalhada \n \n**O que é:** Variação genética que compromete a enzima metionina sintase redutase \n(MTRR), responsável pela conversão da vitamina B12 sintética (cianocobalamina) em sua \nforma metabolicamente ativa (metilcobalamina). \n \n**Mecanismo:**  \n1. **Nível genético:** O polimorfismo MTRR reduz a atividade enzimática em 20-60%, \ncriando \"gargalo\" na via da metilação. \n2. **Nível bioquímico:** Sem metilcobalamina suficiente, o ciclo da metionina fica \ncomprometido, reduzindo a síntese de S-adenosilmetionina (SAMe), principal doador de \ngrupos metil. \n3. **Nível neurológico:** A deficiência funcional de B12 compromete a síntese de mielina \n(bainha dos neurônios) e neurotransmissores como serotonina, dopamina e noradrenalina. \n \n**Por que importa:** Indivíduos com este polimorfismo podem suplementar cianocobalamina \npor anos sem melhora clínica, desenvolvendo sintomas de deficiência: declínio cognitivo, \n\ndepressão, neuropatia periférica e anemia megaloblástica, mesmo com níveis séricos \n\"normais\". \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Usar metilcobalamina diretamente (oral ou intramuscular) \n- Manter níveis séricos >600 pg/mL (acima da referência padrão) \n- Combinar com ácido fólico na forma metilfolato \n- Testar genético para MTRR se histórico de não-resposta à B12 comum \n \n**O que evitar:** \n- Cianocobalamina em portadores conhecidos do polimorfismo \n- Aceitar níveis \"normais\" (200-900 pg/mL) sem melhora clínica \n- Ácido fólico sintético — compete com metilfolato \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Níveis >700 pg/mL + melhora cognitiva | Forma bioativa funcionando | Manter protocolo | \n| B12 \"normal\" + sintomas persistentes | Possível polimorfismo MTRR | Trocar para \nmetilcobalamina | \n| Melhora apenas com IM, não oral | Absorção intestinal comprometida | Manter via \nintramuscular | \n| Homocisteína alta apesar de B12 normal | Via da metilação deficiente | Adicionar \nmetilfolato + B6 | \n \n**Timeline:** Melhora neurológica em 4-8 semanas, regeneração completa da mielina em \n6-12 meses. \n \n→ Ver também: [CARD: MARCADOR — Homocisteína como Indicador da Via da Metilação] "
+    },
+    {
+      "fileName": "EXAMES  VITAMINA D3, VITAMINA B12 E CÁLCIO SÉRICO-Katia Haranaka-9J8k7W63rps.pdf",
+      "title": "SINERGIA: Cálcio-Magnésio-K2 — Direcionamento Ósseo e Prevenção de Calcificação",
+      "type": "SINERGIA",
+      "name": "Cálcio-Magnésio-K2 — Direcionamento Ósseo e Prevenção de Calcificação",
+      "tags": [
+        "Cálcio",
+        "Magnésio"
+      ],
+      "category": "",
+      "tldr": "",
+      "rawText": "# SINERGIA: Cálcio-Magnésio-K2 — Direcionamento Ósseo e Prevenção de Calcificação \n \n**Tags:** #Cálcio #Magnésio # "
+    },
+    {
+      "fileName": "Exames  avaliação hepática-Katia Haranaka-gAuH1Ul5wrI.pdf",
+      "title": "FISIOPATOLOGIA: Hepatótoxicidade por Álcool — Morte Celular Programada por Etanol",
+      "type": "FISIOPATOLOGIA",
+      "name": "Hepatótoxicidade por Álcool — Morte Celular Programada por Etanol",
+      "tags": [
+        "Hepatótoxicidade",
+        "Álcool",
+        "Hepatólise",
+        "EnzimasHepáticas",
+        "FígadoGorduroso"
+      ],
+      "category": "Hepatologia/Toxicologia",
+      "tldr": "O álcool (etanol) causa ruptura direta da membrana hepatocelular,",
+      "rawText": "# FISIOPATOLOGIA: Hepatótoxicidade por Álcool — Morte Celular Programada por Etanol \n \n**Tags:** #Hepatótoxicidade #Álcool #Hepatólise #EnzimasHepáticas #FígadoGorduroso \n**Categoria:** Hepatologia/Toxicologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** O álcool (etanol) causa ruptura direta da membrana hepatocelular, \nliberando enzimas intracelulares (TGP, TGO, Gama GT) no sangue — processo chamado \nhepatólise que antecede a cirrose por décadas. \n \n### 易 Explicação Detalhada \n \n**O que é:** A hepatótoxicidade alcoólica é um processo de morte celular progressiva onde \no etanol atua como \"uma arma\" que perfura diretamente as membranas dos hepatócitos \n(células do fígado), causando vazamento de enzimas intracelulares para a circulação. \n \n**Mecanismo:** \n1. **Nível molecular:** O etanol é metabolizado pela enzima álcool desidrogenase (ADH) \nem acetaldeído, composto altamente reativo que forma adutos com proteínas celulares. \nSimultaneamente, o sistema microssomal de oxidação do etanol (MEOS) gera espécies \nreativas de oxigênio (ROS). \n2. **Nível celular:** Os ROS e acetaldeído causam peroxidação lipídica nas membranas \nhepatocitárias, criando \"furos\" que permitem o extravasamento de enzimas normalmente \nconfinadas no citoplasma (TGP, TGO) e microssomos (Gama GT). \n3. **Nível sistêmico:** A destruição hepatocelular crônica leva à substituição por tecido \nfibroso, redução da capacidade de síntese proteica e acúmulo de gordura (esteatose), \nresultando em hepatomegalia visível como distensão abdominal. \n \n**Por que importa:** O fígado precisa estar 60% destruído para mostrar alterações \nfuncionais graves. As enzimas elevadas são um \"grito de socorro\" das células morrendo — \num sinal precoce décadas antes da cirrose manifesta. O formato corporal \"maçã\" (braços \nmagros, pernas finas, abdômen globoso) indica hepatomegalia por agressão crônica. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- **Teste pós-álcool:** Após consumo de álcool, aguardar 24-48h e dosar TGP, TGO, Gama \nGT para avaliar dano agudo \n\n- **Monitoramento:** Repetir enzimas hepáticas a cada 3 meses durante processo de \ndesintoxicação \n- **Suporte nutricional:** Ácido málico (suco de maçã natural) para dissolução de cálculos \nbiliares microscópicos \n- **Protocolo de limpeza:** Pesquisar método Andreas Moritz de limpeza hepática com \nsupervisão \n \n**O que evitar:** \n- **Medicamentos hepatotóxicos:** Antifúngicos sistémicos (fluconazol, itraconazol), \nrelaxantes musculares, analgésicos crônicos \n- **Combinações perigosas:** Álcool + paracetamol = hepatotoxicidade sinérgica \npotencialmente fatal   \n- **Automedicalização:** Tratar micoses sistêmicas sem avaliação da função hepática basal \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| TGP/TGO >15 U/L | Hepatólise ativa mesmo \"dentro do normal\" | Investigar fonte de \nagressão | \n| Gama GT elevado isoladamente | Consumo alcoólico agudo (3-5 dias) | Suspender álcool, \nredosar em 1 semana | \n| Fosfatase alcalina >70 U/L | Processo crônico, possível fibrose inicial | Avaliação \nhepatológica urgente | \n| Bilirrubinas >0,3 mg/dL | Cálculos biliares microscópicos | Protocolo de limpeza hepática | \n| Costelas \"saltadas\" + abdômen globoso | Hepatomegalia por inflamação crônica | \nUltrassom abdominal + elastografia | \n \n**Timeline:**  \n- Normalização enzimática: 2-4 semanas após cessação completa do álcool \n- Redução da hepatomegalia: 6-8 meses com abstinência total \n- Regeneração hepatocelular: 12-24 meses (fígado tem capacidade regenerativa única) \n \n→ Ver também: [CARD: PROTOCOLO — Detoxificação Hepática Fase I e II] "
+    },
+    {
+      "fileName": "Exames  avaliação hepática-Katia Haranaka-gAuH1Ul5wrI.pdf",
+      "title": "MARCADOR: Interpretação Otimizada de Enzimas Hepáticas — Valores Funcionais vs.",
+      "type": "MARCADOR",
+      "name": "Interpretação Otimizada de Enzimas Hepáticas — Valores Funcionais vs.",
+      "tags": [
+        "EnzimasHepáticas",
+        "TGP",
+        "TGO",
+        "GamaGT",
+        "ValoresReferência"
+      ],
+      "category": "Laboratório/Hepatologia",
+      "tldr": "Os valores de referência laboratoriais permitem doença hepática",
+      "rawText": "# MARCADOR: Interpretação Otimizada de Enzimas Hepáticas — Valores Funcionais vs. \nLaboratório \n \n**Tags:** #EnzimasHepáticas #TGP #TGO #GamaGT #ValoresReferência \n#MedicinaFuncional \n**Categoria:** Laboratório/Hepatologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Os valores de referência laboratoriais permitem doença hepática \nsubclínica. Para saúde otimizada: TGP/TGO <15 U/L, Gama GT <12 U/L, idealmente <10 \nU/L. \n\n \n### 易 Explicação Detalhada \n \n**O que é:** Uma abordagem de medicina funcional que utiliza valores muito mais restritivos \nque os laboratóriais convencionais, baseando-se no princípio de que \"valor de referência \ncoloca você doente\" — ou seja, a população de referência já está doente. \n \n**Mecanismo:** \n- **TGP (ALT - alanina aminotransferase):** Enzima citosólica específica do fígado, \nindicador de hepatólise aguda. Valores tradicionais até 41 U/L são excessivamente \npermissivos. \n- **TGO (AST - aspartato aminotransferase):** Presente também no músculo cardíaco e \nesquelético. Elevação isolada pode indicar lesão muscular. \n- **Gama GT:** Enzima microsomal, marcador mais sensível para álcool e medicamentos \nhepatotóxicos. Reflete agressão aguda (3-5 dias). \n \n**Diferenciação temporal:** \n- **Gama GT:** Álcool agudo, \"final de semana alcoólico\" \n- **TGP:** Processo crônico, agressão sustentada por meses \n- **TGO:** Pode estar elevado sem relação com álcool (exercício intenso, doença muscular) \n \n**Por que importa:** A hepatopatia silenciosa progride por décadas antes de sintomas. Usar \nvalores funcionais permite intervenção precoce quando a reversibilidade é completa, \nevitando progressão para esteatose, fibrose e cirrose. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- **Valores alvo funcionais:** TGP <15, TGO <15, Gama GT <10-12 U/L \n- **Avaliação seriada:** Repetir a cada 3 meses durante otimização \n- **Contexto clínico:** Sempre correlacionar com história (álcool, medic "
+    },
+    {
+      "fileName": "FAN Positivo, o que é  (Doenças autoimunes  tudo está ligado à sua alimentação)-Katia Haranaka-iZM_yIFS2rw.pdf",
+      "title": "MARCADOR: FAN (Fator Anti-Nuclear) — Biomarcador de Autoimunidade Induzida por",
+      "type": "MARCADOR",
+      "name": "FAN (Fator Anti-Nuclear) — Biomarcador de Autoimunidade Induzida por",
+      "tags": [
+        "FAN",
+        "FatorAntiNuclear",
+        "Autoimunidade",
+        "BiomarcadorInflamatório"
+      ],
+      "category": "Exames/Imunologia",
+      "tldr": "FAN mede autoanticorpos contra estruturas celulares próprias,",
+      "rawText": "# MARCADOR: FAN (Fator Anti-Nuclear) — Biomarcador de Autoimunidade Induzida por \nAlimentos \n \n**Tags:** #FAN #FatorAntiNuclear #Autoimunidade #BiomarcadorInflamatório \n#MedicinaFuncional \n**Categoria:** Exames/Imunologia \n**Fonte Original:** Dr. Guilherme Freccia \n \n> **Resumo (TL;DR):** FAN mede autoanticorpos contra estruturas celulares próprias, \nindicando que fatores ambientais (especialmente alimentares) estão desencadeando \nreações autoimunes reversíveis. \n \n### 易 Explicação Detalhada \n \n**O que é:** O FAN detecta cinco tipos de autoanticorpos: nucleares, nucleolares, \ncitoplasmáticos, mitóticos e de placa metafásica cromossômica. Os mais comuns são \nnucleares e de placa metafásica. \n \n**Valores de referência:** \n- **Normal:** Negativo até diluição 1:40 \n- **Positivo:** ≥1:80 (indica atividade autoimune) \n- **Progressão:** 1:160 → 1:320 → 1:640 (gravidade crescente) \n \n**Mecanismo:** Diferentemente da visão clássica de \"doença autoimune idiopática\", o FAN \nelevado reflete resposta imune contra antígenos intracelulares que se tornaram \"estranhos\" \ndevido a: \n1. **Hiperpermeabilidade intestinal:** Quebra das tight junctions permite entrada de \nproteínas mal digeridas \n2. **Sobrecarga do sistema imune:** 80% da imunidade está no intestino (GALT - tecido \nlinfoide associado ao intestino) \n3. **Ativação de células apresentadoras de antígenos:** Macrófagos e células dendríticas \nprocessam proteínas alimentares como \"invasores\" \n \n**Por que importa:** FAN positivo é indicador precoce de disregulação imune antes do \ndesenvolvimento de doenças autoimunes específicas (tireoidite de Hashimoto, artrite \nreumatoide, lúpus). É um marcador de \"terreno autoimune\" modificável. \n \n###  Aplicação Prática \n \n\n**Quando solicitar:** \n- Fadiga crônica inexplicada \n- Sintomas inflamatórios difusos (dores articulares, neblina mental) \n- História familiar de autoimunidade \n- Sintomas digestivos + manifestações extraintestinais \n \n**Interpretação contextual:** \n \n| Título/Padrão | Significado Clínico | Ação Prioritária | \n|---------------|---------------------|------------------| \n| 1:40 (negativo) | Sistema imune equilibrado | Manutenção preventiva | \n| 1:80-1:160 | Início de desregulação | Protocolo anti-inflamatório alimentar | \n| ≥1:320 | Autoimunidade estabelecida | Eliminação radical + suporte intensivo | \n \n**O que fazer:** \n- Protocolo de eliminação: 0% lácteos, 0% glúten, 0% álcool por mínimo 90 dias \n- Suplementação para reparar barreira intestinal (L-glutamina, zinco-carnosina) \n- Anti-inflamatórios naturais (cúrcuma, ômega-3, quercetina) \n- Avaliação de disbiose (teste de permeabilidade intestinal, microbioma) \n \n**Monitoramento:** \n- Reavaliação do FAN a cada 6 meses durante intervenção \n- Expectativa de redução gradual dos títulos em 12-24 meses \n- Meta: retorno ao negativo (≤1:40) com manutenção do protocolo \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Títulos crescentes (1:80→1:160→1:320) | Progressão da autoimunidade | Intensificar \nprotocolo, investigar gatilhos ocultos | \n| Estabilização em níveis altos | Gatilhos persistentes ou dano estabelecido | Ampliar \ninvestigação (metais pesados, infecções crônicas) | \n| Normalização seguida de novo aumento | Reexposição a gatilhos alimentares | Revisar \naderência, identificar alimentos-gatilho | \n| Redução progressiva | Resposta adequada ao protocolo | Manter intervenção até \nnormalização completa | \n \n**Timeline:** Redução significativa dos títulos geralmente observada entre 6-18 meses de \nprotocolo rigoroso. Casos mais avançados podem requerer 24-36 meses para normalização \ncompleta. \n \n→ Ver também: [CARD: MECANISMO — Mimetismo Molecular entre Proteínas Alimentares \ne Tecidos Próprios] "
+    },
+    {
+      "fileName": "FAN Positivo, o que é  (Doenças autoimunes  tudo está ligado à sua alimentação)-Katia Haranaka-iZM_yIFS2rw.pdf",
+      "title": "FISIOPATOLOGIA: Hiperpermeabilidade Intestinal — O Segundo Cérebro Sob Ataque",
+      "type": "FISIOPATOLOGIA",
+      "name": "Hiperpermeabilidade Intestinal — O Segundo Cérebro Sob Ataque",
+      "tags": [
+        "HiperpermeabilidadeIntestinal",
+        "LeakyGut",
+        "SegundoCérebro",
+        "SistemaImune"
+      ],
+      "category": "Gastroenterologia/Imunologia",
+      "tldr": "O intestino possui 500 milhões de neurônios que regulam",
+      "rawText": "# FISIOPATOLOGIA: Hiperpermeabilidade Intestinal — O Segundo Cérebro Sob Ataque \n\n \n**Tags:** #HiperpermeabilidadeIntestinal #LeakyGut #SegundoCérebro #SistemaImune \n#BarreiraIntestinal \n**Categoria:** Gastroenterologia/Imunologia \n**Fonte Original:** Dr. Guilherme Freccia \n \n> **Resumo (TL;DR):** O intestino possui 500 milhões de neurônios que regulam \nseletivamente a absorção, mas fatores inflamatórios crônicos danificam esta barreira, \npermitindo entrada de proteínas mal digeridas e ativação imune sistêmica. \n \n### 易 Explicação Detalhada \n \n**O que é:** O intestino delgado possui o maior plexo nervoso fora do sistema nervoso \ncentral (plexo entérico), com neurônios suficientes para ser denominado \"segundo cérebro\". \nEstes neurônios controlam a permeabilidade seletiva através das tight junctions entre \nenterócitos. \n \n**Mecanismo fisiológico normal:** \n1. **Triagem neural:** Neurônios entéricos analisam compostos luminais via \nquimiorreceptores \n2. **Decisão seletiva:** Vitaminas, minerais, aminoácidos → absorção; toxinas, patógenos \n→ eliminação fecal \n3. **Barreira física:** Tight junctions mantêm espaços intercelulares <10Å, bloqueando \nmacromoléculas \n \n**Fisiopatologia da hiperpermeabilidade:** \n1. **Fase de agressão:** Alimentos ultraprocessados, caseína, glúten, álcool, AINEs, \nanticoncepcionais causam inflamação da mucosa \n2. **Dano às tight junctions:** Citocinas pró-inflamatórias (TNF-α, IL-6) reduzem expressão \nde claudina-1 e ocludina \n3. **Perda de seletividade:** Proteínas de 10-70kDa atravessam a barreira comprometida \n4. **Ativação imune:** GALT (tecido linfoide associado ao intestino) detecta proteínas como \nantígenos estranhos \n5. **Cascata inflamatória:** Produção de anticorpos específicos contra proteínas \nalimentares \n \n**Por que importa:** 80% do sistema imune reside no intestino. A quebra desta barreira \ntransforma o intestino de órgão de nutrição em fonte de inflamação sistêmica, predispondo \na autoimunidade, alergias alimentares tardias e doenças degenerativas. \n \n###  Aplicação Prática \n \n**Fatores de risco principais:** \n- **Alimentares:** Lácteos (c "
+    },
+    {
+      "fileName": "EXAMES  Ferritina, porque o ferro é tão importante em nosso sangue -Katia Haranaka-B87CM1n3o98.pdf",
+      "title": "MARCADOR: Ferritina Sérica — Interpretação Funcional para Mulheres",
+      "type": "MARCADOR",
+      "name": "Ferritina Sérica — Interpretação Funcional para Mulheres",
+      "tags": [
+        "Ferritina",
+        "Ferro",
+        "Anemia",
+        "Hipotireoidismo",
+        "FluxoMenstrual"
+      ],
+      "category": "Exames/Minerais",
+      "tldr": "Ferritina ideal para mulheres é 70-150 ng/mL (não os valores de",
+      "rawText": "# MARCADOR: Ferritina Sérica — Interpretação Funcional para Mulheres \n \n**Tags:** #Ferritina #Ferro #Anemia #Hipotireoidismo #FluxoMenstrual \n**Categoria:** Exames/Minerais \n**Fonte Original:** Dra. Kátia Haranaka \n \n> **Resumo (TL;DR):** Ferritina ideal para mulheres é 70-150 ng/mL (não os valores de \nreferência laboratoriais de 21-274), sendo <70 fator de risco para hipotireoidismo em 8-10 \nanos. \n \n### 易 Explicação Detalhada \n \n**O que é:** A ferritina é a proteína de armazenamento do ferro após a hemoglobina liberar \noxigênio nos tecidos. É o marcador mais fidedigno do status de ferro corporal, superior à \ndosagem direta de ferro sérico (que está ligado a proteínas transportadoras). \n \n**Mecanismo:**  \n1. **Nível celular:** Hemácias contêm hemoglobina que se liga ao ferro para transportar O₂. \nApós liberação do oxigênio nos tecidos, o ferro se desliga e é armazenado como ferritina. \n2. **Nível endócrino:** Ferro é cofator essencial para síntese de T4 na tireoide e conversão \nperiférica T4→T3 via 5'-deiodinase tipo 1. Deficiência compromete função tireoidiana \nmesmo antes dos sintomas clássicos de anemia. \n3. **Nível sistêmico:** Tecidos \"decorativos\" (pele, cabelo, unhas) são os últimos a receber \nnutrientes. Sinais estéticos indicam deficiência já avançada com comprometimento de \nórgãos nobres. \n \n**Por que importa:** Valores laboratoriais \"normais\" (21-274 ng/mL) são estatísticos, não \nfuncionais. Ferritina <70 ng/mL predispõe ao hipotireoidismo clínico em 8-10 anos, \nespecialmente em mulheres com perdas menstruais regulares. \n \n###  Aplicação Prática \n \n**Interpretação por faixas:** \n \n| Ferritina (ng/mL) | Interpretação | Ação Imediata | \n|------------------|---------------|---------------| \n| <30 | Deficiência severa | Reposição EV + investigar causa | \n| 30-69 | Deficiência funcional | Suplementação VO + ajustes dietéticos | \n\n| 70-150 | Ideal para mulheres | Manutenção com alimentação | \n| >150 (mulheres) | Investigar perdas excessivas | Avaliar fluxo menstrual | \n| >200 (homens) | Sobrecarga | Doação de sangue 3-4x/ano | \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Cabelo quebradiço + unhas fracas | Ferritina provavelmente <50 | Solicitar exame + \nreposição | \n| Cansaço inexplicável | Possível deficiência de ferro | Avaliar ferritina mesmo com \nhemograma normal | \n| Fluxo menstrual aumentado | Perda excessiva de ferro | Investigar progesterona + ferritina \n| \n| Sangue vermelho intenso | Ferritina adequada (>70) | Manter cuidados atuais | \n| Sangue opaco/descorado | Ferritina baixa | Reposição urgente | \n \n**Timeline:** Reposição via oral leva 3-6 meses para normalizar. Endovenosa: melhora em \n4-6 semanas. \n \n→ Ver também: [CARD: PROTOCOLO — Reposição Endovenosa de Ferro para Deficiência \nSevera] "
+    },
+    {
+      "fileName": "EXAMES  Ferritina, porque o ferro é tão importante em nosso sangue -Katia Haranaka-B87CM1n3o98.pdf",
+      "title": "PROTOCOLO: Reposição Endovenosa de Ferro — Deficiência Severa",
+      "type": "PROTOCOLO",
+      "name": "Reposição Endovenosa de Ferro — Deficiência Severa",
+      "tags": [
+        "Ferro",
+        "ReposiçãoEndovenosa",
+        "Ferritina",
+        "Anemia",
+        "TratamentoUrgente"
+      ],
+      "category": "Protocolos/Reposição",
+      "tldr": "Para ferritina <30 ng/mL: ferro endovenoso (Ex: Noripurum) 1",
+      "rawText": "# PROTOCOLO: Reposição Endovenosa de Ferro — Deficiência Severa \n \n**Tags:** #Ferro #ReposiçãoEndovenosa #Ferritina #Anemia #TratamentoUrgente \n**Categoria:** Protocolos/Reposição \n**Fonte Original:** Dra. Kátia Haranaka \n \n> **Resumo (TL;DR):** Para ferritina <30 ng/mL: ferro endovenoso (Ex: Noripurum) 1 \nampola em 250ml SF, EV lento (1h), 1x/semana por 5 semanas. Via oral ineficaz nestes \ncasos. \n \n### 易 Explicação Detalhada \n \n**O que é:** Protocolo de reposição rápida de ferro para deficiências severas (ferritina <30 \nng/mL) onde a via oral é inadequada devido à baixa absorção intestinal e irritação da \nmucosa. \n \n**Mecanismo:**  \n1. **Absorção limitada:** Via oral, apenas 10-15% do ferro é absorvido no duodeno. Em \ndeficiência severa, mucosa intestinal está comprometida, reduzindo ainda mais a absorção. \n2. **Bypass intestinal:** Via endovenosa entrega 100% do ferro diretamente na circulação, \nonde se liga imediatamente à transferrina e é transportado para medula óssea e fígado. \n3. **Tolerabilidade:** Evita efeitos colaterais gastrintestinais (constipação, náuseas, dor \nabdominal) que limitam adesão ao tratamento oral. \n\n \n**Por que importa:** Mulheres com ferritina <30 frequentemente têm constipação prévia e \nmotilidade intestinal comprometida. Ferro oral agrava esses sintomas, criando ciclo vicioso \nde má absorção e intolerância. \n \n###  Aplicação Prática \n \n**Protocolo padrão:** \n- **Medicação:** Noripurum (ferro sacarato) - 1 ampola de 5ml (100mg ferro elementar) \n- **Diluição:** 250ml de soro fisiológico 0,9% \n- **Velocidade:** Infusão lenta - 50-60 minutos (4-5ml/min) \n- **Frequência:** 1x/semana \n- **Duração:** 5 semanas consecutivas \n- **Total:** 500mg ferro elementar \n \n**Pré-requisitos:** \n- Receita médica obrigatória \n- Local com estrutura para aplicação EV (posto de saúde/convênio) \n- Ferritina <30 ng/mL confirmada \n- Hemoglobina <11 g/dL (mulheres) ou sintomas severos \n \n**Monitoramento:** \n \n| Semana | Parâmetro | Valor Esperado | \n|--------|-----------|----------------| \n| 0 | Ferritina baseline | <30 ng/mL | \n| 3 | Hemoglobina | Aumento >1g/dL | \n| 6 | Ferritina pós-tratamento | >70 ng/mL | \n| 12 | Controle | Manutenção 70-150 ng/mL | \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Melhora energia após 2ª aplicação | Resposta adequada | Continuar protocolo | \n| Reação alérgica (urticária, dispneia) | Hipersensibilidade rara (<1 "
+    },
+    {
+      "fileName": "Creatinina, Saúde Renal, sobrecarga de Proteína e Hipertensão Arterial - Exames-Katia Haranaka--AINZ_fpKbk.pdf",
+      "title": "MARCADOR: Creatinina — Avaliação Funcional Renal Além dos Valores de Referência",
+      "type": "MARCADOR",
+      "name": "Creatinina — Avaliação Funcional Renal Além dos Valores de Referência",
+      "tags": [
+        "Creatinina",
+        "FunçãoRenal",
+        "Hidratação",
+        "Marcadores",
+        "AvaliaçãoFuncional"
+      ],
+      "category": "Marcadores Bioquímicos/Função Renal",
+      "tldr": "Creatinina sérica reflete capacidade de filtração glomerular; valores",
+      "rawText": "# MARCADOR: Creatinina — Avaliação Funcional Renal Além dos Valores de Referência \n \n**Tags:** #Creatinina #FunçãoRenal #Hidratação #Marcadores #AvaliaçãoFuncional \n**Categoria:** Marcadores Bioquímicos/Função Renal \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Creatinina sérica reflete capacidade de filtração glomerular; valores \n\"normais\" de referência podem mascarar 30% de perda funcional renal já estabelecida. \n \n### 易 Explicação Detalhada \n \n**O que é:** A creatinina é um produto final do metabolismo da creatina muscular, eliminada \nexclusivamente por filtração glomerular. Seus níveis séricos inversamente correlacionam \ncom a taxa de filtração glomerular (TFG). \n \n**Mecanismo:**  \n1. **Nível molecular:** Creatina fosfato muscular → creatinina (conversão não-enzimática \nconstante) → eliminação renal por filtração passiva \n2. **Nível renal:** Glomérulos funcionais filtram creatinina sem reabsorção tubular \nsignificativa. Redução da massa nefronítica funcional → acúmulo sérico proporcional \n3. **Nível sistêmico:** \"Metáfora do filtro de café\": rim funciona como filtro que processa \ntodo volume sanguíneo. Filtro sujo (baixa hidratação) → sobrecarga → acúmulo de \n\"resíduos\" (creatinina elevada) \n \n**Por que importa:** Valores de referência laboratoriais (0,7-1,25 mg/dL) classificam \npacientes com até 30% de perda funcional renal como \"normais\". Esta janela perdida \nrepresenta oportunidade crucial de prevenção secundária antes da progressão para doença \nrenal crônica. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Meta creatinina: 0,7-0,9 mg/dL (não aceitar valores >1,0 como \"normais\") \n- Protocolo hídrico baseado em hemograma: peso(kg) × 40ml até 16h (ex: 70kg = 2,8L) \n- Monitoramento trimestral em pacientes >40 anos ou com fatores de risco \n- Avaliar creatinina em contexto: clearance calculado + cistatina C para maior precisão \n \n**O que evitar:** \n- Anti-inflamatórios não-esteroidais regulares — inibem prostaglandinas renoprotetoras \n\n- Analgésicos de rotina — sobrecarga de eliminação renal \n- Desidratação crônica — concentra toxinas urêmicas \n- Aceitar \"normalidade\" sem otimização funcional \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Creatinina 0,7-0,8 mg/dL | Função renal ótima | Manter hidratação preventiva | \n| Creatinina 0,9-1,0 mg/dL | Início de declínio funcional | Intensificar protocolo hídrico, \nreavaliar em 30 dias | \n| Creatinina >1,1 mg/dL | Perda significativa (>20%) | Investigação nefrológica + protocolo \nintensivo | \n| Flutuações >0,2 mg/dL | Instabilidade funcional | Avaliar medicamentos, hidratação, \ncomorbidades | \n \n**Timeline:** Melhora da creatinina com hidratação adequada: 2-4 semanas. Estabilização \nfuncional: 8-12 semanas de protocolo consistente. \n \n→ Ver também: [CARD: PROTOCOLO — Hidratação Baseada em Hemograma para \nOtimização Renal] "
+    },
+    {
+      "fileName": "Creatinina, Saúde Renal, sobrecarga de Proteína e Hipertensão Arterial - Exames-Katia Haranaka--AINZ_fpKbk.pdf",
+      "title": "PROTOCOLO: Hidratação Baseada em Hemograma — Cálculo Individual de",
+      "type": "PROTOCOLO",
+      "name": "Hidratação Baseada em Hemograma — Cálculo Individual de",
+      "tags": [
+        "Hidratação",
+        "Hemograma",
+        "Hematócrito",
+        "VolumeCirculante",
+        "Personalização"
+      ],
+      "category": "Protocolos Terapêuticos/Hidratação",
+      "tldr": "Número de hemácias no hemograma determina volume hídrico",
+      "rawText": "# PROTOCOLO: Hidratação Baseada em Hemograma — Cálculo Individual de \nNecessidades Hídricas \n \n**Tags:** #Hidratação #Hemograma #Hematócrito #VolumeCirculante #Personalização \n**Categoria:** Protocolos Terapêuticos/Hidratação \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Número de hemácias no hemograma determina volume hídrico \nindividual necessário (peso × 40ml), com timing até 16h para otimização da função renal. \n \n### 易 Explicação Detalhada \n \n**O que é:** Protocolo de hidratação personalizada baseada na contagem eritrocitária \nindividual, que reflete a necessidade real de volume plasmático para manter viscosidade \nsanguínea ótima. \n \n**Mecanismo:** \n1. **Nível hematológico:** Cada pessoa possui número único de eritrócitos (ex: \"4,5 \nmilhões/μL\"). Volume plasmático deve ser proporcional para manter hematócrito ideal \n(40-45%) \n2. **Nível hidrodinâmico:** \"Sangue como lago limpo e transparente\" — volume adequado \npermite fluidez microcirculatória ótima, reduz resistência vascular \n3. **Nível renal:** Hidratação adequada mantém pressão de perfusão glomerular, facilitando \nfiltração e reduzindo trabalho compensatório \n\n \n**Por que importa:** Recomendações genéricas (2L/dia) ignoram variabilidade individual da \nmassa eritrocitária. Subhidratação crônica força compensação renal, elevando creatinina e \nsobrecarregando função glomerular prematuramente. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- **Cálculo base:** Peso corporal (kg) × 40ml = volume diário mínimo \n- **Exemplo prático:** 70kg = 2.800ml (aproximar para 3L) \n- **Timeline crítico:** Consumir 100% do volume até às 16h \n- **Distribuição:** 300-400ml/hora das 6h às 16h (10 doses) \n- **Treinamento vesical:** Segurar urina progressivamente para fortalecer musculatura \n \n**O que evitar:** \n- Concentrar volume após 16h — compromete qualidade do sono \n- Ingestão em bolus grandes (>500ml) — sobrecarga renal aguda \n- Líquidos diuréticos (café, chá preto) contabilizados como hidratação \n- Ignorar sinais de hiperhidratação (hiponatremia, edema) \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Eosinófilos <2%, basófilos =0% | Hidratação adequada, sangue \"limpo\" | Manter protocolo \natual | \n| Eosinófilos >2%, basófilos >0% | Desidratação relativa, sangue \"espesso\" | Aumentar 20% \nvolume por 2 semanas | \n| Urina clara, sem odor | Filtração renal otimizada | Protocolo efetivo | \n| Noctúria frequente | Timing inadequado ou excesso vespertino | Antecipar última ingestão \npara 14h | \n| Edema matinal | Possível sobrecarga ou disfunção renal | Reduzir 10% volume, avaliar \nfunção cardíaca | \n \n**Timeline:** Adaptação vesical: 7-10 dias. Melhora na qualidade sanguín "
+    },
+    {
+      "fileName": "Diabetes, Glicemia, Hemoglobina Glicada e Insulina - Exames-Katia Haranaka-xX0hruC-8DY.pdf",
+      "title": "MARCADOR: Glicemia de Jejum — Limitações Diagnósticas e Interpretação Otimizada",
+      "type": "MARCADOR",
+      "name": "Glicemia de Jejum — Limitações Diagnósticas e Interpretação Otimizada",
+      "tags": [
+        "GlicemiaJejum",
+        "Diabetes",
+        "InterpretaçãoExames",
+        "ValoresReferência"
+      ],
+      "category": "Diagnóstico/Marcadores Metabólicos",
+      "tldr": "A glicemia de jejum é manipulável por dietas restritivas de 2-3 dias,",
+      "rawText": "# MARCADOR: Glicemia de Jejum — Limitações Diagnósticas e Interpretação Otimizada \n \n**Tags:** #GlicemiaJejum #Diabetes #InterpretaçãoExames #ValoresReferência \n**Categoria:** Diagnóstico/Marcadores Metabólicos \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** A glicemia de jejum é manipulável por dietas restritivas de 2-3 dias, \nsendo inferior à hemoglobina glicada e insulina para avaliar homeostase glicêmica real. \n \n### 易 Explicação Detalhada \n \n**O que é:** A glicemia de jejum mede concentração de glicose sanguínea após 8-10 horas \nsem alimentação. Valor de referência laboratorial: 70-99 mg/dL. \n \n**Limitação fundamental:** Pacientes frequentemente fazem \"dietas de jejum\" por 2-3 \nsemanas antes do exame para \"normalizar\" os valores, criando uma \"janela artificial\" de \nnormalidade que não reflete o padrão metabólico habitual. \n \n**Interpretação otimizada em quartis:** \n- **Ideal (70-77 mg/dL):** Homeostase glicêmica excelente \n- **Bom (78-84 mg/dL):** Aceitável, monitorar tendências \n- **Alerta (85-92 mg/dL):** \"Em cima do muro\" - investigar outros marcadores \n- **Problemático (93-99 mg/dL):** Alto risco, mesmo dentro da \"normalidade\" \n \n**Por que importa:** Um valor de 90 mg/dL em jejum já indica comprometimento metabólico \nsignificativo. Valores >105 mg/dL confirmam hiperglicemia estabelecida, criando ambiente \npró-inflamatório sistêmico (comparável a \"pires de açúcar\" atraindo patógenos). \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Sempre solicitar junto com hemoglobina glicada e insulina basal \n- Interpretar por quartis, não apenas \"normal vs anormal\" \n- Considerar histórico alimentar das 2-3 semanas precedentes \n- Valores 85-92 mg/dL: investigar resistência insulínica mesmo com HbA1c normal \n \n**O que evitar:** \n\n- Interpretação isolada da glicemia de jejum \n- Aceitar \"normalidade\" em valores >85 mg/dL sem contexto \n- Solicitar repetição após dietas restritivas imediatas \n \n**Sinais de Alerta:** \n \n| Valor (mg/dL) | Interpretação | Ação Imediata | \n|---------------|---------------|---------------| \n| 70-77 | Homeostase ótima | Manter padrão alimentar | \n| 85-92 | Resistência em desenvolvimento | Solicitar insulina basal e HbA1c | \n| 93-99 | Pré-diabetes disfarçado | Protocolo anti-resistência insulínica | \n| >105 | Diabetes estabelecida | Intervenção intensiva imediata | \n \n**Timeline:** Não reflete mudanças recentes - pode mascarar padrões de 3-4 meses por \nmanipulação dietética aguda. \n \n→ Ver também: [CARD: Hemoglobina Glicada — Marcador 3-4 Meses] e [CARD: Insulina \nBasal — Detecção Precoce RI] "
+    },
+    {
+      "fileName": "Diabetes, Glicemia, Hemoglobina Glicada e Insulina - Exames-Katia Haranaka-xX0hruC-8DY.pdf",
+      "title": "FISIOPATOLOGIA: Produtos de Glicação — A \"Cola Plástica\" que Compromete o",
+      "type": "FISIOPATOLOGIA",
+      "name": "Produtos de Glicação — A \"Cola Plástica\" que Compromete o",
+      "tags": [
+        "ProdutosGlicação",
+        "HemoglobinaGlicada",
+        "ProteinaGlicose",
+        "Inflamação"
+      ],
+      "category": "Fisiopatologia/Bioquímica",
+      "tldr": "Produtos de glicação formam-se pela reação proteína + açúcar +",
+      "rawText": "# FISIOPATOLOGIA: Produtos de Glicação — A \"Cola Plástica\" que Compromete o \nTransporte de Oxigênio \n \n**Tags:** #ProdutosGlicação #HemoglobinaGlicada #ProteinaGlicose #Inflamação \n**Categoria:** Fisiopatologia/Bioquímica \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Produtos de glicação formam-se pela reação proteína + açúcar + \ncalor, criando compostos inertes que sequestram hemoglobina e comprometem transporte \nde oxigênio por 3-4 meses. \n \n### 易 Explicação Detalhada \n \n**O que é:** Produtos de glicação são compostos moleculares inertes formados pela reação \nnão-enzimática entre proteínas e açúcares na presença de calor - processo conhecido \ncomo reação de Maillard ou glicação não-enzimática. \n \n**Mecanismo de formação:** \n1. **Componentes necessários:** Proteína + açúcar + calor (todos simultaneamente) \n2. **Exemplo clássico:** Caseína (leite) + lactose + pasteurização = produto glicado \n3. **Resultado:** Estrutura molecular \"plástica\" que não possui função biológica útil \n \n**Sequestro da hemoglobina:** \n- Hemoglobina normal: proteína \"carente\" que precisa se ligar a algo para funcionar \n- **Cenário ideal:** Hemoglobina + ferro + oxigênio = transporte eficiente \n- **Cenário patológico:** Hemoglobina + produto de glicação = hemoglobina glicada \n(HbA1c) \n\n- **Consequência:** Hemoglobina \"seduzida\" fica 90-120 dias circulando sem transportar \noxigênio \n \n**Por que importa:** O percentual de HbA1c indica quantas hemoglobinas estão \"fora de \nserviço\". HbA1c de 5,2% = 5,2% das hemoglobinas não transportam oxigênio, explicando \ncomplicações diabéticas: amputações, retinopatia, nefropatia (hipóxia tecidual crônica). \n \n###  Aplicação Prática \n \n**Principais fontes de produtos de glicação:** \n- **Laticínios processados:** Leite pasteurizado, queijos, requeijão, iogurte \n- **Panificação:** Qualquer produto de padaria (proteína + açúcar + forno) \n- **Alimentos aquecidos:** Proteína animal + carboidrato em alta temperatura \n \n**O que evitar:** \n- Queijo branco (caseína + lactose + calor) - \"feito para piorar diabetes\" \n- Torradas, biscoitos, pães (glúten + açúcar + calor) \n- Combinações lácteo + carboidrato aquecidas \n \n**Estratégias de redução:** \n- Preferir proteínas sem acompanhamento de açúcares \n- Evitar aquecimento simultâneo de proteína + carboidrato \n- Escolher laticínios não-pasteurizados quando possível (legislação permitindo) \n \n**Sinais de Alerta:** \n \n| HbA1c (%) | Hemoglobinas Comprometidas | Risco | \n|-----------|---------------------------|-------| \n| <5.5 | <5.5% | Aceitável | \n| 5.6-6.4 | 5.6-6.4% | Pré-diabetes | \n| >6.5 | >6.5% | Diabetes estabelecida | \n \n**Timeline:** Produtos formados hoje permanecerão circulantes por 90-120 dias (vida útil da \nhemácia). \n \n→ Ver também: [CARD: Hemoglobina Glicada — Interpretação] e [ "
+    },
+    {
+      "fileName": "Colesterol, HDL Alto e Triglicérides Baixo é saúde - Exames-Katia Haranaka-LrkNBKC5u9Y.pdf",
+      "title": "FISIOPATOLOGIA: Colesterol — Substrato Essencial para Integridade Celular e Síntese",
+      "type": "FISIOPATOLOGIA",
+      "name": "Colesterol — Substrato Essencial para Integridade Celular e Síntese",
+      "tags": [
+        "Colesterol",
+        "MembranasCelulares",
+        "SínteseHormonal",
+        "Mielina"
+      ],
+      "category": "Bioquímica/Lipídios",
+      "tldr": "Colesterol é substrato fundamental para membranas celulares,",
+      "rawText": "# FISIOPATOLOGIA: Colesterol — Substrato Essencial para Integridade Celular e Síntese \nHormonal \n \n**Tags:** #Colesterol #MembranasCelulares #SínteseHormonal #Mielina \n#SistemaImunológico \n**Categoria:** Bioquímica/Lipídios \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Colesterol é substrato fundamental para membranas celulares, \nmielina neuronal, hormônios esteroides, vitamina D3 e sais biliares — sua redução \nfarmacológica compromete função cerebral, cardíaca e muscular. \n \n### 易 Explicação Detalhada \n \n**O que é:** O colesterol é um lipídio esterol essencial produzido principalmente pelo fígado \n(80%) e tecidos especializados como adrenais, ovários, testículos e placenta. Não é \nderivado da gordura dietética, mas sintetizado endogenamente via acetil-CoA. \n \n**Mecanismo:**  \n1. **Estrutural:** Integra membranas celulares regulando fluidez e permeabilidade. Sem \ncolesterol adequado, as membranas perdem integridade funcional. \n2. **Neurológico:** Compõe a mielina que reveste axônios, essencial para condução neural \ne síntese de neurotransmissores. \n3. **Endócrino:** Precursor de todos hormônios esteroides (testosterona, progesterona, \ncortisol, aldosterona) via enzimas esteroidogênicas. \n4. **Metabólico:** Convertido em vitamina D3 na pele (via 7-desidrocolesterol) e em sais \nbiliares no fígado para emulsificação lipídica. \n5. **Imunológico:** Fundamental para 80% do sistema imune intestinal, modulando resposta \ninflamatória. \n \n**Por que importa:** Estatinas (inibidores HMG-CoA redutase) bloqueiam síntese endógena, \ncausando miopatias, declínio cognitivo e disfunção hormonal. Sintomas incluem perda de \npropriocepção espacial (\"bater em portas\"), hematomas espontâneos e fraqueza muscular \nprogressiva. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Monitorar colesterol total, frações LDL/HDL e especialmente triglicerídeos \n\n- Consumir precursores: gema de ovos caipiras, carnes grass-fed, peixes gordos \n- Exposição solar 15-20min diários para conversão D3 (10h-14h ideal) \n- Suporte hepático com crucíferas amargas (rúcula, agrião, almeirão) \n \n**O que evitar:** \n- Estatinas sem indicação absoluta (pós-IAM recente, LDL >190 + fatores múltiplos) \n- Demonização de gorduras saturadas naturais vs. processados industriais \n- Foco isolado em colesterol total ignorando perfil inflamatório \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Colesterol total <150mg/dL | Possível deficiência de síntese | Investigar causa, suporte \nnutricional | \n| Sintomas neurológicos em estatina | Depleção de colesterol cerebral | Considerar \nsuspensão, CoQ10 200mg/dia | \n| HDL persistentemente <40♂/<50♀ | Transporte reverso deficiente | Aumentar ômega-3, \nexercício, gorduras MCT | \n| LDL >130 + inflamação elevada | Sobrecarga hepática | Protocolo detox hepático, reduzir \nprocessados | \n \n**Timeline:** Normalização de síntese endógena em 6-8 semanas pós-suspensão de \nestatinas (se apropriado). \n \n→ Ver também: [CARD: Sistema de Transporte Lipoproteico - LDL, HDL e VLDL] "
+    },
+    {
+      "fileName": "Colesterol, HDL Alto e Triglicérides Baixo é saúde - Exames-Katia Haranaka-LrkNBKC5u9Y.pdf",
+      "title": "MECANISMO: Sistema de Transporte Lipoproteico — Dinâmica LDL, HDL e VLDL",
+      "type": "MECANISMO",
+      "name": "Sistema de Transporte Lipoproteico — Dinâmica LDL, HDL e VLDL",
+      "tags": [
+        "LDL",
+        "HDL",
+        "VLDL",
+        "TransporteLipídico",
+        "Lipoproteínas"
+      ],
+      "category": "Bioquímica/Transporte",
+      "tldr": "LDL transporta hormônios do fígado aos tecidos, HDL realiza",
+      "rawText": "# MECANISMO: Sistema de Transporte Lipoproteico — Dinâmica LDL, HDL e VLDL \n \n**Tags:** #LDL #HDL #VLDL #TransporteLipídico #Lipoproteínas \n**Categoria:** Bioquímica/Transporte \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** LDL transporta hormônios do fígado aos tecidos, HDL realiza \ntransporte reverso limpando \"restos hormonais\", VLDL carrega triglicerídeos — não existe \n\"colesterol bom/ruim\", apenas desequilíbrio funcional. \n \n### 易 Explicação Detalhada \n \n**O que é:** Lipoproteínas são \"veículos de transporte\" que solubilizam lipídios hidrofóbicos \nno plasma sanguíneo. Cada tipo tem função específica no metabolismo lipídico, não \npropriedades \"boas\" ou \"ruins\" inerentes. \n \n**Mecanismo:**  \n1. **LDL (Low-Density Lipoprotein):** Produzida no fígado, transporta colesterol e \nhormônios esteroides para tecidos periféricos. É o \"Uber que leva\" — essencial para \n\ndistribuição hormonal ao cérebro (função cognitiva), coração (contratilidade) e músculos \n(força). O coração é o maior consumidor de testosterona via LDL. \n \n2. **HDL (High-Density Lipoprotein):** Realiza transporte reverso, coletando colesterol \noxidado e \"restos hormonais\" dos tecidos de volta ao fígado. É o \"Uber que busca e \norganiza\" — essencial para limpeza celular e reciclagem. Meta: HDL ≥70mg/dL para \ntransporte reverso eficiente. \n \n3. **VLDL (Very Low-Density Lipoprotein):** Transporta triglicerídeos endógenos do fígado. \nElevação indica sobrecarga hepática por carboidratos refinados, não gorduras dietéticas. \n \n**Por que importa:** Razão LDL/HDL equilibrada (idealmente próxima a 1:1) indica sistema \nde transporte funcional. LDL elevado com HDL baixo sugere sobrecarga hepática e \nclearance deficiente, não necessariamente \"doença cardiovascular\". \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Interpretar perfil completo: LDL + HDL + triglicerídeos + inflamação (PCR-us) \n- Elevar HDL: abacate diário (3 colheres), coco, azeite extra-virgem legítimo \n- Otimizar clearance: exercício aeróbico intenso 15min (frequência máxima) \n- Suporte hepático: jejum intermitente, água em abundância, vegetais amargos \n \n**O que evitar:** \n- Interpretar LDL isoladamente como \"ruim\" \n- Estatinas baseadas apenas em LDL elevado, ignorando HDL e inflamação \n- Carboidratos refinados que elevam VLDL (pães, massas, doces) \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| LDL 80-100 + HDL 70+ | Sistema bal "
+    },
+    {
+      "fileName": "Hemograma, Deficiência de Complexo B e Anemia - Exames-Katia Haranaka-20skyXiPKs8.pdf",
+      "title": "MECANISMO: Proporção Medula Óssea-Intestino na Formação do Sangue",
+      "type": "MECANISMO",
+      "name": "Proporção Medula Óssea-Intestino na Formação do Sangue",
+      "tags": [
+        "MedulaOssea",
+        "Hematopoiese",
+        "SaudeIntestinal",
+        "DefesaImunologica"
+      ],
+      "category": "Fisiologia/Hematologia",
+      "tldr": "45% do sangue vem da medula óssea (produção autônoma), 55%",
+      "rawText": "# MECANISMO: Proporção Medula Óssea-Intestino na Formação do Sangue \n \n**Tags:** #MedulaOssea #Hematopoiese #SaudeIntestinal #DefesaImunologica \n**Categoria:** Fisiologia/Hematologia \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** 45% do sangue vem da medula óssea (produção autônoma), 55% \ndepende da absorção intestinal de nutrientes — explicando por que a saúde intestinal é \ncrucial para imunidade. \n \n### 易 Explicação Detalhada \n \n**O que é:** O sangue humano tem origem dupla: 45% produzido pela medula óssea de \nforma relativamente autônoma, e 55% dependente da qualidade dos nutrientes absorvidos \npelo trato gastrointestinal. \n \n**Mecanismo:**  \n1. **Medula óssea (45%):** Produção de células-tronco hematopoiéticas que se diferenciam \nem eritrócitos, leucócitos e plaquetas. Processo relativamente independente da dieta, \nmantendo produção basal mesmo com nutrição inadequada. \n \n2. **Intestino (55%):** Absorção de ferro, vitaminas do complexo B (especialmente B12, \nfolato), vitamina C, zinco e outros cofatores essenciais para síntese de hemoglobina, divisão \ncelular e maturação das células sanguíneas. \n \n3. **Integração funcional:** A medula óssea fornece o \"chassi\" celular, mas a qualidade final \n(hemoglobina adequada, função imune otimizada) depende dos nutrientes intestinais. \n \n**Por que importa:** Esta proporção explica por que pacientes com dietas restritivas podem \nmanter contagens normais de células, mas apresentar função inadequada. A defesa \nimunológica de alto nível (80% intestinal) supera a defesa básica (20% medular), tornando a \nsaúde digestiva fundamental para imunidade robusta. \n \n###  Aplicação Prática \n \n**O que fazer:** \n\n- Priorizar biodisponibilidade: consumir ferro heme (carnes) com vitamina C para maximizar \nabsorção \n- Manter microbiota saudável: fibras prebióticas + fermentados para otimizar absorção \nintestinal \n- Timing nutricional: ferro longe de cálcio/taninos, complexo B em jejum para melhor \ncaptação \n \n**O que evitar:** \n- Antiácidos crônicos — reduzem absorção de ferro e B12 \n- Excesso de fibras insolúveis com refeições — podem quelar minerais essenciais \n- Antibióticos desnecessários — destroem microbiota que sintetiza vitaminas do complexo B \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Hemograma normal + fadiga | Funcionalmente deficiente apesar de contagem adequada | \nInvestigar ferritina, B12, folato | \n| Infecções recorrentes + hemograma normal | 80% da defesa intestinal comprometida | \nFoco em reparação intestinal | \n| Anemia + contagem normal de hemácias | Deficiência funcional de hemoglobina | \nSuplementar cofatores (ferro + vitamina C) | \n \n**Timeline:** Melhora na qualidade sanguínea em 60-90 dias com correção nutricional \nadequada. \n \n→ Ver também: [CARD: MARCADOR — RDW como Indicador de Qualidade Celular] "
+    },
+    {
+      "fileName": "Hemograma, Deficiência de Complexo B e Anemia - Exames-Katia Haranaka-20skyXiPKs8.pdf",
+      "title": "BIOHACK: Hidratação Baseada em Contagem de Hemácias",
+      "type": "BIOHACK",
+      "name": "Hidratação Baseada em Contagem de Hemácias",
+      "tags": [
+        "Hidratacao",
+        "Hemacias",
+        "VolemiaOtima",
+        "TransporteOxigenio"
+      ],
+      "category": "Hidratação/Performance",
+      "tldr": "Calcular hidratação individual baseando-se na contagem de",
+      "rawText": "# BIOHACK: Hidratação Baseada em Contagem de Hemácias \n \n**Tags:** #Hidratacao #Hemacias #VolemiaOtima #TransporteOxigenio \n**Categoria:** Hidratação/Performance \n**Fonte Original:** Dra. Katia Haranaka \n \n> **Resumo (TL;DR):** Calcular hidratação individual baseando-se na contagem de \nhemácias: cada milhão de hemácias = 1L de água/dia, otimizando transporte de oxigênio e \nviscosidade sanguínea. \n \n### 易 Explicação Detalhada \n \n**O que é:** Método personalizado de hidratação que utiliza a contagem individual de \nhemácias (eritrócitos) do hemograma para determinar necessidade hídrica específica, \nsubstituindo fórmulas genéricas de peso corporal. \n \n**Mecanismo:**  \n\n1. **Base fisiológica:** Cada hemácia no sangue atua como \"veículo transportador\" em meio \naquoso. Maior densidade de hemácias requer maior volume de plasma para manter \nviscosidade adequada e velocidade de fluxo otimizada. \n \n2. **Transporte de oxigênio:** Com hidratação adequada proporcional às hemácias, o \nsangue mantém consistência ideal (\"lago transparente\" vs \"esgoto estagnado\"), permitindo \nque hemoglobinas carregadas de O₂ cheguem rapidamente aos tecidos periféricos. \n \n3. **Retorno venoso:** Sangue adequadamente diluído facilita o trabalho da \"bomba da \npanturrilha\" e retorno venoso contra gravidade, completando o ciclo cardiopulmonar \neficientemente. \n \n**Por que importa:** Hidratação insuficiente para a carga de hemácias causa \nhemoconcentração, aumentando viscosidade e reduzindo perfusão tecidual. Isso \ncompromete desde função cerebral até cicatrização de feridas. \n \n###  Aplicação Prática \n \n**O que fazer:** \n- Pegar contagem de hemácias do hemograma (ex: 4,7 milhões/μL) \n- Calcular: cada 1 milhão = 1L de água/dia (4,7 milhões = 4,7L/dia) \n- Distribuir: consumir até 16h para evitar noctúria \n- Protocolo: 400ml a cada hora das 6h às 16h (total: ~4,4L) \n \n**O que evitar:** \n- Beber grandes volumes de uma vez — sobrecarrega rins e dilui eletrólitos \n- Continuar ingestão após 19h — interfere com qualidade do sono \n- Usar apenas peso corporal como referência — ignora densidade sanguínea individual \n \n**Sinais de Alerta:** \n \n| Sinal | Interpretação | Ação | \n|-------|---------------|------| \n| Urina clara e frequente | Hidratação adequada | Manter protocolo | \n| Urina concentrada mesmo com ingestão adequada | Possível disfunção renal ou diabetes | \nInvestigar creatinina/glicemia | \n| Fadiga com hemograma normal | Hemoconcentração por desidratação crônica | Aumentar \ngradualmente ingestão hídrica | \n| Edema com ingestão alta | Retenção hídrica — problema cardiovascular ou renal | Reduzir \nvolume e investigar | \n \n**Timeline:** Melhora na energia e clareza mental em 7-14 dias de hidratação otimizada. \n \n→ Ver também: [CARD: MARCADOR — Creatinina como Filtro de Qualidade Renal] "
+    },
+    {
+      "fileName": "Hemograma, Deficiência de Complexo B e Anemia - Exames-Katia Haranaka-20skyXiPKs8.pdf",
+      "title": "MARCADOR: RDW como Indicador de Qualidade Celular e Status Vitamínico",
+      "type": "MARCADOR",
+      "name": "RDW como Indicador de Qualidade Celular e Status Vitamínico",
+      "tags": [
+        "RDW",
+        "ComplexoB",
+        "QualidadeCelular",
+        "Anemia",
+        "Vit"
+      ],
+      "category": "",
+      "tldr": "",
+      "rawText": "# MARCADOR: RDW como Indicador de Qualidade Celular e Status Vitamínico \n\n \n**Tags:** #RDW #ComplexoB #QualidadeCelular #Anemia #Vit "
+    }
+  ],
+  "index": {
+    "tireoide": [
+      0
+    ],
+    "tsh": [
+      0
+    ],
+    "t4": [
+      0,
+      1
+    ],
+    "t3livre": [
+      0,
+      1
+    ],
+    "t3reverso": [
+      0,
+      1
+    ],
+    "hipotireoidismo": [
+      0,
+      2,
+      4,
+      15
+    ],
+    "desiodinase": [
+      1
+    ],
+    "metabolismotireoidiano": [
+      1
+    ],
+    "ferritina": [
+      2,
+      4,
+      15,
+      16
+    ],
+    "altafluxomenstrual": [
+      2,
+      4
+    ],
+    "deficiênciaferro": [
+      2,
+      4
+    ],
+    "progesterona": [
+      2,
+      4
+    ],
+    "halógenos": [
+      3,
+      5
+    ],
+    "iodo": [
+      3,
+      5
+    ],
+    "flúor": [
+      3,
+      5
+    ],
+    "cloro": [
+      3,
+      5
+    ],
+    "bromo": [
+      3,
+      5
+    ],
+    "mecanismosimportador": [
+      3,
+      5
+    ],
+    "pcrultrasensível": [
+      6
+    ],
+    "inflamaçãovascular": [
+      6
+    ],
+    "riscocardiovascular": [
+      6
+    ],
+    "marcadores": [
+      6,
+      17
+    ],
+    "homocisteína": [
+      7
+    ],
+    "metilação": [
+      7
+    ],
+    "neuroproteçãocognitiva": [
+      7
+    ],
+    "vitaminasb": [
+      7
+    ],
+    "vitaminad3": [
+      8
+    ],
+    "tcm": [
+      8
+    ],
+    "cortisol": [
+      8
+    ],
+    "absorção": [
+      8
+    ],
+    "cronobiologia": [
+      8
+    ],
+    "polimorfismogenético": [
+      9
+    ],
+    "vitaminab12": [
+      9
+    ],
+    "mtrr": [
+      9
+    ],
+    "metilcobalamina": [
+      9
+    ],
+    "neuroproteção": [
+      9
+    ],
+    "cálcio": [
+      10
+    ],
+    "magnésio": [
+      10
+    ],
+    "hepatótoxicidade": [
+      11
+    ],
+    "álcool": [
+      11
+    ],
+    "hepatólise": [
+      11
+    ],
+    "enzimashepáticas": [
+      11,
+      12
+    ],
+    "fígadogorduroso": [
+      11
+    ],
+    "tgp": [
+      12
+    ],
+    "tgo": [
+      12
+    ],
+    "gamagt": [
+      12
+    ],
+    "valoresreferência": [
+      12,
+      19
+    ],
+    "fan": [
+      13
+    ],
+    "fatorantinuclear": [
+      13
+    ],
+    "autoimunidade": [
+      13
+    ],
+    "biomarcadorinflamatório": [
+      13
+    ],
+    "hiperpermeabilidadeintestinal": [
+      14
+    ],
+    "leakygut": [
+      14
+    ],
+    "segundocérebro": [
+      14
+    ],
+    "sistemaimune": [
+      14
+    ],
+    "ferro": [
+      15,
+      16
+    ],
+    "anemia": [
+      15,
+      16,
+      25
+    ],
+    "fluxomenstrual": [
+      15
+    ],
+    "reposiçãoendovenosa": [
+      16
+    ],
+    "tratamentourgente": [
+      16
+    ],
+    "creatinina": [
+      17
+    ],
+    "funçãorenal": [
+      17
+    ],
+    "hidratação": [
+      17,
+      18
+    ],
+    "avaliaçãofuncional": [
+      17
+    ],
+    "hemograma": [
+      18
+    ],
+    "hematócrito": [
+      18
+    ],
+    "volumecirculante": [
+      18
+    ],
+    "personalização": [
+      18
+    ],
+    "glicemiajejum": [
+      19
+    ],
+    "diabetes": [
+      19
+    ],
+    "interpretaçãoexames": [
+      19
+    ],
+    "produtosglicação": [
+      20
+    ],
+    "hemoglobinaglicada": [
+      20
+    ],
+    "proteinaglicose": [
+      20
+    ],
+    "inflamação": [
+      20
+    ],
+    "colesterol": [
+      21
+    ],
+    "membranascelulares": [
+      21
+    ],
+    "síntesehormonal": [
+      21
+    ],
+    "mielina": [
+      21
+    ],
+    "ldl": [
+      22
+    ],
+    "hdl": [
+      22
+    ],
+    "vldl": [
+      22
+    ],
+    "transportelipídico": [
+      22
+    ],
+    "lipoproteínas": [
+      22
+    ],
+    "medulaossea": [
+      23
+    ],
+    "hematopoiese": [
+      23
+    ],
+    "saudeintestinal": [
+      23
+    ],
+    "defesaimunologica": [
+      23
+    ],
+    "hidratacao": [
+      24
+    ],
+    "hemacias": [
+      24
+    ],
+    "volemiaotima": [
+      24
+    ],
+    "transporteoxigenio": [
+      24
+    ],
+    "rdw": [
+      25
+    ],
+    "complexob": [
+      25
+    ],
+    "qualidadecelular": [
+      25
+    ],
+    "vit": [
+      25
+    ]
+  },
+  "extractedAt": "2026-08-11T18:15:49.073Z"
+}
