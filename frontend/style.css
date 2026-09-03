@@ -3107,29 +3107,6 @@ button:disabled,
   background: transparent;
 }
 
-.btn-sync-opengym {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 40px;
-  padding: 8px 14px;
-  border: 1px solid var(--accent-orange-hover);
-  border-radius: var(--radius-field);
-  background: var(--accent-orange);
-  color: var(--command-ink);
-  font-family: var(--font-mono);
-  font-size: var(--type-sm);
-  font-weight: 650;
-  cursor: pointer;
-  transition: background-color var(--transition-smooth), opacity var(--transition-smooth);
-}
-
-.btn-sync-opengym:hover {
-  background: var(--accent-orange-hover);
-}
-
 .checkbox-label,
 .cb-pill-label {
   min-height: 40px;
@@ -3522,7 +3499,6 @@ li {
 .btn-secondary,
 .btn-view-doc,
 .btn-preset,
-.btn-sync-opengym,
 .card-link,
 .btn-text-orange,
 .browse-link,

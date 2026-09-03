@@ -1,4 +1,4 @@
-import type { Analysis, ClinicalDocument, Profile, Session, Settings, StructuredBiomarker, Weekday, WorkoutChecklist, WorkoutTaskCompletion } from "../types";
+import type { Analysis, BackofficePatient, BackofficePlanEditor, ClinicalDocument, Exercise, PlanContent, PlanRevision, Profile, Session, Settings, StructuredBiomarker, Weekday, WorkoutChecklist, WorkoutTaskCompletion } from "../types";
 
 export class ApiError extends Error {
   constructor(
@@ -29,12 +29,14 @@ const json = (body: unknown): RequestInit => ({
 
 export const api = {
   session: () => request<Session | null>("/api/auth/get-session"),
+  me: () => request<{ success: true; user: { id: string; name: string; email: string; role: "patient" | "professional" } }>("/api/me"),
   signIn: (email: string, password: string) => request("/api/auth/sign-in/email", json({ email, password })),
   signUp: (name: string, email: string, password: string) => request("/api/auth/sign-up/email", json({ name, email, password })),
   signOut: () => request("/api/auth/sign-out", { method: "POST" }),
   settings: () => request<{ success: true; settings: Settings }>("/api/settings"),
   saveSettings: (settings: Partial<Settings>) => request<{ success: true; message: string }>("/api/settings", json(settings)),
   profile: () => request<{ success: true; profile: Profile }>("/api/profile"),
+  exercises: (q: string) => request<{ success: true; exercises: Exercise[] }>(`/api/exercises?q=${encodeURIComponent(q)}`),
   saveProfile: (profile: Profile) => request<{ success: true; profile: Profile; message: string }>("/api/profile", json(profile)),
   documents: () => request<{ success: true; documents: ClinicalDocument[] }>("/api/documents"),
   analyses: () => request<{ success: true; analyses: Analysis[] }>("/api/analyses"),
@@ -42,6 +44,10 @@ export const api = {
   workoutChecklist: (analysisId: string, weekday: Weekday) => request<{ success: true; checklist: WorkoutChecklist }>(`/api/workout/checklist?analysisId=${encodeURIComponent(analysisId)}&weekday=${encodeURIComponent(weekday)}`),
   updateWorkoutTaskCompletion: (input: { analysisId: string; weekday: Weekday; taskKey: string; completed: boolean }) => request<{ success: true; completion: WorkoutTaskCompletion }>("/api/workout/checklist/completion", json(input)),
   saveAnnotations: (analysisId: string, annotations: string) => request<{ success: true; analysis: Analysis; message: string }>(`/api/analyses/${encodeURIComponent(analysisId)}/annotations`, json({ annotations })),
+  backofficePatients: () => request<{ success: true; patients: BackofficePatient[] }>("/api/backoffice/patients"),
+  backofficePlan: (patientId: string, analysisId: string) => request<{ success: true; editor: BackofficePlanEditor }>(`/api/backoffice/patients/${encodeURIComponent(patientId)}/analyses/${encodeURIComponent(analysisId)}/plan`),
+  saveBackofficeDraft: (patientId: string, analysisId: string, content: PlanContent) => request<{ success: true; revision: PlanRevision; message: string }>(`/api/backoffice/patients/${encodeURIComponent(patientId)}/analyses/${encodeURIComponent(analysisId)}/plan`, { ...json({ content }), method: "PUT" }),
+  publishBackofficePlan: (patientId: string, analysisId: string) => request<{ success: true; revision: PlanRevision; message: string }>(`/api/backoffice/patients/${encodeURIComponent(patientId)}/analyses/${encodeURIComponent(analysisId)}/plan/publish`, json({})),
   upload: async (file: File, docType: ClinicalDocument["type"]) => {
     const form = new FormData();
     form.append("pdf", file);

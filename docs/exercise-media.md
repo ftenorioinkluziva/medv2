@@ -1,12 +1,14 @@
 # Mídia dos exercícios
 
-O checklist usa o campo `gif` do catálogo local como mídia principal do exercício. Como o GIF é carregado em uma tag `<img>`, ele reproduz automaticamente sem depender de player ou integração com o OpenGym.
+O catálogo de exercícios e as mídias são persistidos no PostgreSQL do MedV2. A tabela `medv2_exercise` guarda os dados do exercício e `medv2_exercise_media` mantém a relação por exercício, tipo (`image` ou `animation`), nome original, MIME, hash, tamanho e conteúdo binário.
 
-- O clique na miniatura continua abrindo a visualização ampliada.
+O importador lê o módulo JavaScript `EXDB`, valida os registros com Zod e associa os arquivos JPG/GIF pelos campos `img`/`gif`. Os diretórios de origem são usados apenas durante a importação; não são necessários em runtime.
+
+- O checklist prioriza o GIF animado.
 - O controle `Pausar` troca o GIF pela imagem estática do mesmo exercício.
 - O controle `Reproduzir` restaura o GIF.
 - Se o GIF falhar, a interface tenta a imagem JPG correspondente.
-- Se nenhum dos dois assets carregar, o exercício permanece sem imagem.
-- As URLs-base podem ser substituídas por `EXERCISE_IMAGE_BASE_URL` e `EXERCISE_GIF_BASE_URL`, permitindo hospedar os arquivos sob controle do MedV2 no futuro.
+- Se nenhum asset existir ou carregar, o exercício permanece sem imagem.
+- As mídias são entregues por `GET /api/exercises/:exerciseId/media/:kind`.
 
-Não há consulta ao OpenGym em runtime e nenhum arquivo de mídia do OpenGym foi copiado para o repositório. A decisão evita aumentar o artefato com um pacote grande de imagens e GIFs enquanto os assets atuais continuam disponíveis; uma futura hospedagem própria deve preservar a associação pelo mesmo `exercise.id` e os nomes do catálogo.
+Exercícios personalizados podem ser cadastrados sem registros em `medv2_exercise_media` e, portanto, sem mídia por padrão.

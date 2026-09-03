@@ -11,8 +11,11 @@ import { DatabasePort } from "../src/core/ports/DatabasePort";
 import { ExerciseCatalogPort } from "../src/core/ports/ExerciseCatalogPort";
 import { JsonExerciseCatalogAdapter } from "../src/adapters/exercise/JsonExerciseCatalogAdapter";
 import { RuntimePort } from "../src/core/ports/RuntimePort";
-import { parseWorkoutDay, resolveExerciseName } from "../src/core/services/WorkoutChecklistParser";
+import { parseTrainingDay, parseWorkoutDay, resolveExerciseName } from "../src/core/services/WorkoutChecklistParser";
+import { TrainingPlanIntentSchema } from "../src/core/schemas/training-plan";
+import { ResolveTrainingPlanUseCase } from "../src/core/use-cases/ResolveTrainingPlanUseCase";
 import { GetWorkoutChecklistUseCase, UpdateWorkoutTaskCompletionUseCase } from "../src/core/use-cases/WorkoutChecklistUseCases";
+import { SearchExercisesUseCase } from "../src/core/use-cases/SearchExercisesUseCase";
 
 const weekdays = {
   "Segunda-feira": "### Treino A\n- **Supino com halteres**: 3 séries de 8 a 10 repetições\n- **Exercício que não existe**: 2 séries de 10 repetições",
@@ -80,7 +83,7 @@ class FakeDatabase implements DatabasePort {
 
 const catalog: ExerciseCatalogPort = {
   getExercises: async () => [catalogExercise],
-  getAssetUrl: () => null
+  getAssetUrl: (_exercise, kind) => `/api/exercises/0289/media/${kind}`
 };
 const runtime: RuntimePort = {
   now: () => new Date("2026-08-26T13:00:00.000Z"),
@@ -99,9 +102,74 @@ test("parser extracts exercise tasks and ignores rest metadata", () => {
   assert.equal(cardio.tasks[0].sourceExerciseName, "bicicleta de spinning");
 });
 
+test("normalizer converts the generated training text into editable fields", () => {
+  const parsed = parseTrainingDay(`### Treino B: Membros Inferiores (Ênfase em Proteção Articular)
+
+- **Aquecimento:** 5 min de elíptico + mobilidade de quadril e tornozelo.
+- **Leg Press 45°:** 4 séries de 10-12 repetições (controle a fase excêntrica, não estenda totalmente os joelhos no final).
+- **Descanso:** 60 a 90 segundos entre as séries.`, "Quarta-feira");
+  assert.equal(parsed.title, "Treino B: Membros Inferiores (Ênfase em Proteção Articular)");
+  assert.equal(parsed.items.length, 3);
+  assert.equal(parsed.items[0].kind, "warmup");
+  assert.equal(parsed.items[0].duration, "5 min");
+  assert.match(parsed.items[0].notes, /elíptico/);
+  assert.equal(parsed.items[1].kind, "exercise");
+  assert.equal(parsed.items[1].sets, 4);
+  assert.equal(parsed.items[1].reps, "10-12");
+  assert.match(parsed.items[1].notes, /fase excêntrica/);
+  assert.equal(parsed.items[2].kind, "rest");
+  assert.match(parsed.items[2].rest, /60 a 90 segundos/);
+});
+
 test("resolver returns only catalog exercises and never invents a fallback", () => {
   assert.equal(resolveExerciseName("Supino com halteres", [catalogExercise])?.id, "0289");
   assert.equal(resolveExerciseName("Exercício que não existe", [catalogExercise]), null);
+});
+
+test("generation resolver links structured intent to a canonical catalog id", async () => {
+  const restDay = { title: "Descanso", message: "", isRestDay: true, items: [] };
+  const intent = TrainingPlanIntentSchema.parse({
+    "Segunda-feira": {
+      title: "Treino A", message: "", isRestDay: false, items: [{
+        id: "segunda-feira-1", kind: "exercise", name: "Supino reto com halteres",
+        searchText: "Supino reto com halteres", aliases: ["dumbbell bench press"],
+        bodyPart: "chest", target: "pectorals", equipment: "dumbbell",
+        sets: 4, reps: "10-12", duration: "", rest: "90 s", notes: "", prescription: ""
+      }]
+    },
+    "Terça-feira": restDay,
+    "Quarta-feira": restDay,
+    "Quinta-feira": restDay,
+    "Sexta-feira": restDay,
+    "Sábado": restDay,
+    "Domingo": restDay
+  });
+  const resolved = await new ResolveTrainingPlanUseCase(catalog).execute({
+    trainingPlan: weekdays,
+    trainingPlanIntent: intent
+  });
+  assert.equal(resolved["Segunda-feira"].items[0]?.exerciseId, "0289");
+  assert.equal(resolved["Segunda-feira"].items[0]?.prescription, "4 séries de 10-12 repetições Descanso: 90 s");
+  assert.equal(resolved["Terça-feira"].items.length, 0);
+});
+
+test("generation resolver leaves ambiguous or unknown intent available for review", async () => {
+  const restDay = { title: "Descanso", message: "", isRestDay: true, items: [] };
+  const intent = TrainingPlanIntentSchema.parse(Object.fromEntries([
+    ["Segunda-feira", { title: "Treino", message: "", isRestDay: false, items: [{ kind: "exercise", name: "Exercício que não existe", searchText: "Exercício que não existe" }] }],
+    ...["Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"].map((day) => [day, restDay])
+  ]));
+  const resolved = await new ResolveTrainingPlanUseCase(catalog).execute({ trainingPlan: weekdays, trainingPlanIntent: intent });
+  assert.equal(resolved["Segunda-feira"].items[0]?.exerciseId, null);
+});
+
+test("exercise search accepts Portuguese aliases and catalog instructions", async () => {
+  const search = new SearchExercisesUseCase(catalog);
+  const portuguese = await search.execute({ q: "Supino Reto com Halteres" });
+  assert.equal(portuguese[0]?.id, "0289");
+  assert.equal(portuguese[0]?.namePt, "supino reto com halteres");
+  const instruction = await search.execute({ q: "Deite-se no banco" });
+  assert.equal(instruction[0]?.id, "0289");
 });
 
 test("catalog resolves only the same exercise media assets", () => {
@@ -146,8 +214,33 @@ test("checklist links matched tasks to catalog data and flags unknown tasks for 
   assert.equal(result.value.day.tasks[0].status, "completed");
   assert.equal(result.value.day.tasks[0].steps.length, 2);
   assert.equal(result.value.day.tasks[0].steps[0], "Deite-se no banco.");
+  assert.equal(result.value.day.tasks[0].imageUrl, "/api/exercises/0289/media/image");
+  assert.equal(result.value.day.tasks[0].animationUrl, "/api/exercises/0289/media/animation");
   assert.equal(result.value.day.tasks[1].exerciseId, null);
   assert.equal(result.value.day.tasks[1].status, "review");
+});
+
+test("checklist consumes structured training and uses stable item ids", async () => {
+  const structuredAnalysis = AnalysisSchema.parse({
+    ...analysis,
+    trainingPlanStructured: {
+      "Segunda-feira": { title: "Treino A", message: "", isRestDay: false, items: [{ id: "manual-press", kind: "exercise", name: "Supino com halteres", exerciseId: "0289", sets: 3, reps: "8-10", duration: "", rest: "90 s", notes: "", prescription: "3 séries de 8-10 repetições" }] },
+      "Terça-feira": { title: "Descanso", message: "", isRestDay: true, items: [] },
+      "Quarta-feira": { title: "Treino", message: "", isRestDay: false, items: [] },
+      "Quinta-feira": { title: "Treino", message: "", isRestDay: false, items: [] },
+      "Sexta-feira": { title: "Treino", message: "", isRestDay: false, items: [] },
+      "Sábado": { title: "Treino", message: "", isRestDay: false, items: [] },
+      "Domingo": { title: "Treino", message: "", isRestDay: false, items: [] }
+    }
+  });
+  const db = new FakeDatabase([structuredAnalysis]);
+  db.completions.push({ analysisId: analysis.id, weekday: "Segunda-feira", taskKey: `${analysis.id}:Segunda-feira:manual-press`, completed: true, completedAt: "2026-08-26T12:30:00.000Z" });
+  const result = await new GetWorkoutChecklistUseCase(db, catalog).execute("user-1", { analysisId: analysis.id, weekday: "Segunda-feira" });
+  assert.equal(result.ok, true);
+  if (result.ok) {
+    assert.equal(result.value.day.tasks[0].taskKey, "analysis-1:Segunda-feira:manual-press");
+    assert.equal(result.value.day.tasks[0].status, "completed");
+  }
 });
 
 test("completion update validates the task and persists only catalog-matched tasks", async () => {

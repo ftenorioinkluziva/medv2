@@ -1,4 +1,4 @@
-export type ViewId = "dashboard" | "labs" | "scores" | "profile" | "history";
+export type ViewId = "dashboard" | "labs" | "scores" | "profile" | "history" | "backoffice";
 export type DetailTab = "status" | "insights" | "supplements" | "nutrition" | "training";
 export type BiomarkerStatus = "normal" | "alto" | "baixo" | "alterado";
 export type Weekday = "Segunda-feira" | "Terça-feira" | "Quarta-feira" | "Quinta-feira" | "Sexta-feira" | "Sábado" | "Domingo";
@@ -53,11 +53,52 @@ export interface Analysis {
   supplementation: Supplement[];
   nutritionPlan: Record<Weekday, string | Meal[]>;
   trainingPlan: Record<Weekday, string>;
+  trainingPlanStructured?: TrainingPlan | null;
   deterministicAlerts: DeterministicAlert[];
   nutritionOrientation: string;
   trainingOrientation: string;
   createdAt: string;
   annotations?: string;
+}
+
+export type TrainingItemKind = "exercise" | "activity" | "warmup" | "mobility" | "rest";
+
+export interface TrainingItem {
+  id: string;
+  kind: TrainingItemKind;
+  name: string;
+  exerciseId: string | null;
+  sets: number | null;
+  reps: string;
+  duration: string;
+  rest: string;
+  notes: string;
+  prescription: string;
+}
+
+export interface TrainingDay {
+  title: string;
+  message: string;
+  isRestDay: boolean;
+  items: TrainingItem[];
+}
+
+export type TrainingPlan = Record<Weekday, TrainingDay>;
+
+export interface Exercise {
+  id: string;
+  n: string;
+  namePt?: string;
+  aliasesPt?: string[];
+  bp?: string;
+  tg?: string;
+  eq?: string;
+  img?: string;
+  gif?: string;
+  mg?: string;
+  sm?: string[];
+  st?: string[];
+  stPt?: string[];
 }
 
 export type WorkoutTaskStatus = "pending" | "completed" | "review";
@@ -211,6 +252,54 @@ export interface Profile {
 }
 
 export interface Session {
-  user?: { id?: string; name?: string; email?: string };
+  user?: { id?: string; name?: string; email?: string; role?: "patient" | "professional" };
   session?: { id?: string; expiresAt?: string };
+}
+
+export interface PlanContent {
+  supplementation: Supplement[];
+  nutritionPlan: Record<Weekday, string | Meal[]>;
+  trainingPlan: Record<Weekday, string>;
+  trainingPlanStructured?: TrainingPlan | null;
+  nutritionOrientation: string;
+  trainingOrientation: string;
+}
+
+export interface PlanRevision {
+  id: string;
+  patientId: string;
+  analysisId: string;
+  analysisVersion: number;
+  version: number;
+  status: "draft" | "published" | "archived";
+  source: "manual";
+  content: PlanContent;
+  createdBy: string;
+  publishedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+}
+
+export interface BackofficeAnalysis {
+  id: string;
+  date: string;
+  bloodTestFilename: string;
+  createdAt: string;
+}
+
+export interface BackofficePatient {
+  id: string;
+  name: string;
+  email: string;
+  analyses: BackofficeAnalysis[];
+}
+
+export interface BackofficePlanEditor {
+  patient: Omit<BackofficePatient, "analyses">;
+  analysis: BackofficeAnalysis;
+  generated: PlanContent;
+  published: PlanRevision | null;
+  draft: PlanRevision | null;
+  history: PlanRevision[];
 }

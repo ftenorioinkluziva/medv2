@@ -10,9 +10,8 @@ Transformar o MedV2 de uma aplicação local single-user em uma aplicação aute
 
 - Não existe autenticação, sessão ou usuário. Todas as rotas da API estão acessíveis sem login.
 - `JsonDatabaseAdapter` persiste estado global em `data/profile.json`, `data/settings.json`, `data/analyses.json` e `data/documents.json`.
-- `JsonHandoffGrantAdapter` persiste grants em `data/handoff-grants.json`.
 - PDFs são gravados em `uploads/<document-id>.pdf`; o caminho não é exposto diretamente.
-- As bases `*_kb.json` e `backend/data/exercises.json` são catálogo/base de conhecimento somente leitura e não devem migrar para tabelas de dados do usuário nesta etapa.
+- As bases `*_kb.json` permanecem como catálogo de conhecimento somente leitura; o catálogo de exercícios possui persistência própria, separada dos dados de usuário.
 - O Compose sobe somente `app`; não há serviço PostgreSQL nem `DATABASE_URL`.
 - A chave OpenRouter pode hoje ser gravada em `settings.json`; isso não deve continuar como segredo em texto puro por usuário.
 
@@ -43,7 +42,6 @@ Esses itens podem ser adicionados depois sem alterar o vínculo principal dos da
 - O runtime será migrado de CommonJS para ESM antes da integração do Better Auth. O `tsconfig.json` atual usa `module: commonjs`, enquanto a integração oficial do Better Auth com Express exige ESM.
 - A identidade autenticada será contexto privado criado pelo middleware. `userId` nunca será aceito do body, query string ou header controlado pelo cliente.
 - O isolamento terá duas camadas: repositories/use cases sempre filtram por `user_id`, e PostgreSQL terá Row-Level Security nas tabelas clínicas quando a conexão de aplicação estiver ativa.
-- A unidade de autorização do handoff será o `user_id` proprietário do grant, não o `subject` recebido pelo consumidor externo.
 - A chave OpenRouter será única e operacional, fornecida por `OPENROUTER_API_KEY`. A configuração por usuário fica fora da primeira versão e o campo atual será removido do contrato persistente.
 - O PostgreSQL será a fonte de verdade após a migração. O adapter JSON será usado somente pelo importador e por fixtures de testes, nunca como fallback silencioso de produção.
 - A transação do PostgreSQL não será apresentada como transação do PDF. A consistência entre banco e volume será tratada por protocolo de staging, rename, status e reconciliação.
@@ -64,24 +62,22 @@ Usar as tabelas oficiais geradas pelo Better Auth: `user`, `session`, `account` 
 | `medv2_document_blob` | Hash SHA-256, tamanho, MIME, chave física, estado do arquivo e timestamps | Obrigatória 1:1 com documento; manter PDF no volume privado, não em `bytea`; estados `staged`, `available`, `missing`, `quarantined` |
 | `medv2_analysis` | Análise imutável e versionada: status de saúde, orientações, planos, alertas e payload estruturado | FK `user_id` e `document_id`; `version`, `status`, `schema_version`, `input_fingerprint`, `model`, `lens`, `payload jsonb`; índice por usuário/data/status; `created_at` imutável |
 | `medv2_analysis_annotation` | Anotações editáveis da análise | FK `analysis_id` e `user_id`; uma anotação atual por análise na primeira versão; `updated_at`; validar que análise pertence ao mesmo usuário |
-| `medv2_handoff_grant` | `contract_id`, subject, criação, expiração, último acesso e estado do handoff OpenGym | FK `user_id`; `contract_id` UNIQUE; índice de expiração; estados `active`, `expired`, `revoked`; grant expirado/revogado não autoriza leitura |
 | `medv2_operation` | Idempotência e estado de operações de upload/processamento | UNIQUE `(user_id, idempotency_key)`; fingerprint da entrada, estado, resultado, tentativa, lease e erro terminal |
 | `medv2_migration_issue` | Pendências de importação, vínculos ambíguos, órfãos e falhas de validação | Não bloquear a importação de outros registros; cada item deve ter origem, motivo, status e resolução |
-| `medv2_audit_event` | Auditoria mínima de login, logout, criação/alteração de perfil, upload, processamento, leitura de PDF e handoff | `user_id` nullable para eventos pré-login; guardar ação, recurso, resultado, request id e timestamp; nunca guardar PDF, prompt, resposta LLM, token ou segredo |
+| `medv2_audit_event` | Auditoria mínima de login, logout, criação/alteração de perfil, upload, processamento e leitura de PDF | `user_id` nullable para eventos pré-login; guardar ação, recurso, resultado, request id e timestamp; nunca guardar PDF, prompt, resposta LLM, token ou segredo |
 
 ### Dados que permanecem fora do PostgreSQL
 
 - PDFs: volume privado `medv2_uploads`, referenciado por `medv2_document`.
 - Bases clínicas compiladas: `data/katia_haranaka_kb.json`, `data/guilherme_freccia_kb.json` e `data/nutricao_kb.json`.
-- Catálogo de exercícios: `backend/data/exercises.json`.
-- Segredos operacionais: `.env`/secret manager (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `OPENROUTER_API_KEY`, `MEDV0_*`).
+- Catálogo de exercícios: `medv2_exercise` e `medv2_exercise_media`, preenchidos pelo importador do snapshot local.
+- Segredos operacionais: `.env`/secret manager (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `OPENROUTER_API_KEY`).
 
 ### Constraints e ownership
 
 - Todas as tabelas clínicas têm `user_id NOT NULL`, exceto eventos explicitamente pré-login.
 - `medv2_analysis.document_id` deve apontar para documento do mesmo `user_id`; usar constraint composta ou validação transacional equivalente.
 - `medv2_analysis_annotation` só pode apontar para análise do mesmo usuário.
-- `medv2_handoff_grant` só pode ser consumido para o proprietário registrado no grant.
 - RLS deve negar acesso por padrão e ser exercitada em testes com dois usuários.
 
 ## Contratos operacionais
@@ -98,8 +94,6 @@ Cada operação deve possuir schema de input/output e erros estáveis no core ou
 | `update_settings` | modelos/lente, sem chave secreta | `userId`, configuração operacional | substituição validada; não persiste segredo | próprio usuário |
 | `upload_document` | PDF, `docType`, `Idempotency-Key` | `userId`, parser, LLM, storage, request id | operação reconciliável; status persistido | próprio usuário |
 | `update_analysis_annotations` | analysis ID, texto | `userId`, request id | escrita reversível; update por recurso | análise do próprio usuário |
-| `create_handoff` | consentimento explícito | `userId`, assinatura, clock | escrita externa/autorização; `contractId` único; não repetir sem reconciliação | próprio usuário e consentimento `true` |
-| `get_workout_contract` | contract ID e subject do contrato | token de serviço, grant, request id | leitura sensível; sem retry de autorização | token válido + grant ativo + ownership do grant |
 
 Erros devem usar a taxonomia existente (`validation`, `authorization`, `conflict`, `rate_limit`, `upstream`, `internal`) com `code`, `retryable`, `hint` e campos inválidos quando aplicável.
 
@@ -122,14 +116,6 @@ Erros devem usar a taxonomia existente (`validation`, `authorization`, `conflict
 - `GET /api/analyses/:id`
 - `POST /api/analyses/:id/annotations`
 - `POST /api/upload-document`
-- `POST /api/integrations/opengym/handoff`
-
-### Proteção específica do handoff
-
-`GET /api/integrations/opengym/workout/contract` continua exigindo o token de serviço e o grant válido, mas o grant também deve estar ligado ao `user_id` que o criou. Não confiar no `subject` recebido para descobrir ou trocar de usuário.
-
-O endpoint externo não exige sessão de navegador, porque o OpenGym usa token de serviço. O adapter deve resolver o proprietário pelo `contract_id` e autorizar a leitura dentro desse grant; não deve tentar obter `user_id` a partir de header público.
-
 `GET /api/exercises` e o acesso às bases de conhecimento podem permanecer públicos somente se forem realmente considerados catálogo não sensível; a implementação deve evitar que qualquer contexto clínico seja retornado junto.
 
 ## Arquitetura de implementação
@@ -201,9 +187,8 @@ O processamento deve ser síncrono somente enquanto os smoke tests demonstrarem 
 5. Calcular correspondência de análise por `originalName + date` somente como tentativa; nunca usar nome como chave definitiva.
 6. Preservar análises sem correspondência com `document_id = NULL` e registrar `medv2_migration_issue`.
 7. Registrar como pendência toda duplicidade, arquivo ausente, documento sem análise e análise com documento ambíguo.
-8. Inserir grants ainda válidos com o `user_id` do usuário de migração; grants expirados devem ser importados como `expired` ou omitidos com contagem registrada.
-9. Validar contagens, IDs, hashes, arquivos físicos, ownership e leitura pela API autenticada.
-10. Resolver pendências e só então tornar vínculos obrigatórios e alterar o composition root para PostgreSQL.
+8. Validar contagens, IDs, hashes, arquivos físicos, ownership e leitura pela API autenticada.
+9. Resolver pendências e só então tornar vínculos obrigatórios e alterar o composition root para PostgreSQL.
 
 O importador deve ser executável novamente sem duplicar registros e sem apagar os JSON originais.
 
@@ -213,7 +198,7 @@ O importador deve ser executável novamente sem duplicar registros e sem apagar 
 - Sem sessão, rotas clínicas respondem `401` com erro estruturado.
 - Login, logout e sessão sobrevivem à reinicialização do container.
 - PostgreSQL e aplicação sobem em conjunto em um checkout limpo.
-- `profile`, `settings`, documentos, análises, anotações e grants sobrevivem a `docker compose restart`.
+- `profile`, `settings`, documentos e análises sobrevivem a `docker compose restart`.
 - Processamento falho não deixa documento órfão nem análise sem documento.
 - Falhas entre volume e banco são reconciliáveis e não são apresentadas como transação atômica.
 - Repetir o upload com a mesma chave não chama a LLM nem cria nova análise.
@@ -234,16 +219,14 @@ O importador deve ser executável novamente sem duplicar registros e sem apagar 
 4. Better Auth + tela/fluxo de login + middleware de sessão + cookies/CORS.
 5. Protocolo arquivo–banco, `medv2_operation` e idempotência.
 6. Migração dos JSON com relatório de reconciliação.
-7. Upload/processamento e grants de handoff com ownership.
-8. Testes de isolamento, restart, migração, secrets, reconciliação e smoke end-to-end.
-9. Remoção do adapter JSON do runtime e atualização do README/arquitetura.
+7. Testes de isolamento, restart, migração, secrets, reconciliação e smoke end-to-end.
+8. Remoção do adapter JSON do runtime e atualização do README/arquitetura.
 
 ## Decisões adotadas na implementação inicial
 
 - Login por e-mail e senha com Better Auth; OAuth fica fora do primeiro incremento.
 - A chave OpenRouter permanece somente no ambiente do serviço (`OPENROUTER_API_KEY`); não é persistida por usuário.
 - O primeiro usuário é criado por `npm run db:bootstrap`, sem usuário padrão embutido na imagem.
-- O contrato OpenGym atual `medv0-opengym-workout/v1` foi preservado, mas sua leitura agora resolve o proprietário do handoff e aplica o isolamento correspondente.
 - O runtime usa PostgreSQL como fonte de verdade; o adapter JSON permanece apenas como compatibilidade de migração/testes e não é usado pela composição principal.
 
 ## Evoluções pós-MVP

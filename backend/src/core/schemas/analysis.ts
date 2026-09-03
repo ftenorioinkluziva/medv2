@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { BiomarkerItemSchema } from "./biomarkers";
+import { TrainingPlanIntentSchema, TrainingPlanSchema } from "./training-plan";
 
 export const SupplementationItemSchema = z.object({
   name: z.string(),
@@ -32,7 +33,7 @@ export const WeekdaysNutritionSchema = z.object({
   "Domingo": DayNutritionSchema
 });
 
-const WeekdaysSchema = z.object({
+export const WeekdaysSchema = z.object({
   "Segunda-feira": z.string().default(""),
   "Terça-feira": z.string().default(""),
   "Quarta-feira": z.string().default(""),
@@ -41,6 +42,15 @@ const WeekdaysSchema = z.object({
   "Sábado": z.string().default(""),
   "Domingo": z.string().default("")
 });
+
+export const PlanContentSchema = z.object({
+  supplementation: z.array(SupplementationItemSchema),
+  nutritionPlan: WeekdaysNutritionSchema,
+  trainingPlan: WeekdaysSchema,
+  trainingPlanStructured: TrainingPlanSchema.optional().nullable(),
+  nutritionOrientation: z.string(),
+  trainingOrientation: z.string()
+}).strict();
 
 export const DeterministicAlertSchema = z.object({
   biomarker: z.string(),
@@ -58,6 +68,7 @@ export const AnalysisLLMResponseSchema = z.object({
   supplementation: z.array(SupplementationItemSchema).default([]),
   nutritionPlan: WeekdaysNutritionSchema,
   trainingPlan: WeekdaysSchema,
+  trainingPlanIntent: TrainingPlanIntentSchema.optional().nullable(),
   nutritionOrientation: z.string().default(""),
   trainingOrientation: z.string().default("")
 });
@@ -71,6 +82,7 @@ export const AnalysisSchema = z.object({
   supplementation: z.array(SupplementationItemSchema).default([]),
   nutritionPlan: WeekdaysNutritionSchema,
   trainingPlan: WeekdaysSchema,
+  trainingPlanStructured: TrainingPlanSchema.optional().nullable(),
   deterministicAlerts: z.array(DeterministicAlertSchema).default([]),
   nutritionOrientation: z.string().default(""),
   trainingOrientation: z.string().default(""),
@@ -82,4 +94,4 @@ export type SupplementationItem = z.infer<typeof SupplementationItemSchema>;
 export type AnalysisLLMResponse = z.infer<typeof AnalysisLLMResponseSchema>;
 export type DeterministicAlert = z.infer<typeof DeterministicAlertSchema>;
 export type Analysis = z.infer<typeof AnalysisSchema>;
-
+export type PlanContent = z.infer<typeof PlanContentSchema>;

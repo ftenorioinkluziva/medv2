@@ -33,6 +33,11 @@ export const WorkoutChecklistQuerySchema = z.object({
 
 export type WorkoutChecklistQuery = z.infer<typeof WorkoutChecklistQuerySchema>;
 
+const ExerciseMediaUrlSchema = z.union([
+  z.string().url(),
+  z.string().regex(/^\/api\/exercises\/[^/?#]+\/media\/(?:image|animation)$/)
+]);
+
 export const WorkoutTaskCompletionUpdateSchema = z.object({
   analysisId: z.string().trim().min(1).max(200),
   weekday: WeekdaySchema,
@@ -51,8 +56,8 @@ export const WorkoutChecklistTaskSchema = z.object({
   exerciseName: z.string().trim().min(1).max(200).nullable(),
   bodyPart: z.string().trim().max(100).nullable(),
   target: z.string().trim().max(100).nullable(),
-  imageUrl: z.string().url().nullable(),
-  animationUrl: z.string().url().nullable(),
+  imageUrl: ExerciseMediaUrlSchema.nullable(),
+  animationUrl: ExerciseMediaUrlSchema.nullable(),
   steps: z.array(z.string().trim().min(1).max(1000)).max(20),
   prescription: z.string().trim().max(2000),
   status: WorkoutTaskStatusSchema,

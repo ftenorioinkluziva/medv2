@@ -52,7 +52,6 @@ O sucesso da experiência do usuário é medido pela capacidade de responder ins
 2. **Determinismo Clínico antes de IA**: Cálculos e faixas de referência críticas (como triglicerídeos/HDL, HOMA-IR, risco cardiovascular) são avaliados primeiro por algoritmos determinísticos puros (`DeterministicRulesService`), não dependendo de alucinação do modelo.
 3. **Preservação de Evidência Dupla**: O JSON original completo da análise é preservado para rastreabilidade histórica, enquanto os biomarcadores individuais são estruturados relacionalmente em tabelas normalizadas para consultas e gráficos.
 4. **Isolamento e Privacidade Local**: O software opera localmente por padrão. Dados de exames e PDFs nunca são enviados a serviços terceiros não autorizados. Apenas o texto extraído necessário é enviado ao provedor LLM via OpenRouter.
-5. **Consentimento Explícito para Handoff**: A exportação de dados para ecossistemas parceiros (como o contrato de treino OpenGym `medv0-opengym-workout/v1`) requer consentimento explícito, gerando um token de uso único (grant) temporário (5 minutos).
 
 ---
 
@@ -84,7 +83,6 @@ A arquitetura garante desacoplamento total entre o domínio e a infraestrutura e
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        ADAPTADORES DE ENTRADA                          │
 │   [ SPA React (Vite) ]  ──►  [ Express HTTP Adapter (server.ts) ]      │
-│   [ OpenGym API Client] ──►  [ Auth & RLS Context Middleware ]         │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼ (invoca com DTOs validados)
@@ -94,8 +92,7 @@ A arquitetura garante desacoplamento total entre o domínio e a infraestrutura e
 │   ┌────────────────────────────────────────────────────────────────┐   │
 │   │                      Casos de Uso (Use Cases)                  │   │
 │   │  • ProcessDocumentUseCase     • GenerateAnalysisUseCase        │   │
-│   │  • SaveProfileUseCase         • CreateHandoffUseCase           │   │
-│   │  • UpdateSettingsUseCase      • MapWorkoutContractUseCase      │   │
+│   │  • SaveProfileUseCase         • UpdateSettingsUseCase           │   │
 │   │  • CrudUseCases (GetAnalyses, History, Settings, Biomarkers)   │   │
 │   └───────────────────────────────┬────────────────────────────────┘   │
 │                                   │                                    │
@@ -108,7 +105,7 @@ A arquitetura garante desacoplamento total entre o domínio e a infraestrutura e
 │   ┌───────────────────────────────▼────────────────────────────────┐   │
 │   │                     Portas (Interfaces/Ports)                  │   │
 │   │  DatabasePort, FileStoragePort, LLMServicePort, PDFParserPort, │   │
-│   │  HandoffPort, KnowledgeBasePort, ExerciseCatalogPort, Runtime  │   │
+│   │  KnowledgeBasePort, ExerciseCatalogPort, Runtime                │   │
 │   └───────────────────────────────┬────────────────────────────────┘   │
 └───────────────────────────────────┼────────────────────────────────────┘
                                     │
@@ -119,8 +116,7 @@ A arquitetura garante desacoplamento total entre o domínio e a infraestrutura e
 │   • LocalFileStorageAdapter (Staging + SHA-256 + Atomic Rename)        │
 │   • OpenRouterAdapter (Classificação de Erros & Retries)               │
 │   • PdfParseAdapter (Extração de texto local)                          │
-│   • PostgresHandoffGrantAdapter / HmacHandoffTokenAdapter              │
-│   • JsonExerciseCatalogAdapter & JsonKnowledgeBaseAdapter              │
+│   • PostgresExerciseCatalogAdapter & JsonKnowledgeBaseAdapter           │
 │   • SystemRuntimeAdapter (IDs UUID & Clock Determinístico)             │
 └────────────────────────────────────────────────────────────────────────┘
 ```
@@ -157,8 +153,6 @@ O sistema carrega configurações do arquivo `.env` na raiz do projeto. Nenhuma 
 | `BETTER_AUTH_URL` | **Sim** | `http://127.0.0.1:3000` | URL base confiável da aplicação web para validação de origem e cookies. |
 | `BETTER_AUTH_URL_DOCKER` | Docker | `http://127.0.0.1:3011` | URL base quando executado via Docker Compose local. |
 | `OPENROUTER_API_KEY` | Opcional | `sk-or-v1-...` | Chave de fallback para a API da OpenRouter (caso não fornecida na UI). |
-| `MEDV0_HANDOFF_SECRET` | **Sim** (p/ Handoff) | `segredo-hmac-min-32-chars` | Chave secreta HMAC para assinatura dos tokens curtos de autorização OpenGym. |
-| `MEDV0_SERVICE_TOKEN` | **Sim** (p/ Handoff) | `token-privado-servico-opengym` | Token estático do consumidor externo autorizado a ler contratos de treino. |
 | `MEDV2_DOCKER_PORT` | Docker | `3011` | Porta mapeada no host para a aplicação no Docker Compose. |
 | `MEDV2_POSTGRES_PORT` | Docker | `5437` | Porta mapeada no host para o PostgreSQL do Docker Compose. |
 
@@ -189,17 +183,17 @@ O PostgreSQL é a fonte da verdade relacional. Todas as tabelas de domínio poss
                                                                 │ documentId (PK), sha256   │
                                                                 └───────────────────────────┘
               ┌───────────────────────────────┬───────────────────────────────┐
-              │1                              │*                              │*
-┌─────────────┴─────────────┐   ┌─────────────┴─────────────┐   ┌─────────────┴─────────────┐
-│      medv2_analysis       │   │    medv2_handoff_grant    │   │      medv2_operation      │
-│ id, version (PK), payload ├─┐ │ contractId (PK, UUID)     │   │ userId, idempotencyKey(PK)│
-└─────────────┬─────────────┘ │ │ userId, subject, expiresAt │   └───────────────────────────┘
-              │1              │ └───────────────────────────┘
-┌─────────────┴─────────────┐ │
-│ medv2_analysis_annotation │ │
-│ analysisId, version (PK)  │ │
-└───────────────────────────┘ │
-                              │*
+              │1                              │*
+┌─────────────┴─────────────┐   ┌─────────────┴─────────────┐
+│      medv2_analysis       │   │      medv2_operation      │
+│ id, version (PK), payload │   │ userId, idempotencyKey(PK)│
+└─────────────┬─────────────┘   └───────────────────────────┘
+              │1
+┌─────────────┴─────────────┐
+│ medv2_analysis_annotation │
+│ analysisId, version (PK)  │
+└───────────────────────────┘
+              │*
 ┌─────────────────────────────┴─────────────────────────────┐
 │                 medv2_analysis_biomarker                  │
 │ analysisId, analysisVersion, biomarkerId (PK, FK)         │
@@ -228,8 +222,8 @@ O PostgreSQL é a fonte da verdade relacional. Todas as tabelas de domínio poss
 6. **`medv2_biomarker_definition`**: Dicionário canônico de biomarcadores (código único, aliases em JSONB, unidade padrão).
 7. **`medv2_reference_range`**: Faixas de referência auditadas por faixa etária e sexo biológico.
 8. **`medv2_analysis_biomarker`**: Tabela desnormalizada e tipada para indexação e consultas rápidas de evolução temporal.
-9. **`medv2_handoff_grant`**: Permissões concedidas a consumidores externos (OpenGym) com TTL rigoroso.
-10. **`medv2_operation`**: Controle transacional de idempotência e locks otimistas (`leaseUntil`).
+9. **`medv2_operation`**: Controle transacional de idempotência e locks otimistas (`leaseUntil`).
+10. **`medv2_exercise` & `medv2_exercise_media`**: Catálogo global de exercícios e mídias JPG/GIF armazenadas no PostgreSQL.
 11. **`medv2_audit_event` & `medv2_migration_issue`**: Trilha de auditoria e registro de inconsistências em migrações.
 
 ---
@@ -329,7 +323,7 @@ O sistema não propaga exceções descontroladas para o cliente. Toda falha de n
 ```typescript
 export type OperationCategory =
   | "validation"      // HTTP 400 - Entrada inválida contra schema Zod
-  | "authorization"   // HTTP 403 / 401 - Falha de sessão ou grant expirado
+  | "authorization"   // HTTP 403 / 401 - Falha de sessão
   | "conflict"        // HTTP 409 - Conflito de versão ou idempotência
   | "rate_limit"      // HTTP 429 - Limite de requisições excedido no upstream
   | "upstream"        // HTTP 502 - Falha de rede/resposta na OpenRouter
@@ -393,7 +387,6 @@ Para manter a integridade arquitetural e a segurança clínica, as seguintes aç
 6. 🚫 **PROIBIDO** alterar o bind de escuta padrão do servidor para interfaces não-loopback (`0.0.0.0`) fora do ambiente Docker explicitamente autorizado por `MEDV2_CONTAINER=true`.
 7. 🚫 **PROIBIDO** incluir dados sensíveis do paciente (PHI), textos completos de exames ou chaves privadas nos logs do servidor.
 8. 🚫 **PROIBIDO** permitir acesso a rotas de domínio clínico sem validação de sessão ativa do Better Auth ou sem aplicar o filtro de usuário no PostgreSQL via RLS (`app.user_id`).
-9. 🚫 **PROIBIDO** conceder dados para consumidores do Handoff (OpenGym) sem grant persistido, válido e não expirado.
 
 ### Proibições de Design e UI
 10. 🚫 **PROIBIDO** usar gradientes decorativos, texto em gradiente ou efeitos de glassmorphism.
@@ -416,3 +409,4 @@ Para manter a integridade arquitetural e a segurança clínica, as seguintes aç
 | `npm run db:reset-password` | Redefine a senha de um usuário local com invalidação de sessões. |
 | `npm run db:backfill-biomarkers` | Popula as tabelas relacionais de biomarcadores a partir do histórico de análises. |
 | `npm run db:import-json` | Importa dados e históricos legados em formato JSON para o banco PostgreSQL. |
+| `npm run db:import-exercises` | Importa o módulo `EXDB`, instruções localizadas e mídias JPG/GIF para o catálogo PostgreSQL. |

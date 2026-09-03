@@ -8,6 +8,7 @@ import { Labs } from "./features/Labs";
 import { ProfileForm } from "./features/ProfileForm";
 import { Scores } from "./features/Scores";
 import { SettingsDialog } from "./features/SettingsDialog";
+import { Backoffice } from "./features/Backoffice";
 import { ApiError, api } from "./lib/api";
 import type { Analysis, ClinicalDocument, DetailTab, Profile, Session, Settings, StructuredBiomarker, ViewId } from "./types";
 
@@ -59,9 +60,15 @@ export default function App() {
     setLoading(true);
     try {
       const next = await api.session();
-      setSession(next?.user ? next : null);
-      if (next?.user) await loadClinicalData();
-      else setLoading(false);
+      if (next?.user) {
+        const identity = await api.me();
+        const sessionWithRole = { ...next, user: { ...next.user, ...identity.user } };
+        setSession(sessionWithRole);
+        await loadClinicalData();
+      } else {
+        setSession(null);
+        setLoading(false);
+      }
     } catch {
       setSession(null);
       setLoading(false);
@@ -121,9 +128,10 @@ export default function App() {
 
   if (session === undefined) return <div className="boot-screen"><div><span>// MedV2</span><Skeleton rows={3} /></div></div>;
   if (!session) return <AuthScreen onAuthenticated={refreshSession} />;
+  const professional = session.user?.role === "professional";
 
   return <>
-    <AppShell view={view} onView={setView} profile={profile} analyses={analyses} activeAnalysisId={activeAnalysisId} onAnalysis={selectAnalysis} settings={settings} loading={loading} onSettings={() => setSettingsOpen(true)} onLogout={logout}>
+    <AppShell view={view} onView={setView} profile={profile} analyses={analyses} activeAnalysisId={activeAnalysisId} onAnalysis={selectAnalysis} settings={settings} loading={loading} onSettings={() => setSettingsOpen(true)} onLogout={logout} professional={professional}>
       {error ? <Notice tone="danger"><div><strong>Não foi possível carregar o MedV2</strong><span>{error}</span></div><button type="button" className="button small" onClick={loadClinicalData}>Tentar novamente</button></Notice> : null}
       {loading ? <Skeleton rows={8} /> : null}
       {!loading && !error && view === "dashboard" ? <Dashboard profile={profile} analysis={activeAnalysis} documents={documents} settings={settings} detailTab={detailTab} onDetailTab={tab => { setDetailTab(tab); document.querySelector(".analysis-detail")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} onView={setView} onUpload={upload} uploadBusy={uploadBusy} /> : null}
@@ -131,6 +139,7 @@ export default function App() {
       {!loading && !error && view === "scores" ? <Scores analysis={activeAnalysis} profile={profile} /> : null}
       {!loading && !error && view === "profile" && profile ? <ProfileForm profile={profile} onSave={saveProfile} busy={profileBusy} /> : null}
       {!loading && !error && view === "history" ? <History analyses={analyses} documents={documents} onAnalysis={selectAnalysis} /> : null}
+      {!loading && !error && view === "backoffice" && professional ? <Backoffice /> : null}
     </AppShell>
     <SettingsDialog open={settingsOpen} settings={settings} onClose={() => setSettingsOpen(false)} onSaved={setSettings} notify={notify} />
     {toast ? <div className={`toast ${toast.tone}`} role="status">{toast.message}</div> : null}

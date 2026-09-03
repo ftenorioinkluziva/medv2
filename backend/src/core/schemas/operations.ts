@@ -22,17 +22,14 @@ export const ExerciseQuerySchema = z.object({
   target: z.string().trim().max(100).optional()
 }).strict();
 
-export const HandoffRequestSchema = z.object({
-  consent: z.literal(true)
-}).strict();
-
-export const WorkoutContractRequestSchema = z.object({
-  subject: z.string().trim().min(1).max(200),
-  contractId: z.string().uuid()
-});
-
 export const ResourceIdSchema = z.string().trim().min(1).max(200);
+
+export const ExerciseMediaRequestSchema = z.object({
+  exerciseId: ResourceIdSchema,
+  kind: z.enum(["image", "animation"])
+}).strict();
 
 export type SettingsUpdate = z.infer<typeof SettingsUpdateSchema>;
 export type ExerciseQuery = z.infer<typeof ExerciseQuerySchema>;
 export type DocumentType = z.infer<typeof DocumentTypeSchema>;
+export type ExerciseMediaRequest = z.infer<typeof ExerciseMediaRequestSchema>;

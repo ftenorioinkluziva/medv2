@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import pg from "pg";
 import { DatabasePort } from "../../core/ports/DatabasePort";
 import { AnalysisConfiguration, AnalysisConfigurationPort, OpenRouterCredentialPort } from "../../core/ports/ConfigurationPort";
-import { Analysis, AnalysisSchema } from "../../core/schemas/analysis";
+import { Analysis, AnalysisSchema, PlanContentSchema } from "../../core/schemas/analysis";
 import { Document, DocumentSchema } from "../../core/schemas/document";
 import { Profile, ProfileSchema } from "../../core/schemas/profile";
 import { Settings, SettingsSchema } from "../../core/schemas/settings";
@@ -29,6 +29,7 @@ export class PostgresDatabaseAdapter implements DatabasePort, AnalysisConfigurat
     try {
       await client.query("BEGIN");
       await client.query("SELECT set_config('app.user_id', $1, true)", [userId]);
+      await client.query("SELECT set_config('app.user_role', COALESCE((SELECT role FROM \"user\" WHERE id = $1), 'patient'), true)", [userId]);
       const result = await client.query<T>(text, values);
       await client.query("COMMIT");
       return result;
@@ -83,11 +84,23 @@ export class PostgresDatabaseAdapter implements DatabasePort, AnalysisConfigurat
   async getAnalyses(userId: string): Promise<Analysis[]> {
     try {
       const result = await this.queryAsUser(userId, `
-        SELECT payload, "createdAt" FROM medv2_analysis
-        WHERE "userId" = $1 AND status = 'completed'
+        SELECT a.payload, a."createdAt", published.payload AS "planPayload"
+        FROM medv2_analysis a
+        LEFT JOIN LATERAL (
+          SELECT payload
+          FROM medv2_plan_revision
+          WHERE "userId" = a."userId" AND "analysisId" = a.id AND "analysisVersion" = a.version AND status = 'published'
+          ORDER BY version DESC
+          LIMIT 1
+        ) published ON TRUE
+        WHERE a."userId" = $1 AND a.status = 'completed'
         ORDER BY "createdAt" DESC
       `, [userId]);
-      return AnalysisSchema.array().parse(result.rows.map((row) => row.payload));
+      return AnalysisSchema.array().parse(result.rows.map((row) => {
+        const analysis = AnalysisSchema.parse(row.payload);
+        if (!row.planPayload) return analysis;
+        return AnalysisSchema.parse({ ...analysis, ...PlanContentSchema.parse(row.planPayload) });
+      }));
     } catch (error) { throw persistenceError("Não foi possível ler as análises persistidas.", error); }
   }
 

@@ -112,11 +112,8 @@ test("document processing compensates the stored file when persistence fails", a
   if (!result.ok) assert.equal(result.error.code, "PERSISTENCE_WRITE_FAILED");
 });
 
-test("HTTP adapter returns structured errors, masks secrets and protects handoff", async () => {
-  const previousToken = process.env.MEDV0_SERVICE_TOKEN;
-  process.env.MEDV0_SERVICE_TOKEN = "test-service-token";
-  try {
-    await withServer(async (baseUrl) => {
+test("HTTP adapter returns structured errors and masks secrets", async () => {
+  await withServer(async (baseUrl) => {
       const health = await fetch(`${baseUrl}/api/health`).then((response) => response.json() as any);
       assert.equal(health.success, true);
       assert.equal(health.db, "connected");
@@ -138,24 +135,9 @@ test("HTTP adapter returns structured errors, masks secrets and protects handoff
       const oldStaticUpload = await fetch(`${baseUrl}/uploads/does-not-exist.pdf`);
       assert.equal(oldStaticUpload.status, 404);
 
-      const unauthorized = await fetch(`${baseUrl}/api/integrations/opengym/workout/contract`, {
-        headers: {
-          Authorization: "Bearer test-service-token",
-          "X-Medv0-Subject": "medv2-patient",
-          "X-Medv0-Contract-Id": "00000000-0000-4000-8000-000000000000"
-        }
-      });
-      const unauthorizedBody = await unauthorized.json() as any;
-      assert.equal(unauthorized.status, 403);
-      assert.equal(unauthorizedBody.error.code, "HANDOFF_GRANT_INVALID");
-
       const foreignOrigin = await fetch(`${baseUrl}/api/profile`, { headers: { Origin: "https://example.invalid" } });
       assert.equal(foreignOrigin.status, 403);
-    });
-  } finally {
-    if (previousToken === undefined) delete process.env.MEDV0_SERVICE_TOKEN;
-    else process.env.MEDV0_SERVICE_TOKEN = previousToken;
-  }
+  });
 });
 
 test("Better Auth creates a session and scopes the clinical API to the authenticated user", async () => {
@@ -188,6 +170,11 @@ test("Better Auth creates a session and scopes the clinical API to the authentic
     const biomarkerHistoryBody = await biomarkerHistory.json() as any;
     assert.equal(biomarkerHistoryBody.success, true);
     assert.ok(Array.isArray(biomarkerHistoryBody.biomarkers));
+
+    const backoffice = await fetch(`${baseUrl}/api/backoffice/patients`, { headers: { cookie, Origin: origin } });
+    const backofficeBody = await backoffice.json() as any;
+    assert.equal(backoffice.status, 403);
+    assert.equal(backofficeBody.error.code, "PROFESSIONAL_REQUIRED");
 
     const update = await fetch(`${baseUrl}/api/profile`, {
       method: "POST",

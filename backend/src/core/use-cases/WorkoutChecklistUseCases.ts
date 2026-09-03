@@ -41,13 +41,20 @@ export class GetWorkoutChecklistUseCase {
       );
     }
 
-    const parsedDay = parseWorkoutDay(analysis.trainingPlan[input.weekday] || "", input.weekday);
+    const structuredDay = analysis.trainingPlanStructured?.[input.weekday];
+    const legacyDay = parseWorkoutDay(analysis.trainingPlan[input.weekday] || "", input.weekday);
+    const parsedDay = structuredDay || legacyDay;
     const exercises = await this.catalog.getExercises();
     const completions = await this.db.getWorkoutTaskCompletions(userId, analysis.id, input.weekday);
     const completionByTask = new Map(completions.map((completion) => [completion.taskKey, completion]));
 
-    const tasks = parsedDay.tasks.map((task, index) => {
-      const taskKey = `${analysis.id}:${input.weekday}:${index + 1}`;
+    const parsedTasks = structuredDay
+      ? structuredDay.items
+        .filter((item) => item.kind === "exercise" || item.kind === "activity")
+        .map((item) => ({ itemId: item.id, sourceExerciseName: item.exerciseId || item.name, prescription: item.prescription }))
+      : legacyDay.tasks.map((task, index) => ({ itemId: String(index + 1), sourceExerciseName: task.sourceExerciseName, prescription: task.prescription }));
+    const tasks = parsedTasks.map((task, index) => {
+      const taskKey = structuredDay ? `${analysis.id}:${input.weekday}:${task.itemId}` : `${analysis.id}:${input.weekday}:${index + 1}`;
       const exercise = resolveExerciseName(task.sourceExerciseName, exercises);
       const completion = completionByTask.get(taskKey);
       const status: WorkoutTaskStatus = !exercise

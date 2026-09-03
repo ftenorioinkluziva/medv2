@@ -17,8 +17,8 @@ export class JsonExerciseCatalogAdapter implements ExerciseCatalogPort {
     private readonly instructionTranslationsFilePath?: string
   ) {
     this.assetBaseUrls = {
-      image: assetBaseUrls.image || "https://raw.githubusercontent.com/Alejor-Dev/ejercicios-dataset/main/images",
-      animation: assetBaseUrls.animation || "https://raw.githubusercontent.com/Alejor-Dev/ejercicios-dataset/main/videos"
+      image: assetBaseUrls.image || "",
+      animation: assetBaseUrls.animation || ""
     };
   }
 

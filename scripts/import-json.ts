@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import { getPool, closePool } from "../backend/src/adapters/database/PostgresPool.js";
 import { AnalysisSchema } from "../backend/src/core/schemas/analysis.js";
 import { DocumentSchema } from "../backend/src/core/schemas/document.js";
-import { HandoffGrantSchema } from "../backend/src/core/schemas/handoff.js";
 import { ProfileSchema } from "../backend/src/core/schemas/profile.js";
 import { SettingsSchema } from "../backend/src/core/schemas/settings.js";
 import { persistStructuredBiomarkers } from "../backend/src/adapters/database/BiomarkerPersistence.js";
@@ -26,8 +25,6 @@ async function main(): Promise<void> {
   const settings = SettingsSchema.parse(await readJson("settings.json", {}));
   const documents = DocumentSchema.array().parse(await readJson("documents.json", []));
   const analyses = AnalysisSchema.array().parse(await readJson("analyses.json", []));
-  const grantsRaw = await readJson<unknown>("handoff-grants.json", []);
-  const grants = HandoffGrantSchema.array().safeParse(Array.isArray(grantsRaw) ? grantsRaw : grantsRaw && typeof grantsRaw === "object" && "contractId" in grantsRaw ? [grantsRaw] : []);
   const client = await pool.connect();
   const issues: Array<{ source: string; sourceId?: string; reason: string; details?: unknown }> = [];
   try {
@@ -57,15 +54,6 @@ async function main(): Promise<void> {
         VALUES ($1, $2, $3, 1, encode(digest($4, 'sha256'), 'hex'), $4::jsonb, $5) ON CONFLICT (id, version) DO NOTHING
       `, [analysis.id, userId, documentId, JSON.stringify(analysis), analysis.createdAt]);
       await persistStructuredBiomarkers(client, userId, analysis);
-    }
-    if (grants.success) {
-      for (const grant of grants.data) {
-        const subject = grant.subject.includes(":") ? grant.subject : `${userId}:${grant.subject}`;
-        await client.query(`
-          INSERT INTO medv2_handoff_grant("contractId", "userId", subject, status, "createdAt", "expiresAt", "lastAccessedAt")
-          VALUES ($1, $2, $3, CASE WHEN $5 <= NOW() THEN 'expired' ELSE 'active' END, $4, $5, $6) ON CONFLICT DO NOTHING
-        `, [grant.contractId, userId, subject, grant.createdAt, grant.expiresAt, grant.lastAccessedAt || null]);
-      }
     }
     for (const issue of issues) await client.query(`INSERT INTO medv2_migration_issue(source, source_id, reason, details) VALUES ($1, $2, $3, $4::jsonb)`, [issue.source, issue.sourceId || null, issue.reason, JSON.stringify(issue.details || {})]);
     await client.query("COMMIT");

@@ -9,6 +9,7 @@ import { RuntimePort } from "../ports/RuntimePort";
 import { Profile } from "../schemas/profile";
 import { toOperationError } from "../types/errors";
 import { AnalysisConfigurationPort } from "../ports/ConfigurationPort";
+import { ResolveTrainingPlanUseCase } from "./ResolveTrainingPlanUseCase";
 
 export class GenerateAnalysisUseCase {
   constructor(
@@ -16,7 +17,8 @@ export class GenerateAnalysisUseCase {
     private db: DatabasePort,
     private configuration: AnalysisConfigurationPort,
     private knowledgeBase: KnowledgeBasePort,
-    private runtime: RuntimePort
+    private runtime: RuntimePort,
+    private readonly trainingPlanResolver?: ResolveTrainingPlanUseCase
   ) {}
 
   private async retrieveRelevantKbCards(biomarkers: BiomarkerItem[], profile: Profile): Promise<string> {
@@ -364,15 +366,17 @@ Gere um JSON estruturado contendo a análise clínica. O JSON deve possuir exata
    CRITICAL NUTRITION PLAN RULES:
    - As refeições sugeridas devem conter exclusivamente alimentos e produtos comuns e de fácil acesso no Brasil (como ovos, arroz, feijão, frango, carne magra, batata doce, mandioca, aveia, banana, mamão, azeite, iogurte natural, queijos simples). Evite ingredientes exóticos, importados ou muito caros.
    - Adapte o plano de acordo com as restrições alimentares do paciente, alergias, sensibilidades alimentares conhecidas e sintomas digestivos (ex: se o paciente relata gases ou estufamento moderado a severo, evite ou reduza alimentos altamente fermentativos ou que piorem os sintomas relatados).
-4. "trainingPlan": Um objeto contendo exatamente 7 chaves ("Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"). O valor de cada chave deve ser uma string em formato Markdown contendo o treino programado para aquele dia (se for dia de descanso, escreva detalhadamente sobre o descanso, alongamento ou cardio regenerativo). 
+4. "trainingPlan": Um objeto contendo exatamente 7 chaves ("Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"). O valor de cada chave deve ser uma string em formato Markdown contendo o treino programado para aquele dia (se for dia de descanso, escreva detalhadamente sobre o descanso, alongamento ou cardio regenerativo).
+
+5. "trainingPlanIntent": O mesmo plano de treino em estrutura editável. Para cada item do tipo "exercise" ou "activity", informe "searchText" com o nome mais específico possível em português ou inglês, e opcionalmente "aliases", "bodyPart", "target" e "equipment". Nunca invente "exerciseId": o backend resolverá o item pelo catálogo local. Para "warmup", "mobility" e "rest", mantenha "searchText" vazio. Cada item também deve conter "id", "kind", "name", "sets", "reps", "duration", "rest", "notes" e "prescription". Se não houver correspondência única e segura no catálogo, o item será mantido para revisão profissional.
 
    CRITICAL TRAINING PLAN RULES:
    - Respeite rigorosamente as limitações físicas (${profile.limitacoesFisicas}) e lesões/desafios de recuperação informados pelo paciente (${(profile as any).limitationsAndRecovery}).
    - Adapte a rotina de treinos de acordo com a frequência semanal (${(profile as any).exerciseFrequency || 'Não especificada'}), tipos de exercícios praticados (${(profile as any).exerciseTypes || 'Nenhum'}), intensidade tolerável (${(profile as any).exerciseIntensity || 'Não especificada'}), duração típica da sessão (${(profile as any).typicalSessionDuration || 'Não especificada'}) e notas de histórico de atividade (${(profile as any).exerciseNotes || 'Nenhuma'}).
    - Se o paciente tem dores crônicas ou limitações de mobilidade importantes, proponha exercícios adaptados e seguros de fortalecimento e poupe as articulações afetadas.
    - Integre as diretrizes da base de conhecimento clínico de Guilherme Freccia para VO2 máx, zonas de treino (Zona 2 e HIIT) e prevenção de sarcopenia.
-5. "nutritionOrientation": String em formato Markdown contendo um resumo analítico do estado de saúde e orientações nutricionais gerais sob a ótica da Dra. Katia Haranaka e da base de Nutrição (acidez, absorção de minerais quelados, impacto da glicação, etc.).
-6. "trainingOrientation": String em formato Markdown contendo um resumo analítico da aptidão física e orientações de treinamento gerais sob a ótica do Dr. Guilherme Freccia (melhora do VO2 máx, prevenção de sarcopenia, zonas de treino, etc.).
+6. "nutritionOrientation": String em formato Markdown contendo um resumo analítico do estado de saúde e orientações nutricionais gerais sob a ótica da Dra. Katia Haranaka e da base de Nutrição (acidez, absorção de minerais quelados, impacto da glicação, etc.).
+7. "trainingOrientation": String em formato Markdown contendo um resumo analítico da aptidão física e orientações de treinamento gerais sob a ótica do Dr. Guilherme Freccia (melhora do VO2 máx, prevenção de sarcopenia, zonas de treino, etc.).
 
 Formato de saída estrito:
 {
@@ -412,6 +416,35 @@ Formato de saída estrito:
     "Sábado": "...",
     "Domingo": "..."
   },
+  "trainingPlanIntent": {
+    "Segunda-feira": {
+      "title": "Treino A",
+      "message": "",
+      "isRestDay": false,
+      "items": [{
+        "id": "segunda-feira-1",
+        "kind": "exercise",
+        "name": "Supino reto com halteres",
+        "searchText": "Supino reto com halteres",
+        "aliases": ["dumbbell bench press"],
+        "bodyPart": "chest",
+        "target": "pectorals",
+        "equipment": "dumbbell",
+        "sets": 4,
+        "reps": "10-12",
+        "duration": "",
+        "rest": "90 segundos",
+        "notes": "Controle a fase excêntrica.",
+        "prescription": "4 séries de 10-12 repetições"
+      }]
+    },
+    "Terça-feira": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] },
+    "Quarta-feira": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] },
+    "Quinta-feira": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] },
+    "Sexta-feira": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] },
+    "Sábado": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] },
+    "Domingo": { "title": "Descanso", "message": "", "isRestDay": true, "items": [] }
+  },
   "nutritionOrientation": "...",
   "trainingOrientation": "..."
 }
@@ -448,6 +481,12 @@ Responda APENAS com o JSON válido, sem comentários ou explicações.`;
         supplementation: this.mergeDeterministicSupplements(parsed.data.supplementation || [], deterministicAlerts),
         nutritionPlan: parsed.data.nutritionPlan,
         trainingPlan: parsed.data.trainingPlan,
+        trainingPlanStructured: this.trainingPlanResolver
+          ? await this.trainingPlanResolver.execute({
+            trainingPlan: parsed.data.trainingPlan,
+            trainingPlanIntent: parsed.data.trainingPlanIntent
+          })
+          : null,
         deterministicAlerts: deterministicAlerts,
         nutritionOrientation: parsed.data.nutritionOrientation || "",
         trainingOrientation: parsed.data.trainingOrientation || "",

@@ -29,13 +29,12 @@ Variáveis suportadas:
 
 - `PORT`: porta local, padrão `3000`;
 - `OPENROUTER_API_KEY`: fallback para a credencial configurada pela interface;
-- `MEDV0_HANDOFF_SECRET`: assinatura dos tokens curtos de handoff OpenGym;
-- `MEDV0_SERVICE_TOKEN`: credencial privada do consumidor do contrato OpenGym;
 - `DATABASE_URL`: conexão PostgreSQL;
 - `BETTER_AUTH_SECRET`: segredo de sessão do Better Auth;
 - `BETTER_AUTH_URL`: origem confiável da aplicação.
+- `MEDV2_ROLE_EMAIL` e `MEDV2_ROLE`: usados somente pelo comando local de manutenção de papel (`patient` ou `professional`).
 
-Credenciais reais ficam em `.env` ou no armazenamento local de configurações e nunca são retornadas integralmente pela API. `.env`, dados pessoais, grants e uploads estão excluídos do versionamento.
+Credenciais reais ficam em `.env` ou no armazenamento local de configurações e nunca são retornadas integralmente pela API. `.env`, dados pessoais e uploads estão excluídos do versionamento.
 
 ## Estrutura
 
@@ -48,9 +47,8 @@ backend/src/core/
   types/         Result e OperationError
 
 backend/src/adapters/
-  database/      PostgreSQL, pool, adapter e importador JSON
-  exercise/      catálogo local de exercícios
-  handoff/       grants persistidos e assinatura HMAC
+  database/      PostgreSQL, pool, adapters e importadores
+  exercise/      catálogo e mídias de exercícios no PostgreSQL
   knowledge/     leitura validada das bases de conhecimento
   llm/           integração OpenRouter e tradução de falhas
   pdf/           extração de PDF
@@ -78,7 +76,7 @@ npm run build
 npm run check
 ```
 
-`npm run check` executa typecheck, testes determinísticos/HTTP e build. Os testes cobrem contratos inválidos, persistência inválida, taxonomia de retry, compensação de upload, segredo mascarado, CORS, sessão Better Auth e autorização do handoff.
+`npm run check` executa typecheck, testes determinísticos/HTTP e build. Os testes cobrem contratos inválidos, persistência inválida, taxonomia de retry, compensação de upload, segredo mascarado, CORS e sessão Better Auth.
 
 ## Desenvolvimento do frontend
 
@@ -145,7 +143,6 @@ O último comando remove definitivamente somente os volumes deste Compose.
 - Uploads não são publicados como diretório estático.
 - Um documento é lido pela rota controlada `GET /api/documents/:id/file`.
 - Logs contêm somente request ID, código, categoria e retry; respostas clínicas e secrets não são registrados.
-- O handoff exige consentimento explícito. A leitura do contrato exige token de serviço e um grant correspondente, não expirado, para `contractId + subject`.
 - No host, a aplicação direta escuta em loopback. No container, ela escuta na rede interna e o Compose publica a porta apenas em `127.0.0.1`.
 - PostgreSQL é a fonte de verdade do estado clínico após migração. O volume de PDFs usa staging, hash, rename atômico e reconciliação; não é tratado como parte de uma transação distribuída.
 - As rotas clínicas exigem sessão Better Auth e filtram todos os recursos por usuário.
@@ -174,6 +171,31 @@ Remove-Item Env:MEDV2_RESET_EMAIL, Env:MEDV2_RESET_PASSWORD
 
 O comando atualiza o hash da conta por senha e encerra as sessões existentes.
 
+Para habilitar o backoffice para um profissional existente, execute localmente:
+
+```powershell
+$env:MEDV2_ROLE_EMAIL = 'profissional@example.com'
+$env:MEDV2_ROLE = 'professional'
+npm run db:set-role
+Remove-Item Env:MEDV2_ROLE_EMAIL, Env:MEDV2_ROLE
+```
+
+O backoffice permite salvar rascunhos e publicar revisões de suplementação,
+nutrição e treino. A análise original gerada pela IA permanece preservada.
+
+No treino, o texto Markdown gerado pela IA é convertido deterministicamente em
+`trainingPlanStructured` antes da edição. O profissional trabalha com itens
+estruturados (tipo, exercício do catálogo, séries, repetições, duração, descanso
+e observações), enquanto o sistema também mantém Markdown renderizado para
+clientes antigos. Itens sem correspondência segura no catálogo ficam visíveis
+para revisão e não podem ser concluídos no checklist.
+
+Na geração de novas análises, a IA também retorna `trainingPlanIntent`: uma
+intenção estruturada com nome, aliases e parâmetros do exercício, sem receber
+os registros do catálogo e sem gerar IDs. O backend resolve essa intenção
+contra `medv2_exercise`, grava somente o `exerciseId` canônico em
+`trainingPlanStructured` e mantém itens ambíguos ou desconhecidos para revisão.
+
 Para importar os JSON legados para esse usuário, use o `userId` retornado pelo bootstrap:
 
 ```powershell
@@ -191,6 +213,20 @@ npm run db:backfill-biomarkers
 ```
 
 O backfill cria definições canônicas e valores por análise. Faixas clínicas não são inferidas automaticamente: o texto original permanece em cada medição até que uma fonte versionada e aprovada seja cadastrada em `medv2_reference_range`.
+
+### Catálogo de exercícios
+
+O catálogo e suas mídias são persistidos no PostgreSQL nas tabelas `medv2_exercise` e `medv2_exercise_media`. A importação é uma operação local de manutenção: o módulo JavaScript do catálogo é lido, validado com Zod e os arquivos JPG/GIF são armazenados no banco. O runtime não acessa o checkout da fonte nem URLs externas.
+
+```powershell
+$env:MEDV2_EXERCISE_CATALOG = 'C:\caminho\para\exercises-data.js'
+$env:MEDV2_EXERCISE_IMAGE_DIR = 'C:\caminho\para\media\img'
+$env:MEDV2_EXERCISE_GIF_DIR = 'C:\caminho\para\media\gif'
+npm run db:import-exercises
+Remove-Item Env:MEDV2_EXERCISE_CATALOG, Env:MEDV2_EXERCISE_IMAGE_DIR, Env:MEDV2_EXERCISE_GIF_DIR
+```
+
+As mídias são entregues pela rota `GET /api/exercises/:exerciseId/media/:kind`. Exercícios sem mídia continuam válidos e são exibidos sem imagem.
 
 ## Adicionando uma operação
 

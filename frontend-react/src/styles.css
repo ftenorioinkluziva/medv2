@@ -313,6 +313,52 @@ details > div { padding: 0 12px 12px; }
 .toast { position: fixed; right: 18px; bottom: 18px; z-index: 120; max-width: min(420px, calc(100vw - 36px)); padding: 12px 14px; border: 1px solid var(--success); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: .8rem; }
 .toast.danger { border-color: var(--danger); }
 
+.backoffice-page, .backoffice-editor { display: grid; gap: 16px; }
+.backoffice-selectors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.backoffice-editor { padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.backoffice-editor-header { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.backoffice-editor-header h2 { margin: 4px 0 3px; }
+.backoffice-editor-header p { margin: 0; color: var(--muted); font-size: .78rem; }
+.backoffice-status { color: var(--warning); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .7rem; font-weight: 700; white-space: nowrap; }
+.backoffice-tabs { display: flex; gap: 18px; border-bottom: 1px solid var(--border); }
+.backoffice-tabs button { min-height: 42px; padding: 8px 2px 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .72rem; font-weight: 700; }
+.backoffice-tabs button.active { color: var(--action); border-bottom-color: var(--action); }
+.backoffice-section { display: grid; gap: 14px; }
+.backoffice-list { display: grid; gap: 10px; }
+.backoffice-card { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-field); background: var(--inset); }
+.backoffice-item-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.backoffice-item-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.backoffice-item-title > div { display: grid; gap: 3px; min-width: 0; }
+.backoffice-item-title strong { overflow: hidden; color: var(--text); font-size: .9rem; text-overflow: ellipsis; white-space: nowrap; }
+.backoffice-item-title span:not(.backoffice-item-index) { color: var(--soft); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .66rem; }
+.backoffice-item-index { display: grid; flex: 0 0 32px; width: 32px; height: 32px; place-items: center; border: 1px solid var(--border); border-radius: var(--radius-field); color: var(--muted); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .68rem; font-weight: 700; }
+.supplement-edit-card { gap: 14px; }
+.supplement-fields { gap: 10px 12px; }
+.training-item-card { gap: 14px; }
+.training-item-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.training-item-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.training-item-fields { gap: 10px 12px; }
+.backoffice-catalog-picker { display: grid; gap: 8px; }
+.backoffice-catalog-details { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-field); background: var(--surface); }
+.backoffice-catalog-details img { width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-field); }
+.backoffice-catalog-details > div { display: grid; gap: 4px; align-content: start; }
+.backoffice-catalog-details span, .backoffice-catalog-details li { color: var(--muted); font-size: .72rem; line-height: 1.4; }
+.backoffice-catalog-details details { margin-top: 4px; }
+.backoffice-catalog-details ol { margin: 6px 0 0 18px; padding: 0; }
+.backoffice-add-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.backoffice-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.backoffice-field-grid .wide { grid-column: 1 / -1; }
+.backoffice-remove { justify-self: start; min-height: 30px; color: var(--danger); }
+.backoffice-day-tabs { display: flex; gap: 6px; overflow-x: auto; }
+.backoffice-day-tabs button { flex: 1 0 48px; min-height: 38px; border: 1px solid var(--border); border-radius: var(--radius-field); background: var(--inset); color: var(--muted); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .7rem; }
+.backoffice-day-tabs button.active { border-color: var(--action); color: var(--action); background: oklch(0.72 0.18 55 / .08); }
+.backoffice-hint { margin: 0; color: var(--soft); font-size: .75rem; line-height: 1.5; }
+.backoffice-hint code { color: var(--muted); }
+.backoffice-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 14px; border-top: 1px solid var(--border); }
+.backoffice-history { margin-top: 2px; }
+.backoffice-history p { margin: 0; padding: 8px 12px 0; color: var(--muted); font-size: .75rem; }
+.backoffice-preview { padding-top: 4px; border-top: 1px solid var(--border); }
+
 @media (max-width: 760px) {
   .app-shell { padding-inline: 14px; }
   .primary-nav { margin-inline: -14px; padding-inline: 14px; }
@@ -323,6 +369,8 @@ details > div { padding: 0 12px 12px; }
   .supplement-list dl { min-width: 0; }
   .upload-confirm { grid-template-columns: 1fr 160px; }
   .upload-confirm > div:last-child { grid-column: 1 / -1; justify-content: flex-end; }
+  .backoffice-selectors, .backoffice-field-grid { grid-template-columns: 1fr; }
+  .backoffice-field-grid .wide { grid-column: auto; }
 }
 
 @media (max-width: 520px) {
@@ -352,6 +400,12 @@ details > div { padding: 0 12px 12px; }
   .system-panel > header { align-items: flex-start; }
   .dialog-backdrop { padding: 8px; }
   .dialog { padding: 14px; }
+  .backoffice-editor { padding: 12px; }
+  .backoffice-editor-header { flex-direction: column; }
+  .backoffice-item-header, .training-item-heading { align-items: flex-start; flex-direction: column; }
+  .training-item-actions { justify-content: flex-start; }
+  .backoffice-actions { justify-content: stretch; }
+  .backoffice-actions .button { flex: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {

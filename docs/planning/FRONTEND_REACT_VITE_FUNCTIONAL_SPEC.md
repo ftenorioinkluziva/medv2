@@ -164,9 +164,6 @@ O painel deve exibir:
 - seletor de dia da semana;
 - conteúdo do dia selecionado;
 - estado de descanso ou ausência de treino;
-- ação de integração com OpenGym, quando habilitada.
-
-Abrir a integração deve continuar usando o handoff existente e não deve expor tokens na interface.
 
 ## 6. Labs: evolução de biomarcadores
 
@@ -323,7 +320,6 @@ O frontend React deve consumir os contratos existentes, sem acessar banco, files
 | Anotações | `POST /api/analyses/:id/annotations` |
 | Upload | `POST /api/upload-document` |
 | Catálogo de exercícios | `GET /api/exercises` |
-| Handoff OpenGym | `/api/integrations/opengym/*` |
 
 As respostas devem ser normalizadas em uma camada de cliente HTTP tipada. Componentes não devem chamar `fetch` diretamente.
 
@@ -408,7 +404,6 @@ A estrutura é uma referência funcional. A divisão final pode variar, desde qu
 - [ ] Upload de bioimpedância continua atualizando perfil.
 - [ ] Anotações continuam persistindo.
 - [ ] PDFs continuam protegidos pela API existente.
-- [ ] OpenGym continua usando o fluxo de handoff atual.
 
 ### Qualidade
 

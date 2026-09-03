@@ -10,9 +10,8 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import { getPool } from "./adapters/database/PostgresPool";
 import { PostgresDatabaseAdapter } from "./adapters/database/PostgresDatabaseAdapter";
-import { PostgresHandoffGrantAdapter } from "./adapters/handoff/PostgresHandoffGrantAdapter";
-import { JsonExerciseCatalogAdapter } from "./adapters/exercise/JsonExerciseCatalogAdapter";
-import { HmacHandoffTokenAdapter } from "./adapters/handoff/HmacHandoffTokenAdapter";
+import { PostgresBackofficePlanAdapter } from "./adapters/database/PostgresBackofficePlanAdapter";
+import { PostgresExerciseCatalogAdapter } from "./adapters/exercise/PostgresExerciseCatalogAdapter";
 import { JsonKnowledgeBaseAdapter } from "./adapters/knowledge/JsonKnowledgeBaseAdapter";
 import { OpenRouterAdapter } from "./adapters/llm/OpenRouterAdapter";
 import { PdfParseAdapter } from "./adapters/pdf/PdfParseAdapter";
@@ -22,13 +21,13 @@ import {
   AnnotationUpdateSchema,
   DocumentTypeSchema,
   ExerciseQuerySchema,
-  HandoffRequestSchema,
+  ExerciseMediaRequestSchema,
   ResourceIdSchema,
-  SettingsUpdateSchema,
-  WorkoutContractRequestSchema
+  SettingsUpdateSchema
 } from "./core/schemas/operations";
 import { ProfileSchema } from "./core/schemas/profile";
 import { WorkoutChecklistQuerySchema, WorkoutTaskCompletionUpdateSchema } from "./core/schemas/workout-checklist";
+import { UserRoleSchema } from "./core/schemas/backoffice";
 import { OperationError, OperationFailure, toOperationError } from "./core/types/errors";
 import {
   GetAnalysesUseCase,
@@ -42,13 +41,20 @@ import {
   UpdateSettingsUseCase
 } from "./core/use-cases/CrudUseCases";
 import { GenerateAnalysisUseCase } from "./core/use-cases/GenerateAnalysisUseCase";
+import { ResolveTrainingPlanUseCase } from "./core/use-cases/ResolveTrainingPlanUseCase";
 import { GetDocumentFileUseCase } from "./core/use-cases/GetDocumentFileUseCase";
-import { CreateHandoffUseCase, GetWorkoutContractUseCase } from "./core/use-cases/HandoffUseCases";
-import { MapWorkoutContractUseCase } from "./core/use-cases/MapWorkoutContractUseCase";
 import { ParseDocumentUseCase } from "./core/use-cases/ParseDocumentUseCase";
 import { ProcessDocumentUseCase } from "./core/use-cases/ProcessDocumentUseCase";
 import { SearchExercisesUseCase } from "./core/use-cases/SearchExercisesUseCase";
+import { GetExerciseMediaUseCase } from "./core/use-cases/GetExerciseMediaUseCase";
 import { GetWorkoutChecklistUseCase, UpdateWorkoutTaskCompletionUseCase } from "./core/use-cases/WorkoutChecklistUseCases";
+import {
+  GetBackofficePlanEditorUseCase,
+  ListBackofficePatientsUseCase,
+  PublishBackofficePlanUseCase,
+  SaveBackofficePlanDraftUseCase
+} from "./core/use-cases/BackofficePlanUseCases";
+import { BackofficePlanInputSchema } from "./core/schemas/backoffice";
 import { AuthContext } from "./core/auth-context";
 import { IdempotencyKeySchema } from "./core/schemas/auth";
 
@@ -90,7 +96,7 @@ function operationErrorFrom(error: unknown): OperationError {
 
 function statusFor(error: OperationError): number {
   if (error.code.endsWith("_NOT_FOUND")) return 404;
-  if (error.code === "SERVICE_TOKEN_INVALID" || error.code === "UNAUTHORIZED") return 401;
+  if (error.code === "UNAUTHORIZED") return 401;
   return ({ validation: 400, authorization: 403, conflict: 409, rate_limit: 429, upstream: 502, internal: 500 })[error.category];
 }
 
@@ -110,12 +116,29 @@ type AuthenticatedRequest = Request & { authContext?: AuthContext };
 async function loadAuthContext(request: Request): Promise<AuthContext | null> {
   const session = await auth.api.getSession({ headers: fromNodeHeaders(request.headers) });
   if (!session?.user || !session.session) return null;
+  const roleResult = await getPool().query("SELECT role FROM \"user\" WHERE id = $1", [session.user.id]);
+  const role = UserRoleSchema.parse(roleResult.rows[0]?.role || "patient");
   return {
     userId: session.user.id,
     email: session.user.email,
     name: session.user.name,
-    sessionId: session.session.id
+    sessionId: session.session.id,
+    role
   };
+}
+
+function requireProfessional(request: Request, response: Response, next: NextFunction): void {
+  const context = (request as AuthenticatedRequest).authContext;
+  if (context?.role !== "professional") {
+    sendError(response, {
+      code: "PROFESSIONAL_REQUIRED",
+      category: "authorization",
+      message: "Acesso restrito a profissionais.",
+      retryable: false
+    });
+    return;
+  }
+  next();
 }
 
 function requireSession(request: Request, response: Response, next: NextFunction): void {
@@ -195,17 +218,6 @@ async function failOperation(ownerId: string, key: string, error: unknown): Prom
   finally { client.release(); }
 }
 
-function hasValidServiceToken(request: Request): boolean {
-  const expected = process.env.MEDV0_SERVICE_TOKEN;
-  const supplied = request.headers.authorization?.startsWith("Bearer ")
-    ? request.headers.authorization.slice(7)
-    : "";
-  if (!expected || !supplied) return false;
-  const expectedBuffer = Buffer.from(expected);
-  const suppliedBuffer = Buffer.from(supplied);
-  return expectedBuffer.length === suppliedBuffer.length && crypto.timingSafeEqual(expectedBuffer, suppliedBuffer);
-}
-
 export function createApp() {
   const app = express();
   const db = new PostgresDatabaseAdapter();
@@ -213,11 +225,10 @@ export function createApp() {
   const files = new LocalFileStorageAdapter(UPLOADS_DIR);
   const llm = new OpenRouterAdapter(db);
   const parser = new ParseDocumentUseCase(new PdfParseAdapter(), llm, db);
-  const analysisGenerator = new GenerateAnalysisUseCase(llm, db, db, new JsonKnowledgeBaseAdapter(DATA_DIR), runtime);
+  const exerciseCatalog = new PostgresExerciseCatalogAdapter();
+  const resolveTrainingPlan = new ResolveTrainingPlanUseCase(exerciseCatalog);
+  const analysisGenerator = new GenerateAnalysisUseCase(llm, db, db, new JsonKnowledgeBaseAdapter(DATA_DIR), runtime, resolveTrainingPlan);
   const processDocument = new ProcessDocumentUseCase(parser, analysisGenerator, db, files, runtime);
-  const mapWorkout = new MapWorkoutContractUseCase(db, runtime);
-  const grants = new PostgresHandoffGrantAdapter();
-
   const getProfile = new GetProfileUseCase(db);
   const saveProfile = new SaveProfileUseCase(db);
   const getSettings = new GetSettingsUseCase(db);
@@ -227,21 +238,16 @@ export function createApp() {
   const getAnalysisById = new GetAnalysisByIdUseCase(db);
   const getDocuments = new GetDocumentsUseCase(db);
   const updateAnnotations = new UpdateAnalysisAnnotationsUseCase(db);
-  const exerciseCatalog = new JsonExerciseCatalogAdapter(
-    path.join(ROOT, "backend", "data", "exercises.json"),
-    {
-      image: process.env.EXERCISE_IMAGE_BASE_URL,
-      animation: process.env.EXERCISE_GIF_BASE_URL
-    },
-    path.join(ROOT, "backend", "data", "exercise-instructions.pt-BR.json")
-  );
   const searchExercises = new SearchExercisesUseCase(exerciseCatalog);
+  const getExerciseMedia = new GetExerciseMediaUseCase(exerciseCatalog);
   const getWorkoutChecklist = new GetWorkoutChecklistUseCase(db, exerciseCatalog);
   const updateWorkoutTaskCompletion = new UpdateWorkoutTaskCompletionUseCase(db, getWorkoutChecklist, runtime);
   const getDocumentFile = new GetDocumentFileUseCase(db, files);
-  const createHandoff = new CreateHandoffUseCase(db, grants, new HmacHandoffTokenAdapter(process.env.MEDV0_HANDOFF_SECRET), runtime);
-  const getWorkoutContract = new GetWorkoutContractUseCase(grants, mapWorkout, runtime);
-
+  const backofficePlans = new PostgresBackofficePlanAdapter();
+  const listBackofficePatients = new ListBackofficePatientsUseCase(backofficePlans);
+  const getBackofficePlanEditor = new GetBackofficePlanEditorUseCase(backofficePlans);
+  const saveBackofficePlanDraft = new SaveBackofficePlanDraftUseCase(backofficePlans);
+  const publishBackofficePlan = new PublishBackofficePlanUseCase(backofficePlans);
   const upload = multer({
     storage: multer.memoryStorage(),
     limits: { fileSize: MAX_PDF_BYTES, files: 1 },
@@ -270,7 +276,7 @@ export function createApp() {
     },
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Medv0-Subject", "X-Medv0-Contract-Id", "X-Request-Id"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Request-Id"]
   }));
   app.all("/api/auth/*", toNodeHandler(auth));
   app.get("/api/health", async (_request, response) => {
@@ -283,6 +289,11 @@ export function createApp() {
   });
   app.use(express.json({ limit: "256kb" }));
   app.use(express.static(FRONTEND_DIR));
+
+  app.get("/api/me", requireSession, async (request, response) => {
+    const context = (request as AuthenticatedRequest).authContext;
+    response.json({ success: true, user: context });
+  });
 
   app.get("/api/settings", requireSession, async (request, response) => {
     try {
@@ -325,6 +336,17 @@ export function createApp() {
     catch (error) { sendError(response, error); }
   });
 
+  app.get("/api/exercises/:exerciseId/media/:kind", async (request, response) => {
+    try {
+      const result = await getExerciseMedia.execute(ExerciseMediaRequestSchema.parse(request.params));
+      if (!result.ok) return sendError(response, result.error);
+      response.setHeader("Content-Type", result.value.mimeType);
+      response.setHeader("Content-Length", String(result.value.sizeBytes));
+      response.setHeader("Cache-Control", "public, max-age=86400, immutable");
+      response.send(result.value.contents);
+    } catch (error) { sendError(response, error); }
+  });
+
   app.get("/api/workout/checklist", requireSession, async (request, response) => {
     try {
       const result = await getWorkoutChecklist.execute(userId(request), WorkoutChecklistQuerySchema.parse({
@@ -341,6 +363,41 @@ export function createApp() {
       const result = await updateWorkoutTaskCompletion.execute(userId(request), WorkoutTaskCompletionUpdateSchema.parse(request.body));
       if (!result.ok) return sendError(response, result.error);
       response.json({ success: true, completion: result.value });
+    } catch (error) { sendError(response, error); }
+  });
+
+  app.get("/api/backoffice/patients", requireSession, requireProfessional, async (request, response) => {
+    try { response.json({ success: true, patients: await listBackofficePatients.execute(userId(request)) }); }
+    catch (error) { sendError(response, error); }
+  });
+
+  app.get("/api/backoffice/patients/:patientId/analyses/:analysisId/plan", requireSession, requireProfessional, async (request, response) => {
+    try {
+      const input = BackofficePlanInputSchema.parse({ patientId: request.params.patientId, analysisId: request.params.analysisId });
+      const editor = await getBackofficePlanEditor.execute(userId(request), input);
+      if (!editor) return sendError(response, { code: "PLAN_CONTEXT_NOT_FOUND", category: "validation", message: "Paciente ou análise não encontrada.", retryable: false });
+      response.json({ success: true, editor });
+    } catch (error) { sendError(response, error); }
+  });
+
+  app.put("/api/backoffice/patients/:patientId/analyses/:analysisId/plan", requireSession, requireProfessional, async (request, response) => {
+    try {
+      const result = await saveBackofficePlanDraft.execute(userId(request), {
+        patientId: request.params.patientId,
+        analysisId: request.params.analysisId,
+        content: request.body?.content
+      });
+      if (!result.ok) return sendError(response, result.error);
+      response.json({ success: true, revision: result.value, message: "Rascunho salvo com sucesso." });
+    } catch (error) { sendError(response, error); }
+  });
+
+  app.post("/api/backoffice/patients/:patientId/analyses/:analysisId/plan/publish", requireSession, requireProfessional, async (request, response) => {
+    try {
+      const input = BackofficePlanInputSchema.parse({ patientId: request.params.patientId, analysisId: request.params.analysisId });
+      const result = await publishBackofficePlan.execute(userId(request), input);
+      if (!result.ok) return sendError(response, result.error);
+      response.json({ success: true, revision: result.value, message: "Plano publicado com sucesso." });
     } catch (error) { sendError(response, error); }
   });
 
@@ -408,33 +465,6 @@ export function createApp() {
       const output = { success: true, ...result.value };
       await finishOperation(ownerId, idempotencyKey, output);
       response.json(output);
-    } catch (error) { sendError(response, error); }
-  });
-
-  app.post("/api/integrations/opengym/handoff", requireSession, async (request, response) => {
-    try {
-      HandoffRequestSchema.parse(request.body);
-      const result = await createHandoff.execute(userId(request));
-      if (!result.ok) return sendError(response, result.error);
-      response.json({ success: true, ...result.value });
-    } catch (error) { sendError(response, error); }
-  });
-
-  app.get("/api/integrations/opengym/workout/contract", async (request, response) => {
-    try {
-      if (!hasValidServiceToken(request)) throw new OperationFailure({
-        code: "SERVICE_TOKEN_INVALID",
-        category: "authorization",
-        message: "Token de serviço não autorizado.",
-        retryable: false
-      });
-      const input = WorkoutContractRequestSchema.parse({
-        subject: request.headers["x-medv0-subject"],
-        contractId: request.headers["x-medv0-contract-id"]
-      });
-      const result = await getWorkoutContract.execute(input.contractId, input.subject);
-      if (!result.ok) return sendError(response, result.error);
-      response.json(result.value);
     } catch (error) { sendError(response, error); }
   });
 

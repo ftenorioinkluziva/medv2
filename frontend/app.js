@@ -42,7 +42,6 @@ const linkGoProfile = document.getElementById('link-go-profile');
 const linkViewAllDocs = document.getElementById('link-view-all-docs');
 const btnHistoryBack = document.getElementById('btn-history-back');
 const btnDetailBack = document.getElementById('btn-detail-back');
-const btnSyncOpenGym = document.getElementById('btn-sync-opengym');
 
 // Settings Elements
 const btnSettings = document.getElementById('btn-settings');
@@ -364,12 +363,6 @@ function setupViewNavigation() {
   });
   btnHistoryBack.addEventListener('click', () => showView('dashboard'));
   btnDetailBack.addEventListener('click', () => showView('dashboard'));
-  if (btnSyncOpenGym) {
-    btnSyncOpenGym.addEventListener('click', () => {
-      window.open('http://localhost:8080/#/settings', '_blank');
-    });
-  }
-  
   document.getElementById('btn-logout').addEventListener('click', async () => {
     if (confirm("Deseja sair do aplicativo?")) {
       await fetch('/api/auth/sign-out', { method: 'POST', credentials: 'include' });
