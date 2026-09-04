@@ -29,6 +29,7 @@ Variáveis suportadas:
 
 - `PORT`: porta local, padrão `3000`;
 - `OPENROUTER_API_KEY`: fallback para a credencial configurada pela interface;
+- `OPENROUTER_TIMEOUT_MS`: tempo máximo de cada chamada à OpenRouter em milissegundos, padrão `180000` (3 minutos);
 - `DATABASE_URL`: conexão PostgreSQL;
 - `BETTER_AUTH_SECRET`: segredo de sessão do Better Auth;
 - `BETTER_AUTH_URL`: origem confiável da aplicação.

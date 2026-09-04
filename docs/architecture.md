@@ -58,7 +58,7 @@ type OperationError = {
 };
 ```
 
-A API responde `{ success: false, error: OperationError }`. O adapter OpenRouter classifica credencial, rate limit, indisponibilidade e output inválido. Escritas e validações não são repetidas automaticamente.
+A API responde `{ success: false, error: OperationError }`. O adapter OpenRouter classifica credencial, rate limit, timeout do cliente, indisponibilidade e output inválido. O timeout por chamada é configurável por `OPENROUTER_TIMEOUT_MS` e usa 180 segundos por padrão. Escritas e validações não são repetidas automaticamente.
 
 ## Persistência e efeitos
 

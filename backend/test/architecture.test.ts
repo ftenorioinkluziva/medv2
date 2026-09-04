@@ -6,12 +6,12 @@ import path from "node:path";
 import test from "node:test";
 import { JsonDatabaseAdapter } from "../src/adapters/database/JsonDatabaseAdapter";
 import { canonicalizeBiomarkerName, parseNumericBiomarkerValue } from "../src/adapters/database/BiomarkerPersistence";
-import { OpenRouterAdapter } from "../src/adapters/llm/OpenRouterAdapter";
+import { DEFAULT_OPENROUTER_TIMEOUT_MS, OpenRouterAdapter } from "../src/adapters/llm/OpenRouterAdapter";
 import { AnalysisLLMResponseSchema } from "../src/core/schemas/analysis";
 import { AnnotationUpdateSchema, SettingsUpdateSchema } from "../src/core/schemas/operations";
 import { OperationFailure } from "../src/core/types/errors";
 import { ProcessDocumentUseCase } from "../src/core/use-cases/ProcessDocumentUseCase";
-import { createApp, resolveHost } from "../src/server";
+import { createApp, resolveHost, resolveOpenRouterTimeout } from "../src/server";
 
 async function withServer(run: (baseUrl: string) => Promise<void>): Promise<void> {
   const server = createApp().listen(0, "127.0.0.1");
@@ -72,6 +72,39 @@ test("OpenRouter errors expose stable retry semantics without leaking payloads",
       () => rateLimited.call({ prompt: "sensitive", model: "test/model" }),
       (error: unknown) => error instanceof OperationFailure
         && error.operationError.code === "OPENROUTER_RATE_LIMITED"
+        && error.operationError.retryable === true
+        && !error.operationError.message.includes("sensitive")
+    );
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+test("OpenRouter distinguishes client timeout from generic unavailability", async () => {
+  assert.equal(DEFAULT_OPENROUTER_TIMEOUT_MS, 180_000);
+  assert.equal(resolveOpenRouterTimeout({} as NodeJS.ProcessEnv), 180_000);
+  assert.equal(resolveOpenRouterTimeout({ OPENROUTER_TIMEOUT_MS: "240000" } as NodeJS.ProcessEnv), 240_000);
+  assert.throws(
+    () => resolveOpenRouterTimeout({ OPENROUTER_TIMEOUT_MS: "0" } as NodeJS.ProcessEnv),
+    /inteiro positivo/
+  );
+
+  const originalFetch = global.fetch;
+  global.fetch = async () => {
+    const timeout = new Error("The operation was aborted due to timeout");
+    timeout.name = "TimeoutError";
+    throw timeout;
+  };
+  try {
+    const adapter = new OpenRouterAdapter(
+      { getOpenRouterApiKey: async () => "secret" },
+      { timeoutMs: 1_000 }
+    );
+    await assert.rejects(
+      () => adapter.call({ prompt: "sensitive", model: "test/model" }),
+      (error: unknown) => error instanceof OperationFailure
+        && error.operationError.code === "OPENROUTER_TIMEOUT"
+        && error.operationError.category === "upstream"
         && error.operationError.retryable === true
         && !error.operationError.message.includes("sensitive")
     );

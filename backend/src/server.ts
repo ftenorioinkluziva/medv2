@@ -13,7 +13,7 @@ import { PostgresDatabaseAdapter } from "./adapters/database/PostgresDatabaseAda
 import { PostgresBackofficePlanAdapter } from "./adapters/database/PostgresBackofficePlanAdapter";
 import { PostgresExerciseCatalogAdapter } from "./adapters/exercise/PostgresExerciseCatalogAdapter";
 import { JsonKnowledgeBaseAdapter } from "./adapters/knowledge/JsonKnowledgeBaseAdapter";
-import { OpenRouterAdapter } from "./adapters/llm/OpenRouterAdapter";
+import { DEFAULT_OPENROUTER_TIMEOUT_MS, OpenRouterAdapter } from "./adapters/llm/OpenRouterAdapter";
 import { PdfParseAdapter } from "./adapters/pdf/PdfParseAdapter";
 import { SystemRuntimeAdapter } from "./adapters/runtime/SystemRuntimeAdapter";
 import { LocalFileStorageAdapter } from "./adapters/storage/LocalFileStorageAdapter";
@@ -62,6 +62,18 @@ dotenv.config();
 
 const PORT = Number(process.env.PORT || 3000);
 const HOST = resolveHost();
+export function resolveOpenRouterTimeout(environment: NodeJS.ProcessEnv = process.env): number {
+  const rawValue = environment.OPENROUTER_TIMEOUT_MS?.trim();
+  if (!rawValue) return DEFAULT_OPENROUTER_TIMEOUT_MS;
+
+  const timeoutMs = Number(rawValue);
+  if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
+    throw new Error("OPENROUTER_TIMEOUT_MS deve ser um inteiro positivo em milissegundos.");
+  }
+  return timeoutMs;
+}
+
+const OPENROUTER_TIMEOUT_MS = resolveOpenRouterTimeout();
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const DATA_DIR = path.join(ROOT, "data");
 const UPLOADS_DIR = path.join(ROOT, "uploads");
@@ -223,7 +235,7 @@ export function createApp() {
   const db = new PostgresDatabaseAdapter();
   const runtime = new SystemRuntimeAdapter();
   const files = new LocalFileStorageAdapter(UPLOADS_DIR);
-  const llm = new OpenRouterAdapter(db);
+  const llm = new OpenRouterAdapter(db, { timeoutMs: OPENROUTER_TIMEOUT_MS });
   const parser = new ParseDocumentUseCase(new PdfParseAdapter(), llm, db);
   const exerciseCatalog = new PostgresExerciseCatalogAdapter();
   const resolveTrainingPlan = new ResolveTrainingPlanUseCase(exerciseCatalog);

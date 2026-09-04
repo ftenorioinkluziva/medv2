@@ -2,8 +2,29 @@ import { LLMServicePort, LLMCallParams } from "../../core/ports/LLMServicePort";
 import { OpenRouterCredentialPort } from "../../core/ports/ConfigurationPort";
 import { OperationFailure } from "../../core/types/errors";
 
+export const DEFAULT_OPENROUTER_TIMEOUT_MS = 180_000;
+
+export interface OpenRouterAdapterOptions {
+  timeoutMs?: number;
+}
+
+function isTimeoutError(error: unknown): boolean {
+  return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+}
+
 export class OpenRouterAdapter implements LLMServicePort {
-  constructor(private credentials: OpenRouterCredentialPort) {}
+  private readonly timeoutMs: number;
+
+  constructor(
+    private credentials: OpenRouterCredentialPort,
+    options: OpenRouterAdapterOptions = {}
+  ) {
+    const timeoutMs = options.timeoutMs ?? DEFAULT_OPENROUTER_TIMEOUT_MS;
+    if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
+      throw new Error("OpenRouter timeout must be a positive integer in milliseconds.");
+    }
+    this.timeoutMs = timeoutMs;
+  }
 
   async call({ prompt, systemPrompt, model, responseJson }: LLMCallParams): Promise<unknown> {
     const apiKey = await this.credentials.getOpenRouterApiKey();
@@ -57,7 +78,7 @@ export class OpenRouterAdapter implements LLMServicePort {
           "X-Title": "MedV2 Exam Analyzer"
         },
         body: JSON.stringify(body),
-        signal: AbortSignal.timeout(60_000)
+        signal: AbortSignal.timeout(this.timeoutMs)
       });
 
       if (!response.ok) {
@@ -97,6 +118,15 @@ export class OpenRouterAdapter implements LLMServicePort {
       return content;
     } catch (error: unknown) {
       if (error instanceof OperationFailure) throw error;
+      if (isTimeoutError(error)) {
+        throw new OperationFailure({
+          code: "OPENROUTER_TIMEOUT",
+          category: "upstream",
+          message: "A chamada à OpenRouter excedeu o tempo limite.",
+          hint: "Tente novamente; se o problema persistir, aumente OPENROUTER_TIMEOUT_MS.",
+          retryable: true
+        }, { cause: error });
+      }
       throw new OperationFailure({
         code: "OPENROUTER_UNAVAILABLE",
         category: "upstream",

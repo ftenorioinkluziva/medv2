@@ -33,6 +33,7 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-replace-with-a-long-random-secret}
       BETTER_AUTH_URL: ${BETTER_AUTH_URL_DOCKER:-http://127.0.0.1:3011}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_TIMEOUT_MS: ${OPENROUTER_TIMEOUT_MS:-180000}
     ports:
       - "127.0.0.1:${MEDV2_DOCKER_PORT:-3011}:3000"
     volumes:
